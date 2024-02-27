@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using UniMagazine.Data;
+using UniMagazine.Repository;
+using UniMagazine.Repository.IRepository;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("AppDbContextConnection") ?? throw new InvalidOperationException("Connection string 'AppDbContextConnection' not found.");
 
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddRoles<IdentityRole>()
@@ -13,6 +15,8 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 
