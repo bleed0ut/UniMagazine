@@ -9,5 +9,14 @@ namespace UniMagazine.Data;
 // Add profile data for application users by adding properties to the ApplicationUser class
 public class ApplicationUser : IdentityUser
 {
+    public String FullName { get; set; }
+
+    public DateTime DateOfBirth { get; set; }
+
+    public String Address { get; set; }
+
+    public String Role { get; set; }
+
+    //Faculty
 }
 
