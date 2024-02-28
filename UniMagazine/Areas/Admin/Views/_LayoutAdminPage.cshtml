@@ -1,0 +1,26 @@
+﻿@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+<header>
+    <div class="" role="group" aria-label="Tools">
+        <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="btn btn-secondary btn-lg">
+            <span class="btn-label">
+                <i class="fa-brands fa-stack-overflow"></i>
+            </span>   Faculties
+        </a>
+        <a asp-area="Admin" asp-controller="User" asp-action="CustomerIndex" class="btn btn-secondary btn-lg">
+            <span class="btn-label">
+                <i class="fa-solid fa-circle-user"></i>
+            </span>   Users
+        </a>
+    </div>
+</header>
+<body>
+    <div class="container">
+        <main role="main" class="pb-5">
+            @RenderBody()
+        </main>
+    </div>
+    <script src="https://kit.fontawesome.com/c1f40875f2.js" crossorigin="anonymous"></script>
+</body>
+

@@ -5,11 +5,15 @@ namespace UniMagazine.Repository
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private AppDbContext _dbContext {  get; set; }
+        private readonly AppDbContext _dbContext;
+
+        public IUserRepository UserRepository { get; private set; }
+
 
         public UnitOfWork(AppDbContext dbContext)
         { 
             _dbContext = dbContext;
+            UserRepository = new UserRepository(dbContext);
         }
 
         public void Save()

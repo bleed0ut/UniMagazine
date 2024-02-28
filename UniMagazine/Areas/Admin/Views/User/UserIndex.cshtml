@@ -1,0 +1,75 @@
+﻿@model UserVM
+@{
+    Layout = "/Areas/Admin/Views/_LayoutAdminPage.cshtml";
+    ViewData["Title"] = "Admin page";
+}
+@* Search *@
+<div class="d-flex justify-content-end text-center shadow mt-2 mb-2 p-2 card-header bg-secondary bg-gradient ml-0 py-3">
+    <form asp-action="UserIndex" class="row">
+        <div class="col-3">
+            <label class="visually-hidden" for="role"></label>
+            <select class="form-select" id="role" name="role">
+                <option selected="@(Model.Role == "")" value="")>Role</option>
+                <option selected="@(Model.Role == "Manager")" value="Manager">Manager</option>
+                <option selected="@(Model.Role == "Coordinator")" value="Coordinator">Coordinator</option>
+                <option selected="@(Model.Role == "Student")" value="Student">Student</option>
+            </select>
+        </div>
+        
+        <div class="col-5">
+            <label class="visually-hidden" for="search"></label>
+            <div class="input-group">
+                <div class="input-group-text"></div>
+                <input type="text" class="form-control" value="@Model.SearchByEmail" id="search" name="search" placeholder="Search by email">
+            </div>
+        </div>
+        <div class="col-4">
+            <button type="submit" class="btn btn-light">Search</button>
+            <a href="/Admin/User/UserIndex" class="btn btn-dark">Clear</a>
+        </div>
+    </form>
+</div>
+<div class="card shadow border-0 my-4">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">User List</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <table id="tblData" class="table table-bordered table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Role</th>
+                    <th>FullName</th>
+                    <th>Email</th>
+                    <th>DateOfBirth</th>
+                    <th>Address</th>
+                    <th>Falcuty</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (ApplicationUser user in Model.Users){
+                    <tr>
+                        <td>@user.Role</td>
+                        <td>@user.FullName</td>
+                        <td>@user.Email</td>
+                        <td>@user.DateOfBirth</td>
+                        <td>@user.Address</td>
+                        <td>Upcomming</td>
+                        <td>
+                            <a asp-area="Admin" asp-controller="User" asp-action="ResetPassword" asp-route-id="@user.Id" class="btn btn-outline-success">
+                                Reset password
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+

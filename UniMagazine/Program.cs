@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using UniMagazine.Data;
+using UniMagazine.Models;
 using UniMagazine.Repository;
 using UniMagazine.Repository.IRepository;
 var builder = WebApplication.CreateBuilder(args);
@@ -36,14 +37,17 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapRazorPages();
-app.MapAreaControllerRoute(
-    name: "AdminArea",
-    areaName: "Admin",
-    pattern: "admin/{controller=Category}/{action=Index}/");
+
+app.MapControllerRoute(
+    name: "areaDefault",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+
+
 
 using (var scope = app.Services.CreateScope()) {
     await RoleDbSeeder.CreateRole(scope.ServiceProvider);
