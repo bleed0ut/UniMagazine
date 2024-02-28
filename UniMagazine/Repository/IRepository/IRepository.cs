@@ -9,6 +9,5 @@ namespace UniMagazine.Repository.IRepository
         T Get(Expression<Func<T, bool>> filter, string? includeProperty = null);
 
         void Add(T entity);
-        void Detach(T entity);
     }
 }

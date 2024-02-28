@@ -36,6 +36,11 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapRazorPages();
+app.MapAreaControllerRoute(
+    name: "AdminArea",
+    areaName: "Admin",
+    pattern: "admin/{controller=Category}/{action=Index}/");
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
