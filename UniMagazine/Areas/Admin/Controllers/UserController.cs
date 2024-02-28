@@ -15,9 +15,9 @@ namespace UniMagazine.Areas.Admin.Controllers
     {
         private readonly IUnitOfWork _Unit;
         private readonly AppDbContext _db;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public UserController(IUnitOfWork unit, AppDbContext db, UserManager<IdentityUser> userManager)
+        public UserController(IUnitOfWork unit, AppDbContext db, UserManager<ApplicationUser> userManager)
         {
             _Unit = unit;
              _db = db;
