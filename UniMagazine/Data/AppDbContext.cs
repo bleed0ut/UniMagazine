@@ -11,7 +11,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
         : base(options)
     {
     }
-    public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+    public DbSet<Faculty> Faculties { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

@@ -8,12 +8,14 @@ namespace UniMagazine.Repository
         private readonly AppDbContext _dbContext;
 
         public IUserRepository UserRepository { get; private set; }
+        public IFacultyRepository FacultyRepository { get; private set; }
 
 
         public UnitOfWork(AppDbContext dbContext)
         { 
             _dbContext = dbContext;
             UserRepository = new UserRepository(dbContext);
+            FacultyRepository = new FacultyRepository(dbContext);
         }
 
         public void Save()

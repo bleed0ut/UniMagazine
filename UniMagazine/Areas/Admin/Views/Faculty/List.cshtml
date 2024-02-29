@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Faculty>
+@{
+    Layout = "/Areas/Admin/Views/_LayoutAdminPage.cshtml";
+    ViewData["Title"] = "Admin page";
+}
+
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="container">
+        <h1>Show All Faculty - Admin Functionality</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>DesCription</th>
+                    <th>Crete ate</th>
+                    <th> </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var fal in Model)
+                {
+                    <tr>
+                        <td>@fal.Id</td>
+                        <td>@fal.Name</td>
+                        <td>@fal.Description</td>
+                        <td>@fal.CreateDate</td>
+                        <td>
+                            <a asp-area="Admin"
+                               asp-action="Update"
+                               asp-route-id="@fal.Id">Update</a>
+                        </td> 
+                    </tr>
+                }
+            </tbody>
+        </table>
+</div>
+<div >
+    <a asp-area="Admin" asp-controller="Faculty" asp-action="Add" class="btn btn-outline-success">
+        <span class="btn-label">
+            <i class="fa-solid fa-circle-user"></i>
+        </span>   Add New Faculty
+    </a>
+</div>
