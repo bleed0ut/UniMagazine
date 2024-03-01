@@ -7,5 +7,7 @@
         public IFacultyRepository FacultyRepository { get; }
 
         public void Save();
+
+        public Task SaveAsync();
     }
 }

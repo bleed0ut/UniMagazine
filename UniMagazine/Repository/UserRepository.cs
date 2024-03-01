@@ -21,11 +21,13 @@ namespace UniMagazine.Repository
         }
   
 
-        public IEnumerable<ApplicationUser> GetAllUser(string search, string role)
+        public IEnumerable<ApplicationUser> GetAllUser(string search, string role, int facultyId = 0)
         {
             search = search.ToLower().Trim();
 
             var users = (from user in _dbContext.Users
+                         join fac in _dbContext.Faculties
+                         on user.FacultyId equals fac.Id
                          where string.IsNullOrEmpty(search) || user != null && user.Email.ToLower().Contains(search)
                          select new ApplicationUser
                          {
@@ -35,13 +37,17 @@ namespace UniMagazine.Repository
                              DateOfBirth = user.DateOfBirth,
                              Email = user.Email,
                              Role = user.Role,
+                             Faculty = user.Faculty,
+                             FacultyId = user.FacultyId
                          }).ToList();
+            if (facultyId > 0)
+                users = users.Where(u => u.FacultyId == facultyId).ToList();
 
             if (!string.IsNullOrEmpty(role))
                 users = users.Where(u => u.Role == role).ToList();
             else
                 users = users.Where(u => u.Role != "Admin").ToList();
-
+            
             return users;
         }
     }

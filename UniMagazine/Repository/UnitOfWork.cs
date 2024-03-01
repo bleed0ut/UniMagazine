@@ -22,5 +22,10 @@ namespace UniMagazine.Repository
         {
            _dbContext.SaveChanges();
         }
+
+        public async Task SaveAsync()
+        {
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }
