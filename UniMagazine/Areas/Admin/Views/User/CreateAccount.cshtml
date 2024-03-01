@@ -17,6 +17,10 @@
         <label asp-for="@Model.Email">Email</label>
         <span asp-validation-for="@Model.Email" class="text-danger"></span>
     </div>
+    <div class="mb-3">
+        <h6>Date of birth</h6>
+        <input asp-for="@Model.DateOfBirth" type="date" value="1-1-1T00:00" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+    </div>
     <div class="form-floating mb-3">
         <input asp-for="@Model.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
         <label asp-for="@Model.Password">Password</label>
