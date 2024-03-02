@@ -1,0 +1,55 @@
+﻿@model RegisterModel
+@{
+    Layout = "/Areas/Admin/Views/_LayoutAdminPage.cshtml";
+    ViewData["Title"] = "Admin page";
+}
+
+<form id="registerForm" method="post">
+    <h2>Create a new account</h2>
+    <hr />
+    <div class="form-floating mb-3">
+        <input asp-for="@Model.FullName" class="form-control" autocomplete="fullname" aria-required="true" placeholder="Using real name not nickname" />
+        <label asp-for="@Model.FullName">Full Name</label>
+        <span asp-validation-for="@Model.FullName" class="text-danger"></span>
+    </div>
+    <div class="form-floating mb-3">
+        <input asp-for="@Model.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+        <label asp-for="@Model.Email">Email</label>
+        <span asp-validation-for="@Model.Email" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <h6>Date of birth</h6>
+        <input asp-for="@Model.DateOfBirth" type="date" value="1-1-1T00:00" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+    </div>
+    <div class="form-floating mb-3">
+        <input asp-for="@Model.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+        <label asp-for="@Model.Password">Password</label>
+        <span asp-validation-for="@Model.Password" class="text-danger"></span>
+    </div>
+    <div class="form-floating mb-3">
+        <input asp-for="@Model.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+        <label asp-for="@Model.ConfirmPassword">Confirm Password</label>
+        <span asp-validation-for="@Model.ConfirmPassword" class="text-danger"></span>
+    </div>
+    <div class="form-floating mb-3">
+        <input asp-for="@Model.Address" class="form-control" autocomplete="address" aria-required="true" placeholder="Em nha` o? dau the'??" />
+        <label asp-for="@Model.Address">Address</label>
+        <span asp-validation-for="@Model.Address" class="text-danger"></span>
+    </div>
+    <div class="mb-3 row">
+        <label asp-for="FacultyId">Faculty</label>
+        <select asp-for="FacultyId" asp-items="@Model.Faculties">
+            <option value="" disabled selected>Select a faculty</option>
+        </select>
+    </div>
+    <div class="mb-3 row">
+        <label asp-for="Role">Role</label>
+        <select asp-for="Role" asp-items="@Model.Roles">
+            <option value="" disabled selected>Select a role</option>
+        </select>
+    </div>
+    <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-secondary mb-3">Create</button>
+</form>
+<form asp-area="Admin" asp-controller="User" asp-action="UserIndex" method="get">
+    <button type="submit" class="btn btn-outline-danger" style="width:100%">Cancel</button>
+</form>

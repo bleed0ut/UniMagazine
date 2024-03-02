@@ -25,6 +25,14 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <ul class="nav nav-pills ">
+                                <li class="nav-item">
+                                    <a class="nav-link text-black" asp-area="Admin" asp-controller="User" asp-action="UserIndex">Admin Management Page</a>
+                                </li>
+                            </ul>
+                        }
                     </ul>
                 </div>
                 <div>

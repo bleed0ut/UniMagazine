@@ -6,19 +6,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 
-namespace UniMagazine.Data;
+namespace UniMagazine.Models;
 
 // Add profile data for application users by adding properties to the ApplicationUser class
 public class ApplicationUser : IdentityUser
 {
-    [Required]
+    [Required(ErrorMessage = "Name cannot be empty!")]
     [Column(TypeName = "nvarchar(100)")]
     public string FullName { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "DateOfBirth cannot be empty!")]
     public DateTime DateOfBirth { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Address cannot be empty!")]
     [Column(TypeName = "nvarchar(150)")]
     public string Address { get; set; }
 
@@ -26,5 +26,9 @@ public class ApplicationUser : IdentityUser
     public string? Role { get; set; }
 
     //Faculty
+    public int FacultyId { get; set; }
+
+    [ForeignKey("FacultyId")]
+    public virtual Faculty? Faculty { get; set; }
 }
 
