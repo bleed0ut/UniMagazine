@@ -8,6 +8,7 @@ using UniMagazine.Models.ViewModels;
 using UniMagazine.Models;
 using System.Data;
 using Microsoft.DiaSymReader;
+using UniMagazine.Utility;
 
 namespace UniMagazine.Areas.Admin.Controllers
 {
@@ -18,12 +19,15 @@ namespace UniMagazine.Areas.Admin.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IEmailSender _emailSender;
 
-        public UserController(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public UserController(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager,
+            IEmailSender emailSender)
         {
             _unitOfWork = unitOfWork;
             _userManager = userManager;
             _roleManager = roleManager;
+            _emailSender = emailSender;
         }
         public IActionResult UserIndex(string search = "", string role = "", int facultyId = 0)
         {
@@ -84,6 +88,9 @@ namespace UniMagazine.Areas.Admin.Controllers
                 await _unitOfWork.SaveAsync();
                 await _userManager.AddToRoleAsync(user, rm.Role);
 
+                TempData["success"] = "Created user successfully !";
+
+                _emailSender.SendRegistrationEmail(user, rm.Password);
                 return RedirectToAction("UserIndex");
             }
             else
