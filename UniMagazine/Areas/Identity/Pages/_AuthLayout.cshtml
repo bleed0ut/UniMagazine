@@ -3,16 +3,12 @@
 }
 <div class="row justify-content-center">
     <div class="col-5 mt-5">
-        <div class="card login-logout-card">
-            <div class="card-header">
-                <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">
-                    logo o day ne
-                </a>
-            </div>
+        @* Bọc chứa login *@
+        <div class="card login-logout-card" style="background-color: #7077A1; background: linear-gradient(to bottom, #0f2027, #424769, #7077A1);">
             <div class="card-body">
                 <div class="row justify-content-center">
                     <div class="row justify-content-center">
-                        <div class="col-10 mt-4">
+                        <div class="col-10 mt-4 text-white">
                             @RenderBody()
                         </div>
                     </div>
