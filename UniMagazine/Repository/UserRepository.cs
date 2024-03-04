@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using UniMagazine.Data;
 using UniMagazine.Models;
@@ -49,6 +50,16 @@ namespace UniMagazine.Repository
                 users = users.Where(u => u.Role != "Admin").ToList();
             
             return users;
+        }
+
+        public ApplicationUser GetUserById(string id)
+        {
+            return _dbContext.Users.FirstOrDefault(u => u.Id == id);
+        }
+
+        public void UpdateUser(ApplicationUser user)
+        {
+            _dbContext.Users.Update(user);
         }
     }
 }

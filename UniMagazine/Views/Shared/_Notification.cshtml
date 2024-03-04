@@ -1,0 +1,85 @@
+﻿@if (TempData["success"] != null)
+{
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+	<script type="text/javascript">
+		toastr.options = {
+			"positionClass": "toast-top-center",
+			"timeOut": "1500",
+			"showMethod": "slideDown",
+			"hideMethod": "slideUp"
+		}
+		toastr.success('@TempData["success"]');
+	</script>
+}
+@if (TempData["error"] != null)
+{
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+	<script type="text/javascript">
+		toastr.options = {
+			"positionClass": "toast-top-center",
+			"timeOut": "1500",
+			"showMethod": "slideDown",
+			"hideMethod": "slideUp"
+		}
+		toastr.error('@TempData["error"]');
+	</script>
+}
+@if (TempData["welcome"] != null)
+{
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+	<script type="text/javascript">
+		toastr.options = {
+			"positionClass": "toast-top-center",
+			"timeOut": "1500",
+			"showMethod": "slideDown",
+			"hideMethod": "slideUp"
+		}
+		toastr.success('@TempData["welcome"]');
+	</script>
+}
+@if (TempData["cart_add_success"] != null)
+{
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+	<script type="text/javascript">
+		toastr.options = {
+			"positionClass": "toast-top-center",
+			"timeOut": "1500",
+			"showMethod": "slideDown",
+			"hideMethod": "slideUp"
+		}
+		toastr.success('@TempData["cart_add_success"]');
+	</script>
+}
+@if (TempData["cart_remove_success"] != null)
+{
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+	<script type="text/javascript">
+		toastr.options = {
+			"positionClass": "toast-top-center",
+			"timeOut": "1500",
+			"showMethod": "slideDown",
+			"hideMethod": "slideUp"
+		}
+		toastr.error('@TempData["cart_remove_success"]');
+	</script>
+}
+
+@if (TempData["info"] != null)
+{
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+	<script type="text/javascript">
+		toastr.options = {
+			"positionClass": "toast-top-center",
+			"timeOut": "2000",
+			"showMethod": "slideDown",
+			"hideMethod": "slideUp"
+		}
+		toastr.info('@TempData["info"]');
+	</script>
+}

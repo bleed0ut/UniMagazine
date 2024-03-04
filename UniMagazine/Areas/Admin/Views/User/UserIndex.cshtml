@@ -78,6 +78,9 @@
                         <td>@user.Address</td>
                         <td>@user.Faculty.Name</td>
                         <td>
+                            <a asp-area="Admin" asp-controller="User" asp-action="UpdateUser" asp-route-id="@user.Id" class="btn btn-outline-dark">
+                                Detail
+                            </a>
                             <a asp-area="Admin" asp-controller="User" asp-action="ResetPassword" asp-route-id="@user.Id" class="btn btn-outline-success">
                                 Reset password
                             </a>

@@ -6,5 +6,8 @@ namespace UniMagazine.Repository.IRepository
     {
         void CreateUser();
         public IEnumerable<ApplicationUser> GetAllUser(string search, string role, int facultyId);
+        public ApplicationUser GetUserById(string id);
+
+        public void UpdateUser(ApplicationUser user);
     }
 }
