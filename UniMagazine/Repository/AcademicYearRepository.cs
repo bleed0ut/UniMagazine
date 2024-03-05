@@ -40,8 +40,8 @@ namespace UniMagazine.Repository
             if (existingAcademic != null)
             {
                 existingAcademic.YearDate = academicYear.YearDate;
-                existingAcademic.OpenDate = academicYear.OpenDate;
-                existingAcademic.CloseDate = academicYear.CloseDate;
+                existingAcademic.OpenedDate = academicYear.OpenedDate;
+                existingAcademic.ClosedDate = academicYear.ClosedDate;
                 existingAcademic.Status = academicYear.Status;
             }
             _dbContext.AcademicYears.Update(existingAcademic);

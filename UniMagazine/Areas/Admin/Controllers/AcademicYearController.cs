@@ -34,10 +34,10 @@ namespace UniMagazine.Areas.Admin.Controllers
         {
             var aca = new AcademicYear
             {
-                YearDate = academicY.OpenDate,
-                OpenDate = academicY.OpenDate,
-                CloseDate = academicY.CloseDate,
-                Status = StatusData.AYStatusCreated,
+                YearDate = academicY.OpenedDate,
+                OpenedDate = academicY.OpenedDate,
+                ClosedDate = academicY.ClosedDate,
+                Status = academicY.Status,
             };
             _unitOfWork.AcademicYearRepository.Add(aca);
             return RedirectToAction("Index"); ;
@@ -66,10 +66,10 @@ namespace UniMagazine.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            aca.YearDate = academicY.OpenDate;
-            aca.OpenDate = academicY.OpenDate;
-            aca.CloseDate = academicY.CloseDate;
-            aca.Status = StatusData.AYStatusUpdated;
+            aca.YearDate = academicY.OpenedDate;
+            aca.OpenedDate = academicY.OpenedDate;
+            aca.ClosedDate = academicY.ClosedDate;
+            aca.Status = academicY.Status;
             _unitOfWork.AcademicYearRepository.Update(aca);
             _unitOfWork.Save();
             return RedirectToAction("Index");

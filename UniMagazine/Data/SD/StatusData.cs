@@ -2,7 +2,7 @@
 {
     public class StatusData
     {
-        public const string AYStatusCreated = "Created";
-        public const string AYStatusUpdated = "Updated";
+        public const string AYStatusCreated = "Opening";
+        public const string AYStatusUpdated = "Closing";
     }
 }
