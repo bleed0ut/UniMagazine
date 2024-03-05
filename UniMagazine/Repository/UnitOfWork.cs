@@ -10,12 +10,14 @@ namespace UniMagazine.Repository
         public IUserRepository UserRepository { get; private set; }
         public IFacultyRepository FacultyRepository { get; private set; }
 
+        public IAcademicYearRepository AcademicYearRepository { get; private set; }
 
         public UnitOfWork(AppDbContext dbContext)
         { 
             _dbContext = dbContext;
             UserRepository = new UserRepository(dbContext);
             FacultyRepository = new FacultyRepository(dbContext);
+            AcademicYearRepository = new AcademicYearRepository(dbContext);
         }
 
         public void Save()
