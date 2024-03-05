@@ -1,0 +1,30 @@
+﻿@model AcademicYear
+@{
+    Layout = "/Areas/Admin/Views/_LayoutAdminPage.cshtml";
+    ViewData["Title"] = "Admin page";
+}
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="container">
+        <h1>Add New Academic Year - Admin Functionality</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    <form method="post">
+
+        <div class="mb-3">
+            <label class="form-label">Open Date</label>
+            <input class="form-control" id="openDate" asp-for="OpenDate" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Close Date</label>
+            <input class="form-control" id="closeDate" asp-for="CloseDate" />
+        </div>
+
+
+        <div class="mb-3">
+            <button type="submit" class="btn btn-dark">Submit</button>
+        </div>
+    </form>
+</div>

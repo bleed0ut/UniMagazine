@@ -1,0 +1,50 @@
+﻿@model IEnumerable<AcademicYear>
+@{
+    Layout = "/Areas/Admin/Views/_LayoutAdminPage.cshtml";
+    ViewData["Title"] = "Admin page";
+}
+
+<div class="d-flex text-center shadow mt-2 mb-2 p-2 card-header bg-secondary bg-gradient ml-0 py-3 text-white">
+    <div class="container">
+        <h1>All Academic Year - Admin mamangement</h1>
+    </div>
+</div>
+<div>
+    <a asp-area="Admin" asp-controller="AcademicYear" asp-action="Add" class="btn btn-outline-success">
+        <span class="btn-label">
+            <i class="fa-solid fa-circle-user"></i>
+        </span>   Add New Academic
+    </a>
+</div>
+<div class="container py-5">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Academic Year Date</th>
+                <th>Open Date</th>
+                <th>Close Date</th>
+                <th>Sattus</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var academic in Model)
+            {
+                <tr>
+                    <td>@academic.Id</td>
+                    <td>@academic.YearDate.ToString("yyyy")</td>
+                    <td>@academic.OpenDate</td>
+                    <td>@academic.CloseDate</td>
+                    <td>@academic.Status</td>
+                    <td>
+                        <a asp-area="Admin"
+                           asp-action="Update"
+                           asp-route-id="@academic.Id" class="btn btn-dark">Update</a>
+                        
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

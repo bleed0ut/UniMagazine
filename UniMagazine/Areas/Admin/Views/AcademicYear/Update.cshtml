@@ -1,0 +1,63 @@
+﻿@model AcademicYear
+@{
+    Layout = "/Areas/Admin/Views/_LayoutAdminPage.cshtml";
+    ViewData["Title"] = "Admin page";
+}
+
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="container">
+        <h1>Edit Academic Year - Admin Functionality</h1>
+    </div>
+</div>
+
+
+<div class="container py-5">
+    @if (Model != null)
+    {
+        <form method="post">
+
+            <div class="mb-3">
+                <label class="form-label">Id</label>
+                <input type="text" id="id" class="form-control" asp-for="Id" readonly />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Year</label>
+                <input id="YearDate" class="form-control" asp-for="YearDate" readonly/>
+            </div>
+
+            <div class="mb-3">
+            <label class="form-label">Opden date</label>
+            <input class="form-control" id="OpenDate" asp-for="OpenDate" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Satus</label>
+                <input class="form-control" id="Status" asp-for="Status" readonly />
+            </div>
+
+            <div class="mb-3">
+            <label class="form-label">Close Date</label>
+            <input class="form-control" id="CloseDate" asp-for="CloseDate" />
+            </div>
+
+            <div class="mb-3">
+
+                <div class="d-flex">
+                    <button type="submit" class="btn btn-dark">Update</button>
+                    <button class="btn btn-danger ms-2" type="submit"
+                            asp-area="Admin"
+                            asp-controller="AcademicYear"
+                            asp-action="Delete">
+                        Delete
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    }
+    else
+    {
+        <p>Tag not found!</p>
+    }
+</div>

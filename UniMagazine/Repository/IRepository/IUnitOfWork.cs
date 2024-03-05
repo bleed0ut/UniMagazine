@@ -3,6 +3,7 @@
     public interface IUnitOfWork
     {
         //IABCRepository
+        public IAcademicYearRepository AcademicYearRepository { get; }
         public IUserRepository UserRepository { get; }
         public IFacultyRepository FacultyRepository { get; }
 

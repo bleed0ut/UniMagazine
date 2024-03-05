@@ -12,6 +12,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
     }
     public DbSet<Faculty> Faculties { get; set; }
+    public DbSet<AcademicYear> AcademicYears { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
