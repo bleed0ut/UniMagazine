@@ -15,11 +15,11 @@ namespace UniMagazine.Models
         public DateTime OpenedDate { get; set; }
         public DateTime ClosedDate { get; set;}
         public int FacultyId { get; set; }
-        [Required]
+        //[Required]
 
         [ForeignKey("FacultyId")]
         public virtual Faculty Faculty { get; set; }
-        [Required]
+        //[Required]
         public int AcademicYearId { get; set; }
 
         [ForeignKey("AcademicYearId")]

@@ -6,11 +6,11 @@ namespace UniMagazine.Models.ViewModels
 {
     public class MagazineVM
     {
+        [ValidateNever]
         public Magazine Magazine { get; set; }
         [ValidateNever]
         public IEnumerable<SelectListItem> Faculties { get; set; }
         [ValidateNever]
         public IEnumerable<SelectListItem> AcademicYears { get; set; }
-        public IFormFile Files { get; set; }
     }
 }

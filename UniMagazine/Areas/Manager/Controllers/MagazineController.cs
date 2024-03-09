@@ -49,13 +49,14 @@ namespace UniMagazine.Areas.Manager.Controllers
         [HttpPost]
         public IActionResult Add(MagazineVM magazineVm,IFormFile? file)
         {
-            if(ModelState.IsValid ) 
+            Console.WriteLine(ModelState.Values.SelectMany(v => v.Errors));
+            if (ModelState.IsValid) 
             {
                 string wwwRootPath = _webHostEnvironment.WebRootPath;
                 if (file != null)
                 {
                     string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                    string MagazinePath = Path.Combine(wwwRootPath, @"images\Book");
+                    string MagazinePath = Path.Combine(wwwRootPath, @"img\Magazine");
                     if (!Directory.Exists(MagazinePath))
                     {
                         Directory.CreateDirectory(MagazinePath);
@@ -76,11 +77,11 @@ namespace UniMagazine.Areas.Manager.Controllers
                         file.CopyTo(fileStream);
                     }
 
-                    magazineVm.Magazine.ImageUrl = @"\images\Book\" + fileName;
+                    magazineVm.Magazine.ImageUrl = @"\img\Magazine\" + fileName;
                 }
                 _unitOfWork.MagazineRepository.Add(magazineVm.Magazine);
                 _unitOfWork.Save();
-
+                return RedirectToAction("Index");
             }
             else
             {
@@ -96,7 +97,6 @@ namespace UniMagazine.Areas.Manager.Controllers
                 });
                 return View(magazineVm);
             }
-            return View("Index");
         }
     }
 }
