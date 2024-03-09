@@ -1,0 +1,51 @@
+﻿@model MagazineVM
+
+
+<form method="post" enctype="multipart/form-data">
+    <h2>Create a Magazine</h2>
+    <div class="form-floating mb-3">
+        <input asp-for="@Model.Magazine.Title" class="form-control" autocomplete="off" aria-required="true" placeholder="Magazine Title" />
+        <label asp-for="@Model.Magazine.Title">Title</label>
+        <span asp-validation-for="@Model.Magazine.Title" class="text-danger"></span>
+    </div>
+    <div class="form-floating mb-3">
+        <textarea asp-for="@Model.Magazine.Detail" class="form-control" autocomplete="off" aria-required="true" placeholder="Magazine Detail"></textarea>
+        <label asp-for="@Model.Magazine.Detail">Detail</label>
+        <span asp-validation-for="@Model.Magazine.Detail" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="@Model.Magazine.Status"></label>
+        <select class="form-control" asp-for="@Model.Magazine.Status">
+            <option value="" disabled selected>Status</option>
+            <option value="Opening">Opening</option>
+            <option value="Closed">Closed</option>
+        </select>
+    </div>
+    <div class=" mb-3">
+        <label class="form-label">Open Date</label>
+        <input type="date" class="form-control"  asp-for="@Model.Magazine.OpenedDate" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Close Date</label>
+        <input type="date" class="form-control"  asp-for="@Model.Magazine.ClosedDate" />
+    </div>
+
+    <div class="mb-3 row">
+        <label asp-for="@Model.Magazine.FacultyId">Faculty</label>
+        <select asp-for="@Model.Magazine.FacultyId" asp-items="@Model.Faculties">
+            <option value="" disabled selected>Select a faculty</option>
+        </select>
+    </div>
+    <div class="mb-3 row">
+        <label asp-for="@Model.Magazine.AcademicYearId">Academic Year</label>
+        <select asp-for="@Model.Magazine.AcademicYearId" asp-items="@Model.AcademicYears">
+            <option value="" disabled selected>Select an academic year</option>
+        </select>
+    </div>
+    <div class="mb-3 row">
+        <label asp-for="@Model.Magazine.ImageUrl"></label>
+        <input type="file" name="file" class="form-control" />
+    </div>
+
+    <button type="submit" class="w-100 btn btn-lg btn-secondary mb-3">Add</button>
+</form>

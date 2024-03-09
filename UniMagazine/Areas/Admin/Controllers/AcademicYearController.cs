@@ -4,7 +4,6 @@ using UniMagazine.Repository;
 using UniMagazine.Repository.IRepository;
 using UniMagazine.Models;
 using NuGet.Protocol.Plugins;
-using UniMagazine.Data.SD;
 using System.Net.NetworkInformation;
 
 namespace UniMagazine.Areas.Admin.Controllers

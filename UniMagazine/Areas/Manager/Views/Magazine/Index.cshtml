@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Magazine>
+
+<div class="d-flex text-center shadow mt-2 mb-2 p-2 card-header bg-secondary bg-gradient ml-0 py-3 text-white">
+    <div class="container">
+        <h1>All Academic Year - Admin mamangement</h1>
+    </div>
+</div>
+<div>
+    <a asp-area="Manager" asp-controller="Magazine" asp-action="Add" class="btn btn-outline-success">
+        <span class="btn-label">
+            <i class="fa-solid fa fa-female"></i>
+        </span>   Add New Magzine
+    </a>
+</div>
+<div class="container py-5">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Detail</th>
+                <th>Sattus</th>
+                <th>Posted Date</th>
+                <th>Open Date</th>
+                <th>Close Date</th>
+                <th>Faculty</th>
+                <th>Image</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var magazine in Model)
+            {
+                <tr>
+                    <td>@magazine.Id</td>
+                    <td>@magazine.Title</td>
+                    <td>@magazine.Detail</td>
+                    <td>@magazine.Status</td>
+                    <td>@magazine.PostedDate.ToString("dd/mm/yyyy")</td>
+                    <td>@magazine.OpenedDate.ToString("dd/mm/yyyy")</td>
+                    <td>@magazine.ClosedDate.ToString("dd/mm/yyyy")</td>
+                    <td>
+                        <img src="@magazine.ImageUrl" class="card-img-top rounded" />
+                    </td>
+                    <td>
+                        <a asp-area="Manager"
+                           asp-action="Update"
+                           asp-route-id="@magazine.Id" class="btn btn-dark">Detail</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
