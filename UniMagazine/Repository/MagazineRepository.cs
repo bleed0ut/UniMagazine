@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using UniMagazine.Data;
 using UniMagazine.Models;
 using UniMagazine.Repository.IRepository;
@@ -29,7 +30,7 @@ namespace UniMagazine.Repository
 
         public IEnumerable<Magazine>? GetAll(string? includeProperty = null)
         {
-            return _dbContext.Magazines.ToList();
+            return _dbContext.Magazines.Include(f => f.Faculty).ToList();
             
         }
 

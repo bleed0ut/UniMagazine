@@ -36,11 +36,14 @@
                     <td>@magazine.Title</td>
                     <td>@magazine.Detail</td>
                     <td>@magazine.Status</td>
-                    <td>@magazine.PostedDate.ToString("dd/mm/yyyy")</td>
-                    <td>@magazine.OpenedDate.ToString("dd/mm/yyyy")</td>
-                    <td>@magazine.ClosedDate.ToString("dd/mm/yyyy")</td>
+                    <td>@magazine.PostedDate.ToString("dd/MM/yyyy")</td>
+                    <td>@magazine.OpenedDate.ToString("dd/MM/yyyy")</td>
+                    <td>@magazine.ClosedDate.ToString("dd/MM/yyyy")</td>
                     <td>
-                        <img src="@magazine.ImageUrl" class="card-img-top rounded" />
+                        @magazine.Faculty.Name
+                    </td>
+                    <td>
+                        <img width="100px" height="100px" src="@magazine.ImageUrl" class="card-img-top rounded" />
                     </td>
                     <td>
                         <a asp-area="Manager"
