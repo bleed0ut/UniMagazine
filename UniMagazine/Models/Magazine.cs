@@ -10,10 +10,11 @@ namespace UniMagazine.Models
         public string Title { get; set; }
         public string Detail {  get; set; }
         public string Status { get; set; } = "Opening";
-        public string ImageUrl { get; set; }
+        public string ?ImageUrl { get; set; }
         public DateTime PostedDate { get; set; } = DateTime.Now;
-        public DateTime OpenedDate { get; set; }
-        public DateTime ClosedDate { get; set;}
+        public DateTime ?OpenedDate { get; set; }
+        public DateTime ?ClosedDate { get; set;}
+
         public int FacultyId { get; set; }
         //[Required]
 

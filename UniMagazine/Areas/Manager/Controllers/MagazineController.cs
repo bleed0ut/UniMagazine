@@ -47,10 +47,10 @@ namespace UniMagazine.Areas.Manager.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(MagazineVM magazineVm,IFormFile? file)
+        public IActionResult Add(MagazineVM magazineVm, IFormFile? file)
         {
             Console.WriteLine(ModelState.Values.SelectMany(v => v.Errors));
-            if (ModelState.IsValid) 
+            if (ModelState.IsValid)
             {
                 string wwwRootPath = _webHostEnvironment.WebRootPath;
                 if (file != null)
@@ -79,6 +79,24 @@ namespace UniMagazine.Areas.Manager.Controllers
 
                     magazineVm.Magazine.ImageUrl = @"\img\Magazine\" + fileName;
                 }
+                magazineVm.Magazine.ClosedDate = CalculateClosedDate(magazineVm.Magazine.OpenedDate);
+                if (magazineVm.Magazine.PostedDate > magazineVm.Magazine.ClosedDate)
+                {
+                    magazineVm.Magazine.Status = "Closed";
+                }
+                else
+                {
+                    if (magazineVm.Magazine.PostedDate < magazineVm.Magazine.OpenedDate)
+                        magazineVm.Magazine.Status = "Not Assigned";
+                    if (magazineVm.Magazine.OpenedDate == null)
+                    {
+                        magazineVm.Magazine.Status = "Not Assigned";
+                    }
+                    else
+                    {
+                        magazineVm.Magazine.Status = "Opening";
+                    }
+                }
                 _unitOfWork.MagazineRepository.Add(magazineVm.Magazine);
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
@@ -98,5 +116,18 @@ namespace UniMagazine.Areas.Manager.Controllers
                 return View(magazineVm);
             }
         }
+
+
+
+        private DateTime? CalculateClosedDate(DateTime? openedDate)
+        {
+            if (openedDate == null)
+            {
+                return null;
+            }
+            DateTime closedDate = openedDate.Value.AddDays(14);
+            return closedDate;
+        }
+
     }
 }

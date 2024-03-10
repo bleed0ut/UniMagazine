@@ -19,7 +19,7 @@
                 <th>Id</th>
                 <th>Title</th>
                 <th>Detail</th>
-                <th>Sattus</th>
+                <th>Status</th>
                 <th>Posted Date</th>
                 <th>Open Date</th>
                 <th>Close Date</th>
@@ -37,8 +37,8 @@
                     <td>@magazine.Detail</td>
                     <td>@magazine.Status</td>
                     <td>@magazine.PostedDate.ToString("dd/MM/yyyy")</td>
-                    <td>@magazine.OpenedDate.ToString("dd/MM/yyyy")</td>
-                    <td>@magazine.ClosedDate.ToString("dd/MM/yyyy")</td>
+                    <td>@magazine.OpenedDate?.ToString("dd/MM/yyyy")</td>
+                    <td>@magazine.ClosedDate?.ToString("dd/MM/yyyy")</td>
                     <td>
                         @magazine.Faculty.Name
                     </td>
