@@ -19,10 +19,9 @@
                 <th>Id</th>
                 <th>Title</th>
                 <th>Detail</th>
-                <th>Status</th>
+                <th class="text-center">Status</th>
                 <th>Posted Date</th>
-                <th>Open Date</th>
-                <th>Close Date</th>
+                <th class="text-center">Deadline</th>
                 <th>Faculty</th>
                 <th>Image</th>
                 <th>Action</th>
@@ -37,8 +36,16 @@
                     <td>@magazine.Detail</td>
                     <td>@magazine.Status</td>
                     <td>@magazine.PostedDate.ToString("dd/MM/yyyy")</td>
-                    <td>@magazine.OpenedDate?.ToString("dd/MM/yyyy")</td>
-                    <td>@magazine.ClosedDate?.ToString("dd/MM/yyyy")</td>
+                    @if(magazine.OpenedDate != null){
+                        <td>
+                            <p><button class="btn-dark"><strong>Opened date:</strong></button> @magazine.OpenedDate</p>
+                            <p><button class="btn-dark"><strong>Closed date:</strong></button> @magazine.ClosedDate</p>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>This magazine has not had a deadline date yet!</td>
+                    }
                     <td>
                         @magazine.Faculty.Name
                     </td>

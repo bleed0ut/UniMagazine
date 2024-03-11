@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using UniMagazine.Data;
 using UniMagazine.Models;
+using UniMagazine.Models.ViewModels;
 using UniMagazine.Repository.IRepository;
 
 namespace UniMagazine.Repository
@@ -36,12 +37,31 @@ namespace UniMagazine.Repository
 
         public void Update(Magazine magazine)
         {
-            throw new NotImplementedException();
+            _dbContext.Magazines.Update(magazine);
         }
 
         public Magazine Get(Expression<Func<Magazine, bool>> filter, string? includeProperty = null)
         {
             throw new NotImplementedException();
+        }
+
+        public void UpdateStatus(Magazine magazine)
+        {
+            DateTime today = DateTime.Now;
+            if(today >= magazine.ClosedDate)
+            {
+                magazine.Status = "Closed";
+            }
+            else
+            {
+                if(today > magazine.OpenedDate)
+                {
+                    magazine.Status = "Opening";
+                }
+                
+            }
+
+            Update(magazine);
         }
     }
 }

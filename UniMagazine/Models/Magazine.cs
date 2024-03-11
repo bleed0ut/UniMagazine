@@ -7,7 +7,13 @@ namespace UniMagazine.Models
     {
         [Key]
         public int Id {  get; set; }
+
+        [Required(ErrorMessage = "Title cannot be empty!")]
+        [Column(TypeName = "nvarchar(100)")]
         public string Title { get; set; }
+
+        [Required(ErrorMessage = "Detail cannot be empty!")]
+        [Column(TypeName = "nvarchar(230)")]
         public string Detail {  get; set; }
         public string Status { get; set; } = "Opening";
         public string ?ImageUrl { get; set; }
@@ -15,11 +21,12 @@ namespace UniMagazine.Models
         public DateTime ?OpenedDate { get; set; }
         public DateTime ?ClosedDate { get; set;}
 
+
         public int FacultyId { get; set; }
         //[Required]
-
+        
         [ForeignKey("FacultyId")]
-        public virtual Faculty Faculty { get; set; }
+        public virtual Faculty? Faculty { get; set; }
         //[Required]
         public int AcademicYearId { get; set; }
 

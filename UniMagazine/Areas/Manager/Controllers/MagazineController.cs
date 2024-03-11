@@ -25,6 +25,12 @@ namespace UniMagazine.Areas.Manager.Controllers
         public IActionResult Index()
         {
             var maga = _unitOfWork.MagazineRepository.GetAll();
+            foreach (var mag in maga)
+            {
+                _unitOfWork.MagazineRepository.UpdateStatus(mag);
+            }
+            _unitOfWork.Save();
+            maga = _unitOfWork.MagazineRepository.GetAll();
             return View(maga);
         }
         [HttpGet]
@@ -32,6 +38,8 @@ namespace UniMagazine.Areas.Manager.Controllers
         {
             MagazineVM magazineVm = new MagazineVM()
             {
+                Magazine = new Magazine(),
+
                 Faculties = _unitOfWork.FacultyRepository.GetAllFaculty().Select(f => new SelectListItem
                 {
                     Text = f.Name,
@@ -49,8 +57,8 @@ namespace UniMagazine.Areas.Manager.Controllers
         [HttpPost]
         public IActionResult Add(MagazineVM magazineVm, IFormFile? file)
         {
-            Console.WriteLine(ModelState.Values.SelectMany(v => v.Errors));
-            if (ModelState.IsValid)
+            
+            if (ModelState.IsValid && magazineVm.Magazine.FacultyId != 0 && magazineVm.Magazine.AcademicYearId != 0)
             {
                 string wwwRootPath = _webHostEnvironment.WebRootPath;
                 if (file != null)
@@ -80,7 +88,7 @@ namespace UniMagazine.Areas.Manager.Controllers
                     magazineVm.Magazine.ImageUrl = @"\img\Magazine\" + fileName;
                 }
                 magazineVm.Magazine.ClosedDate = CalculateClosedDate(magazineVm.Magazine.OpenedDate);
-                if (magazineVm.Magazine.PostedDate > magazineVm.Magazine.ClosedDate)
+                if (magazineVm.Magazine.PostedDate >= magazineVm.Magazine.ClosedDate)
                 {
                     magazineVm.Magazine.Status = "Closed";
                 }
@@ -89,13 +97,9 @@ namespace UniMagazine.Areas.Manager.Controllers
                     if (magazineVm.Magazine.PostedDate < magazineVm.Magazine.OpenedDate)
                         magazineVm.Magazine.Status = "Not Assigned";
                     if (magazineVm.Magazine.OpenedDate == null)
-                    {
                         magazineVm.Magazine.Status = "Not Assigned";
-                    }
                     else
-                    {
                         magazineVm.Magazine.Status = "Opening";
-                    }
                 }
                 _unitOfWork.MagazineRepository.Add(magazineVm.Magazine);
                 _unitOfWork.Save();
@@ -103,17 +107,21 @@ namespace UniMagazine.Areas.Manager.Controllers
             }
             else
             {
-                magazineVm.Faculties = _unitOfWork.FacultyRepository.GetAllFaculty().Select(f => new SelectListItem
+                MagazineVM magazineVM2 = new MagazineVM()
                 {
-                    Text = f.Name,
-                    Value = f.Id.ToString()
-                });
-                magazineVm.AcademicYears = _unitOfWork.AcademicYearRepository.GetAllAcademicYear().Select(A => new SelectListItem
-                {
-                    Text = A.YearDate.ToString("yyyy"),
-                    Value = A.Id.ToString()
-                });
-                return View(magazineVm);
+                    Magazine = new Magazine(),
+                    Faculties = _unitOfWork.FacultyRepository.GetAllFaculty().Select(f => new SelectListItem
+                    {
+                        Text = f.Name,
+                        Value = f.Id.ToString()
+                    }),
+                    AcademicYears = _unitOfWork.AcademicYearRepository.GetAllAcademicYear().Select(A => new SelectListItem
+                    {
+                        Text = A.YearDate.ToString("yyyy"),
+                        Value = A.Id.ToString()
+                    })
+                };
+                return View(magazineVM2);
             }
         }
 
@@ -122,9 +130,8 @@ namespace UniMagazine.Areas.Manager.Controllers
         private DateTime? CalculateClosedDate(DateTime? openedDate)
         {
             if (openedDate == null)
-            {
                 return null;
-            }
+          
             DateTime closedDate = openedDate.Value.AddDays(14);
             return closedDate;
         }
