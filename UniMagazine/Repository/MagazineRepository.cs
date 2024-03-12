@@ -7,10 +7,10 @@ using UniMagazine.Repository.IRepository;
 
 namespace UniMagazine.Repository
 {
-    public class MagazineRepository : IMagazineRepository
+    public class MagazineRepository : Repository<Magazine>, IMagazineRepository
     {
         private readonly AppDbContext _dbContext;
-        public MagazineRepository(AppDbContext dbContext) 
+        public MagazineRepository(AppDbContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
         }
@@ -40,10 +40,6 @@ namespace UniMagazine.Repository
             _dbContext.Magazines.Update(magazine);
         }
 
-        public Magazine Get(Expression<Func<Magazine, bool>> filter, string? includeProperty = null)
-        {
-            throw new NotImplementedException();
-        }
 
         public void UpdateStatus(Magazine magazine)
         {

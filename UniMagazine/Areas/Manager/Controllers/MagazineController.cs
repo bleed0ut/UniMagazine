@@ -135,6 +135,99 @@ namespace UniMagazine.Areas.Manager.Controllers
             DateTime closedDate = openedDate.Value.AddDays(14);
             return closedDate;
         }
+        public IActionResult Update(int id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            else {
+                var mag = _unitOfWork.MagazineRepository.Get(x => x.Id == id);
+                var ma = new MagazineVM()
+                {
+                    Magazine = mag,
+                    Faculties = _unitOfWork.FacultyRepository.GetAllFaculty().Select(f => new SelectListItem
+                    {
+                        Text = f.Name,
+                        Value = f.Id.ToString()
+                    }),
+                    AcademicYears = _unitOfWork.AcademicYearRepository.GetAllAcademicYear().Select(A => new SelectListItem
+                    {
+                        Text = A.YearDate.ToString("yyyy"),
+                        Value = A.Id.ToString()
+                    })
+                };
+                return View(ma);
+            }
+                
+        }
+        [HttpPost]
+        public IActionResult Update(MagazineVM magazineVm, IFormFile? file)
+        {
+                if (ModelState.IsValid && magazineVm.Magazine.FacultyId != 0 && magazineVm.Magazine.AcademicYearId != 0)
+                {
+                    string wwwRootPath = _webHostEnvironment.WebRootPath;
+                    if (file != null)
+                    {
+                        string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                        string MagazinePath = Path.Combine(wwwRootPath, @"img\Magazine");
+                        if (!Directory.Exists(MagazinePath))
+                        {
+                            Directory.CreateDirectory(MagazinePath);
+                        }
+                    if (!string.IsNullOrEmpty(magazineVm.Magazine.ImageUrl))
+                    {
+                        // Delete the old image
+                        var oldImagePath = Path.Combine(wwwRootPath, magazineVm.Magazine.ImageUrl.TrimStart('\\'));
 
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
+                    using (var fileStream = new FileStream(Path.Combine(MagazinePath, fileName), FileMode.Create))
+                        {
+                            file.CopyTo(fileStream);
+                        }
+
+                        magazineVm.Magazine.ImageUrl = @"\img\Magazine\" + fileName;
+                    }
+                    magazineVm.Magazine.ClosedDate = CalculateClosedDate(magazineVm.Magazine.OpenedDate);
+                    if (magazineVm.Magazine.PostedDate >= magazineVm.Magazine.ClosedDate)
+                    {
+                        magazineVm.Magazine.Status = "Closed";
+                    }
+                    else
+                    {
+                        if (magazineVm.Magazine.PostedDate < magazineVm.Magazine.OpenedDate)
+                            magazineVm.Magazine.Status = "Not Started";
+                        else
+                            magazineVm.Magazine.Status = "Opening";
+                        if (magazineVm.Magazine.OpenedDate == null)
+                            magazineVm.Magazine.Status = "Not Assigned";
+                    }
+                    _unitOfWork.MagazineRepository.Update(magazineVm.Magazine);
+                    _unitOfWork.Save();
+                    return RedirectToAction("Index");
+                }
+            else
+            {
+                magazineVm.Faculties = _unitOfWork.FacultyRepository.GetAllFaculty().Select(f => new SelectListItem
+                {
+                    Text = f.Name,
+                    Value = f.Id.ToString()
+                });
+                magazineVm.AcademicYears = _unitOfWork.AcademicYearRepository.GetAllAcademicYear().Select(A => new SelectListItem
+                {
+                    Text = A.YearDate.ToString("yyyy"),
+                    Value = A.Id.ToString()
+                });
+                return View(magazineVm);
+            }
+
+
+
+        }
     }
 }
