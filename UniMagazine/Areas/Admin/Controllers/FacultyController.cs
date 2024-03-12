@@ -30,14 +30,18 @@ namespace UniMagazine.Areas.Admin.Controllers
         [ActionName("Add")]
         public IActionResult Add(Faculty faculty)
         {
-            var fal = new Faculty
+            if (ModelState.IsValid)
             {
-                Name = faculty.Name,
-                Description = faculty.Description,
-                CreateDate = DateTime.Now,
-            };
-            _unitOfWork.FacultyRepository.Add(fal);
-            return RedirectToAction("List");
+                var fal = new Faculty
+                {
+                    Name = faculty.Name,
+                    Description = faculty.Description,
+                    CreateDate = DateTime.Now,
+                };
+                _unitOfWork.FacultyRepository.Add(fal);
+                return RedirectToAction("List");
+            }else
+                return View(faculty);
 
         }
 
