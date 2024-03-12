@@ -1,0 +1,62 @@
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+using UniMagazine.Data;
+using UniMagazine.Models;
+using UniMagazine.Models.ViewModels;
+using UniMagazine.Repository.IRepository;
+
+namespace UniMagazine.Repository
+{
+    public class MagazineRepository : Repository<Magazine>, IMagazineRepository
+    {
+        private readonly AppDbContext _dbContext;
+        public MagazineRepository(AppDbContext dbContext) : base(dbContext)
+        {
+            _dbContext = dbContext;
+        }
+        public void Add(Magazine entity)
+        {
+            _dbContext.Magazines.Add(entity);
+        }
+
+        public void Delete(Magazine entity)
+        {
+            _dbContext.Magazines.Remove(entity);
+        }
+
+        /*public Magazine Get(int id)
+        {
+            return _dbContext.Magazines.FirstOrDefault(x => x.Id == id);
+        }*/
+
+        public IEnumerable<Magazine>? GetAll(string? includeProperty = null)
+        {
+            return _dbContext.Magazines.Include(f => f.Faculty).ToList();
+            
+        }
+
+        public void Update(Magazine magazine)
+        {
+            _dbContext.Magazines.Update(magazine);
+        }
+
+
+        public void UpdateStatus(Magazine magazine)
+        {
+            DateTime today = DateTime.Now;
+            if (magazine.OpenedDate == null)
+                magazine.Status = "Not Assigned";
+            if(today >= magazine.ClosedDate)
+                magazine.Status = "Closed";
+            else
+            {
+                if (today > magazine.OpenedDate)
+                    magazine.Status = "Opening";
+                else if (today < magazine.OpenedDate)
+                    magazine.Status = "Not Started";
+            }
+
+            Update(magazine);
+        }
+    }
+}

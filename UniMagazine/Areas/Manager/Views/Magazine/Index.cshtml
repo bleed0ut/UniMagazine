@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Magazine>
+
+<div class="d-flex text-center shadow mt-2 mb-2 p-2 card-header bg-secondary bg-gradient ml-0 py-3 text-white">
+    <div class="container">
+        <h1>Magazines - Marketing Manager Mangement</h1>
+    </div>
+</div>
+<div>
+    <a asp-area="Manager" asp-controller="Magazine" asp-action="Add" class="btn btn-outline-success">
+        <span class="btn-label">
+            <i class="fa-solid fa fa-female"></i>
+        </span>   Add New Magzine
+    </a>
+    <a asp-area="Manager" asp-controller="Magazine" asp-action="AssignDeadline" class="btn btn-info">
+        <span class="btn-label">
+            <i class="fa-solid fa fa-female"></i>
+        </span>   Magazines has not had a deadline deadline yet
+    </a>
+</div>
+<div class="container py-5">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Detail</th>
+                <th class="text-center">Status</th>
+                <th>Posted Date</th>
+                <th class="text-center">Deadline</th>
+                <th>Faculty</th>
+                <th>Image</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var magazine in Model)
+            {
+                <tr>
+                    <td>@magazine.Id</td>
+                    <td>@magazine.Title</td>
+                    <td>@magazine.Detail</td>
+                    <td>@magazine.Status</td>
+                    <td>@magazine.PostedDate.ToString("dd/MM/yyyy")</td>
+                    @if(magazine.OpenedDate != null){
+                        <td>
+                            <p><button class="btn-dark"><strong>Opened date:</strong></button> @magazine.OpenedDate</p>
+                            <p><button class="btn-dark"><strong>Closed date:</strong></button> @magazine.ClosedDate</p>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>This magazine has not had a deadline date yet!</td>
+                    }
+                    <td>
+                        @magazine.Faculty.Name
+                    </td>
+                    <td>
+                        <img width="100px" height="100px" src="@magazine.ImageUrl" class="card-img-top rounded" />
+                    </td>
+                    <td>
+                        <a asp-area="Manager"
+                           asp-action="Update"
+                           asp-route-id="@magazine.Id" class="btn btn-dark">Detail</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

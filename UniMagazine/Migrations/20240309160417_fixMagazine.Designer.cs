@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UniMagazine.Data;
 
@@ -11,9 +12,11 @@ using UniMagazine.Data;
 namespace UniMagazine.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240309160417_fixMagazine")]
+    partial class fixMagazine
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -304,20 +307,21 @@ namespace UniMagazine.Migrations
                     b.Property<int>("AcademicYearId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("ClosedDate")
+                    b.Property<DateTime>("ClosedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Detail")
                         .IsRequired()
-                        .HasColumnType("nvarchar(230)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("FacultyId")
                         .HasColumnType("int");
 
                     b.Property<string>("ImageUrl")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("OpenedDate")
+                    b.Property<DateTime>("OpenedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("PostedDate")
@@ -329,7 +333,7 @@ namespace UniMagazine.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

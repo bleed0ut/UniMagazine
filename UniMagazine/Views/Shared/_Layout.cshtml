@@ -36,6 +36,14 @@
                                 </li>
                             </ul>
                         }
+                        @if (User.IsInRole("Manager"))
+                        {
+                            <ul class="nav nav-pills ">
+                                <li class="nav-item">
+                                    <a class="nav-link text-black" asp-area="Manager" asp-controller="Magazine" asp-action="Index">Marketing Management Page</a>
+                                </li>
+                            </ul>
+                        }
                     </ul>
                 </div>
                 <div>
