@@ -3,22 +3,23 @@
 }
 <header>
     <div class="" role="group" aria-label="Tools">
-        <a asp-area="Admin" asp-controller="Faculty" asp-action="List" class="btn btn-secondary btn-lg" style="background-color: var(--primary-color)">
-            <span class="btn-label">
-                <i class="fa-brands fa-stack-overflow"></i>
-            </span>   Faculties
-        </a>
-        <a asp-area="Admin" asp-controller="User" asp-action="UserIndex" class="btn btn-secondary btn-lg" style="background-color: var(--primary-color)">
+        <a asp-area="Admin" asp-controller="User" asp-action="UserIndex" class="btn btn-secondary btn-lg btn-hover-change-jump" style="background-color: var(--primary-color)">
             <span class="btn-label">
                 <i class="fa-solid fa-circle-user"></i>
             </span>   Users
         </a>
-        <a asp-area="Admin" asp-controller="AcademicYear" asp-action="Index" class="btn btn-secondary btn-lg">
+        <a asp-area="Admin" asp-controller="Faculty" asp-action="List" class="btn btn-secondary btn-lg btn-hover-change-jump" style="background-color: var(--primary-color)">
             <span class="btn-label">
-                <i class="fa-solid fa-circle-user"></i>
+                <i class="fa-brands fa-stack-overflow"></i>
+            </span>   Faculties
+        </a>
+        <a asp-area="Admin" asp-controller="AcademicYear" asp-action="Index" class="btn btn-secondary btn-lg btn-hover-change-jump" style="background-color: var(--primary-color)">
+            <span class="btn-label px-1">
+                <i class="fa-solid fa-calendar"></i>
             </span>   Academic Years
         </a>
     </div>
+    <hr />
 </header>
 <body>
     <div class="container">

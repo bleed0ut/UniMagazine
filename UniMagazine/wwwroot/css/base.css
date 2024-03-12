@@ -1,4 +1,21 @@
-﻿:root {
-    --primary-color: #2D3250;
-    --secondary-color: #424769;
+﻿.btn-hover-change-jump {
+    transition: background-color ease 0.3s;
+    transition: transform ease 0.3s;
+}
+
+.btn-hover-change-jump:hover{
+  background-color: white !important;
+  border: 1px solid var(--primary-color) !important;
+  color: black !important;
+  transform: translateY(-4px);
+}
+
+.btn-hover-change {
+    transition: background-color ease 0.3s;
+}
+
+.btn-hover-change:hover {
+    background-color: white !important;
+    border: 1px solid var(--primary-color) !important;
+    color: black !important;
 }
