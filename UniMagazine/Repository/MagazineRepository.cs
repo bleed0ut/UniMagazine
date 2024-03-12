@@ -48,17 +48,15 @@ namespace UniMagazine.Repository
         public void UpdateStatus(Magazine magazine)
         {
             DateTime today = DateTime.Now;
+
             if(today >= magazine.ClosedDate)
-            {
                 magazine.Status = "Closed";
-            }
             else
             {
-                if(today > magazine.OpenedDate)
-                {
+                if (today > magazine.OpenedDate)
                     magazine.Status = "Opening";
-                }
-                
+                else
+                    magazine.Status = "Not Started";
             }
 
             Update(magazine);

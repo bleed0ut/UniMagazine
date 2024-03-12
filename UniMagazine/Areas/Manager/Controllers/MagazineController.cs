@@ -95,11 +95,11 @@ namespace UniMagazine.Areas.Manager.Controllers
                 else
                 {
                     if (magazineVm.Magazine.PostedDate < magazineVm.Magazine.OpenedDate)
-                        magazineVm.Magazine.Status = "Not Assigned";
-                    if (magazineVm.Magazine.OpenedDate == null)
-                        magazineVm.Magazine.Status = "Not Assigned";
+                        magazineVm.Magazine.Status = "Not Started";
                     else
                         magazineVm.Magazine.Status = "Opening";
+                    if (magazineVm.Magazine.OpenedDate == null)
+                        magazineVm.Magazine.Status = "Not Assigned";
                 }
                 _unitOfWork.MagazineRepository.Add(magazineVm.Magazine);
                 _unitOfWork.Save();
