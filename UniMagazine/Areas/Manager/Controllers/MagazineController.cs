@@ -57,84 +57,80 @@ namespace UniMagazine.Areas.Manager.Controllers
         [HttpPost]
         public IActionResult Add(MagazineVM magazineVm, IFormFile? file)
         {
-            
-            if (ModelState.IsValid && magazineVm.Magazine.FacultyId != 0 && magazineVm.Magazine.AcademicYearId != 0)
+            if(magazineVm.Magazine.OpenedDate == null)
             {
-                string wwwRootPath = _webHostEnvironment.WebRootPath;
-                if (file != null)
+                if (ModelState.IsValid && magazineVm.Magazine.FacultyId != 0 && magazineVm.Magazine.AcademicYearId != 0)
                 {
-                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                    string MagazinePath = Path.Combine(wwwRootPath, @"img\Magazine");
-                    if (!Directory.Exists(MagazinePath))
+                    string wwwRootPath = _webHostEnvironment.WebRootPath;
+                    if (file != null)
                     {
-                        Directory.CreateDirectory(MagazinePath);
+                        string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                        string MagazinePath = Path.Combine(wwwRootPath, @"img\Magazine");
+                        if (!Directory.Exists(MagazinePath))
+                        {
+                            Directory.CreateDirectory(MagazinePath);
+                        }
+                        //if (!string.IsNullOrEmpty(MagazineVM.Magazine.ImageUrl))
+                        //{
+                        //    // Delete the old image
+                        //    var oldImagePath = Path.Combine(wwwRootPath, BookVM.Book.ImageUrl.TrimStart('\\'));
+
+                        //    if (System.IO.File.Exists(oldImagePath))
+                        //    {
+                        //        System.IO.File.Delete(oldImagePath);
+                        //    }
+                        //}
+
+                        using (var fileStream = new FileStream(Path.Combine(MagazinePath, fileName), FileMode.Create))
+                        {
+                            file.CopyTo(fileStream);
+                        }
+
+                        magazineVm.Magazine.ImageUrl = @"\img\Magazine\" + fileName;
                     }
-                    //if (!string.IsNullOrEmpty(MagazineVM.Magazine.ImageUrl))
-                    //{
-                    //    // Delete the old image
-                    //    var oldImagePath = Path.Combine(wwwRootPath, BookVM.Book.ImageUrl.TrimStart('\\'));
-
-                    //    if (System.IO.File.Exists(oldImagePath))
-                    //    {
-                    //        System.IO.File.Delete(oldImagePath);
-                    //    }
-                    //}
-
-                    using (var fileStream = new FileStream(Path.Combine(MagazinePath, fileName), FileMode.Create))
+                    magazineVm.Magazine.ClosedDate = CalculateClosedDate(magazineVm.Magazine.OpenedDate);
+                    if (magazineVm.Magazine.PostedDate >= magazineVm.Magazine.ClosedDate)
                     {
-                        file.CopyTo(fileStream);
+                        magazineVm.Magazine.Status = "Closed";
                     }
-
-                    magazineVm.Magazine.ImageUrl = @"\img\Magazine\" + fileName;
-                }
-                magazineVm.Magazine.ClosedDate = CalculateClosedDate(magazineVm.Magazine.OpenedDate);
-                if (magazineVm.Magazine.PostedDate >= magazineVm.Magazine.ClosedDate)
-                {
-                    magazineVm.Magazine.Status = "Closed";
-                }
-                else
-                {
-                    if (magazineVm.Magazine.PostedDate < magazineVm.Magazine.OpenedDate)
-                        magazineVm.Magazine.Status = "Not Started";
                     else
-                        magazineVm.Magazine.Status = "Opening";
-                    if (magazineVm.Magazine.OpenedDate == null)
-                        magazineVm.Magazine.Status = "Not Assigned";
+                    {
+                        if (magazineVm.Magazine.PostedDate < magazineVm.Magazine.OpenedDate)
+                            magazineVm.Magazine.Status = "Not Started";
+                        else
+                            magazineVm.Magazine.Status = "Opening";
+                        if (magazineVm.Magazine.OpenedDate == null)
+                            magazineVm.Magazine.Status = "Not Assigned";
+                    }
+                    _unitOfWork.MagazineRepository.Add(magazineVm.Magazine);
+                    _unitOfWork.Save();
+                    return RedirectToAction("Index");
                 }
-                _unitOfWork.MagazineRepository.Add(magazineVm.Magazine);
-                _unitOfWork.Save();
-                return RedirectToAction("Index");
             }
             else
             {
-                MagazineVM magazineVM2 = new MagazineVM()
-                {
-                    Magazine = new Magazine(),
-                    Faculties = _unitOfWork.FacultyRepository.GetAllFaculty().Select(f => new SelectListItem
-                    {
-                        Text = f.Name,
-                        Value = f.Id.ToString()
-                    }),
-                    AcademicYears = _unitOfWork.AcademicYearRepository.GetAllAcademicYear().Select(A => new SelectListItem
-                    {
-                        Text = A.YearDate.ToString("yyyy"),
-                        Value = A.Id.ToString()
-                    })
-                };
-                return View(magazineVM2);
+                
             }
+            
+            MagazineVM magazineVM2 = new MagazineVM()
+            {
+                Magazine = new Magazine(),
+                Faculties = _unitOfWork.FacultyRepository.GetAllFaculty().Select(f => new SelectListItem
+                {
+                    Text = f.Name,
+                    Value = f.Id.ToString()
+                }),
+                AcademicYears = _unitOfWork.AcademicYearRepository.GetAllAcademicYear().Select(A => new SelectListItem
+                {
+                    Text = A.YearDate.ToString("yyyy"),
+                    Value = A.Id.ToString()
+                })
+            };
+            return View(magazineVM2);
+
+
         }
 
-
-
-        private DateTime? CalculateClosedDate(DateTime? openedDate)
-        {
-            if (openedDate == null)
-                return null;
-          
-            DateTime closedDate = openedDate.Value.AddDays(14);
-            return closedDate;
-        }
         public IActionResult Update(int id)
         {
             if (id == null || id == 0)
@@ -194,19 +190,7 @@ namespace UniMagazine.Areas.Manager.Controllers
                         magazineVm.Magazine.ImageUrl = @"\img\Magazine\" + fileName;
                     }
                     magazineVm.Magazine.ClosedDate = CalculateClosedDate(magazineVm.Magazine.OpenedDate);
-                    if (magazineVm.Magazine.PostedDate >= magazineVm.Magazine.ClosedDate)
-                    {
-                        magazineVm.Magazine.Status = "Closed";
-                    }
-                    else
-                    {
-                        if (magazineVm.Magazine.PostedDate < magazineVm.Magazine.OpenedDate)
-                            magazineVm.Magazine.Status = "Not Started";
-                        else
-                            magazineVm.Magazine.Status = "Opening";
-                        if (magazineVm.Magazine.OpenedDate == null)
-                            magazineVm.Magazine.Status = "Not Assigned";
-                    }
+                    
                     _unitOfWork.MagazineRepository.Update(magazineVm.Magazine);
                     _unitOfWork.Save();
                     return RedirectToAction("Index");
@@ -228,6 +212,49 @@ namespace UniMagazine.Areas.Manager.Controllers
 
 
 
+        }
+
+        public IActionResult DeadlineIndex()
+        {
+            DeadlineModel dlModel = new DeadlineModel();
+            dlModel.Magazines = _unitOfWork.MagazineRepository.GetNotAssigned();
+
+            return View(dlModel);
+        }
+
+        [HttpPost]
+        public IActionResult DeadlineIndex(DeadlineModel deadlineModel)
+        {
+            var magazine = _unitOfWork.MagazineRepository.Get(m => m.Id == deadlineModel.Id);
+            magazine.OpenedDate = deadlineModel.OpenedDate;
+            if (ModelState.IsValid)
+            {
+                magazine.ClosedDate = CalculateClosedDate(magazine.OpenedDate);
+                _unitOfWork.MagazineRepository.UpdateStatus(magazine);
+                _unitOfWork.Save();
+
+                TempData["success"] = "Assign a deadline successfully!";
+                return RedirectToAction("DeadlineIndex");
+            }
+            else
+                deadlineModel = new DeadlineModel()
+                {
+                    Magazines = _unitOfWork.MagazineRepository.GetNotAssigned()
+                };
+                
+
+            return RedirectToAction("DeadlineIndex"); ;
+        }
+            
+        
+
+        private DateTime? CalculateClosedDate(DateTime? openedDate)
+        {
+            if (openedDate == null)
+                return null;
+
+            DateTime closedDate = openedDate.Value.AddDays(14);
+            return closedDate;
         }
     }
 }

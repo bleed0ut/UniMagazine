@@ -1,0 +1,48 @@
+﻿@model DeadlineModel
+
+@{
+    Layout = "/Areas/Manager/Views/_LayoutManagerPage.cshtml";
+}
+
+<div class="d-flex text-center shadow mt-2 mb-2 p-2 card-header bg-secondary bg-gradient ml-0 py-3 text-white">
+    <div class="container">
+        <h1>Magazines - Deadline Management</h1>
+    </div>
+</div>
+@foreach (var mag in Model.Magazines)
+{
+    <form method="post" enctype="multipart/form-data">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center">Deadline</th>
+                    <th>Faculty</th>
+                    <th>Action</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <input class="form-control" asp-for="@Model.Id" value="@mag.Id" hidden />
+                    <td>@mag.Title</td>
+                    <td class="text-center">@mag.Status</td>
+                    <td>
+                        <div class="mb-3">
+                            <label asp-for="@Model.OpenedDate"> <button class="btn-dark"><strong>Opened date:</strong></button></label>
+
+                            <input class="form-control" asp-for="@Model.OpenedDate"/>
+                        </div>
+                    </td>
+                    <td>
+                        @mag.Faculty.Name
+                    </td>
+                    <td>
+                        <button type="submit" class="w-100 btn btn-lg btn-secondary mb-3">Update</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+}

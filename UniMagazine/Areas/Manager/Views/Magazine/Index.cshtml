@@ -5,7 +5,7 @@
 
 <div class="d-flex text-center shadow mt-2 mb-2 p-2 card-header bg-secondary bg-gradient ml-0 py-3 text-white">
     <div class="container">
-        <h1>Magazines - Marketing Manager Mangement</h1>
+        <h1>Magazines - Magazine Mangement</h1>
     </div>
 </div>
 <div>
@@ -14,7 +14,7 @@
             <i class="fa-solid fa fa-female"></i>
         </span>   Add New Magzine
     </a>
-    <a asp-area="Manager" asp-controller="Magazine" asp-action="AssignDeadline" class="btn btn-info">
+    <a asp-area="Manager" asp-controller="Magazine" asp-action="DeadlineIndex" class="btn btn-info">
         <span class="btn-label">
             <i class="fa-solid fa fa-female"></i>
         </span>   Assign deadline for magazines
@@ -42,7 +42,7 @@
                     <td>@magazine.Id</td>
                     <td>@magazine.Title</td>
                     <td>@magazine.Detail</td>
-                    <td>@magazine.Status</td>
+                    <td class="text-center">@magazine.Status</td>
                     <td>@magazine.PostedDate.ToString("dd/MM/yyyy")</td>
                     @if(magazine.OpenedDate != null){
                         <td>

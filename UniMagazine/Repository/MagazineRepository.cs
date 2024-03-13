@@ -31,10 +31,14 @@ namespace UniMagazine.Repository
 
         public IEnumerable<Magazine>? GetAll(string? includeProperty = null)
         {
-            return _dbContext.Magazines.Include(f => f.Faculty).ToList();
+            return _dbContext.Magazines.Where(f => f.Status != "Not Assigned").Include(f => f.Faculty).ToList();
             
         }
 
+        public IEnumerable<Magazine> GetNotAssigned()
+        {
+            return _dbContext.Magazines.Where(f => f.Status == "Not Assigned").Include(f => f.Faculty).ToList();
+        }
         public void Update(Magazine magazine)
         {
             _dbContext.Magazines.Update(magazine);
