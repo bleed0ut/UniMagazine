@@ -1,0 +1,27 @@
+﻿@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+<header>
+    <div class="" role="group" aria-label="Tools">
+        <a asp-area="Manager" asp-controller="Magazine" asp-action="Index" class="btn btn-secondary btn-lg btn-hover-change-jump" style="background-color: var(--primary-color)">
+            <span class="btn-label">
+                <i class="fa-solid fa-circle-user"></i>
+            </span>   Magazines
+        </a>
+        <a asp-area="Manager" asp-controller="Magazine" asp-action="Dashboard" class="btn btn-secondary btn-lg btn-hover-change-jump" style="background-color: var(--primary-color)">
+            <span class="btn-label">
+                <i class="fa-brands fa-stack-overflow"></i>
+            </span>   Dashboard
+        </a>
+    
+    </div>
+    <hr />
+</header>
+<body>
+    <div class="container">
+        <main role="main" class="pb-5">
+            @RenderBody()
+        </main>
+    </div>
+    <script src="https://kit.fontawesome.com/c1f40875f2.js" crossorigin="anonymous"></script>
+</body>
