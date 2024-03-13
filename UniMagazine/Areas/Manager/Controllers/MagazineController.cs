@@ -36,28 +36,19 @@ namespace UniMagazine.Areas.Manager.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            MagazineVM magazineVm = new MagazineVM()
-            {
-                Magazine = new Magazine(),
-
-                Faculties = _unitOfWork.FacultyRepository.GetAllFaculty().Select(f => new SelectListItem
-                {
-                    Text = f.Name,
-                    Value = f.Id.ToString()
-                }),
-                AcademicYears = _unitOfWork.AcademicYearRepository.GetAllAcademicYear().Select(A => new SelectListItem
-                {
-                    Text = A.YearDate.ToString("yyyy"),
-                    Value = A.Id.ToString()
-                }),
-            };
+            MagazineVM magazineVm = GetMagazineVM();
             return View(magazineVm);
         }
 
         [HttpPost]
         public IActionResult Add(MagazineVM magazineVm, IFormFile? file)
         {
-            if(magazineVm.Magazine.OpenedDate == null)
+            AcademicYear academicYear = _unitOfWork.AcademicYearRepository.Get(magazineVm.Magazine.AcademicYearId);
+            bool isInAcademicYearDate =false;
+            if (magazineVm.Magazine.OpenedDate != null)
+                isInAcademicYearDate = magazineVm.Magazine.OpenedDate >= academicYear.OpenedDate && magazineVm.Magazine.OpenedDate <= academicYear.ClosedDate;
+
+            if (magazineVm.Magazine.OpenedDate == null || isInAcademicYearDate)
             {
                 if (ModelState.IsValid && magazineVm.Magazine.FacultyId != 0 && magazineVm.Magazine.AcademicYearId != 0)
                 {
@@ -108,27 +99,10 @@ namespace UniMagazine.Areas.Manager.Controllers
                 }
             }
             else
-            {
-                
-            }
-            
-            MagazineVM magazineVM2 = new MagazineVM()
-            {
-                Magazine = new Magazine(),
-                Faculties = _unitOfWork.FacultyRepository.GetAllFaculty().Select(f => new SelectListItem
-                {
-                    Text = f.Name,
-                    Value = f.Id.ToString()
-                }),
-                AcademicYears = _unitOfWork.AcademicYearRepository.GetAllAcademicYear().Select(A => new SelectListItem
-                {
-                    Text = A.YearDate.ToString("yyyy"),
-                    Value = A.Id.ToString()
-                })
-            };
-            return View(magazineVM2);
-
-
+                TempData["Error"] = "The opened/closed date of magazine have to in range of its academic year";
+           
+             MagazineVM magazineVM2 = GetMagazineVM();
+             return View(magazineVM2);
         }
 
         public IActionResult Update(int id)
@@ -255,6 +229,24 @@ namespace UniMagazine.Areas.Manager.Controllers
 
             DateTime closedDate = openedDate.Value.AddDays(14);
             return closedDate;
+        }
+
+        private MagazineVM GetMagazineVM()
+        {
+            return new MagazineVM()
+            {
+                Magazine = new Magazine(),
+                Faculties = _unitOfWork.FacultyRepository.GetAllFaculty().Select(f => new SelectListItem
+                {
+                    Text = f.Name,
+                    Value = f.Id.ToString()
+                }),
+                AcademicYears = _unitOfWork.AcademicYearRepository.GetAllAcademicYear().Select(A => new SelectListItem
+                {
+                    Text = A.YearDate.ToString("yyyy"),
+                    Value = A.Id.ToString()
+                })
+            };
         }
     }
 }
