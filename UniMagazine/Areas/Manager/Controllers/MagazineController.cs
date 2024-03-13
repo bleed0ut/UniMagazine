@@ -219,8 +219,31 @@ namespace UniMagazine.Areas.Manager.Controllers
 
             return RedirectToAction("DeadlineIndex"); ;
         }
-            
-        
+        [HttpPost]
+        public IActionResult Delete(MagazineVM magazineVM)
+        {
+            if (magazineVM.Magazine == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(magazineVM.Magazine.ImageUrl))
+                {
+                    var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, magazineVM.Magazine.ImageUrl.TrimStart('\\'));
+
+                    if (System.IO.File.Exists(oldImagePath))
+                    {
+                        System.IO.File.Delete(oldImagePath);
+                    }
+                    
+                }
+                _unitOfWork.MagazineRepository.Delete(magazineVM.Magazine);
+                _unitOfWork.Save();
+            }
+            return RedirectToAction("Index"); ;
+        }
+
 
         private DateTime? CalculateClosedDate(DateTime? openedDate)
         {
