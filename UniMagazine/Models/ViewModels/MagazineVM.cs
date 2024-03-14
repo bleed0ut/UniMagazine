@@ -7,9 +7,14 @@ namespace UniMagazine.Models.ViewModels
     public class MagazineVM
     {
         public Magazine? Magazine { get; set; }
+        
         [ValidateNever]
         public IEnumerable<SelectListItem>? Faculties { get; set; }
+        
         [ValidateNever]
         public IEnumerable<SelectListItem>? AcademicYears { get; set; }
+
+        [ValidateNever]
+        public IEnumerable<Magazine> Magazines { get; set; }
     }
 }

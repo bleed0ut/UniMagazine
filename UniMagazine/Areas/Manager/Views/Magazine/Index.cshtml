@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Magazine>
+﻿@model MagazineFilterVM
 @{
     Layout = "/Areas/Manager/Views/_LayoutManagerPage.cshtml";
 }
@@ -7,7 +7,47 @@
     <div class="container">
         <h1>Magazines - Magazine Mangement</h1>
     </div>
+</div
+<div class="d-flex justify-content-end text-center shadow mt-2 mb-2 p-2 ml-0 py-3" style="background-color: var(--secondary-color)">
+    <form asp-action="Index" class="d-flex">
+        <div class="" style="margin-right: 10px">
+            <label class="visually-hidden" for="acaYearId"></label>
+            <select class="form-select" id="acaYearId" name="acaYearId">
+                <option selected disabled>Academic Years</option>
+                @foreach (var acaYear in Model.AcademicYearsDisplay)
+                {
+                        <option selected="@(acaYear.Id == Model.AcademicYearId)" value="@acaYear.Id">@acaYear.YearDate.ToString("yyyy")</option>
+                }
+            </select>
+        </div>
+        <div class="" style="margin-right: 10px">
+            <label class="visually-hidden" for="status"></label>
+            <select class="form-select" id="status" name="status">
+                <option selected="@(Model.Status == "")" value="")>Status</option>
+                <option selected="@(Model.Status == "Not Started")" value="Not Started">Not Started</option>
+                <option selected="@(Model.Status == "Opening")" value="Opening">Opening</option>
+                <option selected="@(Model.Status == "Closed")" value="Closed">Closed</option>
+            </select>
+        </div>
+
+         <div class="" style="margin-right: 10px">
+            <label class="visually-hidden" for="facultyId"></label>
+            <select class="form-select" id="facultyId" name="facultyId">
+                <option selected disabled>Faculties</option>
+                @foreach (var faculty in Model.FacultiesDisplay)
+                {
+                        <option selected="@(faculty.Id == Model.FacultyId)" value="@faculty.Id">@faculty.Name</option>
+                }
+            </select>
+        </div>
+
+        <div class="" style="margin-right: 10px">
+            <button type="submit" class="btn btn-light">Search</button>
+            <a href="/Manager/Magazine/Index" class="btn btn-danger">Clear</a>
+        </div>
+    </form>
 </div>
+
 <div>
     <a asp-area="Manager" asp-controller="Magazine" asp-action="Add" class="btn btn-outline-success">
         <span class="btn-label">
@@ -36,7 +76,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var magazine in Model)
+            @foreach (var magazine in Model.Magazines)
             {
                 <tr>
                     <td>@magazine.Id</td>
