@@ -3,22 +3,22 @@
     Layout = "/Areas/Manager/Views/_LayoutManagerPage.cshtml";
 }
 
-<div class="d-flex text-center shadow mt-2 mb-2 p-2 card-header bg-secondary bg-gradient ml-0 py-3 text-white">
-    <div class="container">
-        <h1>Magazines - Magazine Mangement</h1>
-    </div>
-</div>
-<div>
-    <a asp-area="Manager" asp-controller="Magazine" asp-action="Add" class="btn btn-outline-success">
+<div class="d-flex flex-row-reverse">
+    <a asp-area="Manager" asp-controller="Magazine" asp-action="Add" class="btn btn-dark shadow btn-hover-change" style="background-color: var(--secondary-color)">
         <span class="btn-label">
-            <i class="fa-solid fa fa-female"></i>
+            <i class="fa-solid fa-plus"></i>
         </span>   Add New Magzine
     </a>
-    <a asp-area="Manager" asp-controller="Magazine" asp-action="DeadlineIndex" class="btn btn-info">
+    <a asp-area="Manager" asp-controller="Magazine" asp-action="DeadlineIndex" class="btn btn-dark shadow btn-hover-change mx-2" style="background-color: var(--secondary-color)">
         <span class="btn-label">
             <i class="fa-solid fa fa-female"></i>
         </span>   Assign deadline for magazines
     </a>
+</div>
+<div class="text-center shadow mt-2 mb-2 p-2 card-header bg-secondary bg-gradient ml-0 py-3 text-white">
+    <div class="container">
+        <h1>Magazines - Magazine Mangement</h1>
+    </div>
 </div>
 <div class="container py-5">
     <table class="table">
@@ -26,7 +26,6 @@
             <tr>
                 <th>Id</th>
                 <th>Title</th>
-                <th>Detail</th>
                 <th class="text-center">Status</th>
                 <th>Posted Date</th>
                 <th class="text-center">Deadline</th>
@@ -41,7 +40,6 @@
                 <tr>
                     <td>@magazine.Id</td>
                     <td>@magazine.Title</td>
-                    <td>@magazine.Detail</td>
                     <td class="text-center">@magazine.Status</td>
                     <td>@magazine.PostedDate.ToString("dd/MM/yyyy")</td>
                     @if(magazine.OpenedDate != null){
