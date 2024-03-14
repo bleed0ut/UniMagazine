@@ -15,12 +15,13 @@
         <div class="mb-3">
             <label class="form-label">Open Date</label>
             <input type="date" class="form-control" id="openDate" asp-for="OpenedDate" />
+            <span asp-validation-for="OpenedDate" class="text-danger"></span> 
         </div>
-        
 
         <div class="mb-3">
             <label class="form-label">Close Date</label>
             <input type="date" class="form-control" id="closeDate" asp-for="ClosedDate" />
+            <span asp-validation-for="ClosedDate" class="text-danger"></span> 
         </div>
 
         <div class="mb-3">

@@ -29,18 +29,44 @@ namespace UniMagazine.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Add(AcademicYear academicY)
         {
-            var aca = new AcademicYear
+            if (ModelState.IsValid)
             {
-                YearDate = academicY.OpenedDate,
-                OpenedDate = academicY.OpenedDate,
-                ClosedDate = academicY.ClosedDate,
-                Status = academicY.Status,
-            };
-            _unitOfWork.AcademicYearRepository.Add(aca);
-            return RedirectToAction("Index"); ;
+                // Validate opened date against closed date
+                if (academicY.OpenedDate > academicY.ClosedDate)
+                {
+                    TempData["Error"] = "Open Date cannot exceed closure date";
+                    return View(academicY); // Return to the view with validation error
+                }
+                var date = DateTime.Now;
+                if (date >= academicY.ClosedDate)
+                {
+                    academicY.Status = "Closed";
+                }
+                if(date.Year >= academicY.OpenedDate.Year)
+                {
+                    TempData["Error"] = "Can't create academic year that is in the past";
+                    return View(academicY);
+                }
+                else if (date.Year < academicY.OpenedDate.Year)
+                {
+                    academicY.Status = "Not Started";
+                }
+                else
+                {
+                    academicY.Status = "Opening";
+                }
+
+                _unitOfWork.AcademicYearRepository.Add(academicY);
+                return RedirectToAction("Index");
+            }
+
+            // If model state is not valid, return to the view with validation error
+            return View(academicY);
         }
+
 
         public IActionResult Update(int id)
         {
@@ -59,18 +85,44 @@ namespace UniMagazine.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Update(AcademicYear academicY)
         {
-            var aca = _unitOfWork.AcademicYearRepository.Get(academicY.Id);
-
-            if (aca == null)
+            if (ModelState.IsValid)
             {
-                return NotFound();
+
+                var date = DateTime.Now;
+                if (date >= academicY.ClosedDate)
+                {
+                    academicY.Status = "Closed";
+                }
+                else if (date.Year >= academicY.OpenedDate.Year)
+                {
+                    TempData["Error"] = "Can't create academic year that is in the past";
+                    return View(academicY);
+                }
+                else if (date.Year < academicY.OpenedDate.Year)
+                {
+                    academicY.Status = "Not Started";
+                }
+                else
+                {
+                    academicY.Status = "Opening";
+                }
+
+                if (academicY == null)
+                {
+                    return NotFound();
+                }
+                if (date >= academicY.ClosedDate)
+                {
+                    academicY.Status = "Closed";
+                }
+                else
+                {
+                    academicY.Status = "Opening";
+                }
+                _unitOfWork.AcademicYearRepository.Update(academicY);
+                _unitOfWork.Save();
             }
-            aca.YearDate = academicY.OpenedDate;
-            aca.OpenedDate = academicY.OpenedDate;
-            aca.ClosedDate = academicY.ClosedDate;
-            aca.Status = academicY.Status;
-            _unitOfWork.AcademicYearRepository.Update(aca);
-            _unitOfWork.Save();
+            
             return RedirectToAction("Index");
         }
         [HttpPost]
