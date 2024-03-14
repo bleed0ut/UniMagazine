@@ -3,12 +3,21 @@
     Layout = "/Areas/Manager/Views/_LayoutManagerPage.cshtml";
 }
 
-<div class="d-flex text-center shadow mt-2 mb-2 p-2 card-header bg-secondary bg-gradient ml-0 py-3 text-white">
-    <div class="container">
-        <h1>Magazines - Magazine Mangement</h1>
-    </div>
-</div
-<div class="d-flex justify-content-end text-center shadow mt-2 mb-2 p-2 ml-0 py-3" style="background-color: var(--secondary-color)">
+<div class="d-flex flex-row-reverse">
+    <a asp-area="Manager" asp-controller="Magazine" asp-action="Add" class="btn btn-dark shadow btn-hover-change" style="background-color: var(--primary-color)">
+        <span class="btn-label">
+            <i class="fa-solid fa-plus"></i>
+        </span>   Add New Magzine
+    </a>
+    <a asp-area="Manager" asp-controller="Magazine" asp-action="DeadlineIndex" class="btn btn-dark shadow btn-hover-change mx-2" style="background-color: var(--primary-color)">
+        <span class="btn-label">
+            <i class="fa-solid fa fa-female"></i>
+        </span>   Assign deadline for magazines
+    </a>
+</div>
+
+@* -----Search----- *@
+<div class="d-flex justify-content-end text-center shadow mt-2 mb-2 p-2 ml-0 py-3" style="background-color: var(--primary-color)">
     <form asp-action="Index" class="d-flex">
         <div class="" style="margin-right: 10px">
             <label class="visually-hidden" for="acaYearId"></label>
@@ -48,27 +57,14 @@
     </form>
 </div>
 
-<div>
-    <a asp-area="Manager" asp-controller="Magazine" asp-action="Add" class="btn btn-outline-success">
-<div class="d-flex flex-row-reverse">
-    <a asp-area="Manager" asp-controller="Magazine" asp-action="Add" class="btn btn-dark shadow btn-hover-change" style="background-color: var(--secondary-color)">
-        <span class="btn-label">
-            <i class="fa-solid fa-plus"></i>
-        </span>   Add New Magzine
-    </a>
-    <a asp-area="Manager" asp-controller="Magazine" asp-action="DeadlineIndex" class="btn btn-dark shadow btn-hover-change mx-2" style="background-color: var(--secondary-color)">
-        <span class="btn-label">
-            <i class="fa-solid fa fa-female"></i>
-        </span>   Assign deadline for magazines
-    </a>
-</div>
-<div class="text-center shadow mt-2 mb-2 p-2 card-header bg-secondary bg-gradient ml-0 py-3 text-white">
+<div class="d-flex text-center shadow mb-2 mt-3 card-header bg-secondary bg-gradient ml-0 py-3 text-white">
     <div class="container">
         <h1>Magazines - Magazine Mangement</h1>
     </div>
 </div>
-<div class="container py-5">
-    <table class="table">
+
+<div class="container">
+    <table class="table table-striped text-center align-middle">
         <thead>
             <tr>
                 <th>Id</th>
@@ -87,12 +83,28 @@
                 <tr>
                     <td>@magazine.Id</td>
                     <td>@magazine.Title</td>
-                    <td class="text-center">@magazine.Status</td>
+                    @if(magazine.Status == "Not Started")
+                    {
+                        <td>
+                            <span class="badge rounded-pill bg-secondary">@magazine.Status</span>
+                        </td>
+                    }else if (magazine.Status == "Opening"){
+                        <td>
+                            <span class="badge rounded-pill bg-success">@magazine.Status</span>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            <span class="badge rounded-pill bg-danger">@magazine.Status</span>
+                        </td>
+                    }
+
                     <td>@magazine.PostedDate.ToString("dd/MM/yyyy")</td>
                     @if(magazine.OpenedDate != null){
-                        <td>
-                            <p><button class="btn-dark"><strong>Opened date:</strong></button> @magazine.OpenedDate</p>
-                            <p><button class="btn-dark"><strong>Closed date:</strong></button> @magazine.ClosedDate</p>
+                        <td class="text-start">
+                            <p><span class="badge bg-success me-2">Opened date:</span>@magazine.OpenedDate</p>
+                            <p><span class="badge bg-danger me-4" style="margin-right: 1px">Close date:</span>@magazine.ClosedDate</p>
                         </td>
                     }
                     else
@@ -103,7 +115,7 @@
                         @magazine.Faculty.Name
                     </td>
                     <td>
-                        <img width="100px" height="100px" src="@magazine.ImageUrl" class="card-img-top rounded" />
+                        <img height="100px" src="@magazine.ImageUrl" class="card-img-top rounded" />
                     </td>
                     <td>
                         <a asp-area="Manager"
