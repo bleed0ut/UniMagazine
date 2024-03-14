@@ -22,7 +22,7 @@ namespace UniMagazine.Areas.Manager.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int facultyId = 0, int acaYearId = 0, string status = "")
         {
             var maga = _unitOfWork.MagazineRepository.GetAll();
             foreach (var mag in maga)
@@ -30,8 +30,19 @@ namespace UniMagazine.Areas.Manager.Controllers
                 _unitOfWork.MagazineRepository.UpdateStatus(mag);
             }
             _unitOfWork.Save();
-            maga = _unitOfWork.MagazineRepository.GetAll();
-            return View(maga);
+
+            maga = _unitOfWork.MagazineRepository.GetAllMagazines(facultyId, acaYearId, status);
+
+            MagazineFilterVM magazineVM = new MagazineFilterVM()
+            {
+                Magazines = maga,
+                AcademicYearId = acaYearId,
+                Status = status,
+                FacultyId = facultyId,
+                FacultiesDisplay = _unitOfWork.FacultyRepository.GetAllFaculty(),
+                AcademicYearsDisplay = _unitOfWork.AcademicYearRepository.GetAllAcademicYear()
+            };
+            return View(magazineVM);
         }
         [HttpGet]
         public IActionResult Add()
