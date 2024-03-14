@@ -13,7 +13,6 @@ namespace UniMagazine.Models
         public string Title { get; set; }
 
         [Required(ErrorMessage = "Detail cannot be empty!")]
-        [Column(TypeName = "nvarchar(230)")]
         public string Detail {  get; set; }
         public string Status { get; set; } = "Opening";
         public string ?ImageUrl { get; set; }
