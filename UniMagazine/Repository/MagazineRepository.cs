@@ -49,6 +49,17 @@ namespace UniMagazine.Repository
             return magazines;
         }
 
+        public IEnumerable<Magazine>? GetActiveMagazines(int facultyId = 0)
+        {
+            var magazines = _dbContext.Magazines.Where(s => s.Status == "Opening")
+                                        .Include(f => f.Faculty)
+                                        .ToList();
+            if (facultyId > 0)
+                magazines = magazines.Where(f => f.FacultyId == facultyId).ToList();
+
+            return magazines;
+        }
+
         public IEnumerable<Magazine> GetNotAssigned()
         {
             return _dbContext.Magazines.Where(f => f.Status == "Not Assigned").Include(f => f.Faculty).ToList();

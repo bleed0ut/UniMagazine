@@ -1,8 +1,51 @@
-﻿@{
+﻿@model IEnumerable<Magazine>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row">
+    @foreach(var mag in Model)
+    {
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title card-header">@mag.Title
+                        @if (@mag.Status == "Not Started")
+                        {
+                            <span class="badge bg-secondary">@mag.Status</span>
+                        }
+                        else if (@mag.Status == "Opening")
+                        {
+                            <span class="d-inline-block badge bg-success">@mag.Status</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">@mag.Status</span>
+                        }</h5>
+                    <img id="imgOutput" height="300" src="@mag.ImageUrl" class="card-img-top rounded" alt="Uknown Image"/>
+                    <ul class="list-group list-group-flush">
+                        <li class="btn-dark">Faculty: @mag.Faculty.Name</li>
+                        <li class="list-group-item">
+                            <p class="btn btn-dark"><strong>Deadline</strong></p>
+                            <span class="badge bg-success me-2">@mag.OpenedDate - @mag.ClosedDate</span>
+                        </li>
+                        <li class="list-group-item">@mag.Detail</li>
+                    </ul>
+ 
+                    <a href="#" class="btn btn-outline-dark">Detail</a>
+                </div>
+            </div>
+        </div>
+    }
 </div>
+
+<script>
+    const loadFile = () => {
+        const output = document.getElementById('imgOutput');
+        output.src = URL.createObjectURL(event.target.files[0]);
+        output.onload = function () {
+            URL.revokeObjectURL(output.src)
+        }
+    }
+</script>
