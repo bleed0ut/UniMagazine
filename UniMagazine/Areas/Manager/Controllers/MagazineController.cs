@@ -90,7 +90,6 @@ namespace UniMagazine.Areas.Manager.Controllers
 
                         magazineVm.Magazine.ImageUrl = @"\img\Magazine\" + fileName;
                     }
-                    magazineVm.Magazine.ClosedDate = CalculateClosedDate(magazineVm.Magazine.OpenedDate);
                     if (magazineVm.Magazine.PostedDate >= magazineVm.Magazine.ClosedDate)
                     {
                         magazineVm.Magazine.Status = "Closed";
@@ -173,9 +172,7 @@ namespace UniMagazine.Areas.Manager.Controllers
                         }
 
                         magazineVm.Magazine.ImageUrl = @"\img\Magazine\" + fileName;
-                    }
-                    magazineVm.Magazine.ClosedDate = CalculateClosedDate(magazineVm.Magazine.OpenedDate);
-                    
+                    }         
                     _unitOfWork.MagazineRepository.Update(magazineVm.Magazine);
                     _unitOfWork.Save();
                     return RedirectToAction("Index");
@@ -214,7 +211,6 @@ namespace UniMagazine.Areas.Manager.Controllers
             magazine.OpenedDate = deadlineModel.OpenedDate;
             if (ModelState.IsValid)
             {
-                magazine.ClosedDate = CalculateClosedDate(magazine.OpenedDate);
                 _unitOfWork.MagazineRepository.UpdateStatus(magazine);
                 _unitOfWork.Save();
 
@@ -253,16 +249,6 @@ namespace UniMagazine.Areas.Manager.Controllers
                 _unitOfWork.Save();
             }
             return RedirectToAction("Index"); ;
-        }
-
-
-        private DateTime? CalculateClosedDate(DateTime? openedDate)
-        {
-            if (openedDate == null)
-                return null;
-
-            DateTime closedDate = openedDate.Value.AddDays(14);
-            return closedDate;
         }
 
         private MagazineVM GetMagazineVM()

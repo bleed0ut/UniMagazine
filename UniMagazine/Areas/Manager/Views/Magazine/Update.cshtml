@@ -25,12 +25,22 @@
                 <label asp-for="Magazine.OpenedDate"> Opened Date</label>
                 <input class="form-control" asp-for="@Model.Magazine.OpenedDate" />
             </div>
+
+            <div class="mb-3">
+                <label asp-for="Magazine.ClosedDate"> Close Date</label>
+                <input class="form-control" asp-for="@Model.Magazine.ClosedDate" />
+            </div>
         }
         else
         {
             <div class="mb-3">
                 <label asp-for="Magazine.OpenedDate"> Opened Date</label>
-                <input class="form-control" asp-for="@Model.Magazine.OpenedDate" readonly/>
+                <input class="form-control" asp-for="@Model.Magazine.OpenedDate" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Magazine.ClosedDate"> Close Date</label>
+                <input class="form-control" asp-for="@Model.Magazine.ClosedDate" />
             </div>
         }
 

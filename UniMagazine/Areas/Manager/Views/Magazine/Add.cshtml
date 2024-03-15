@@ -29,10 +29,10 @@
         <label asp-for="Magazine.OpenedDate"> Opened Date</label>
         <input class="form-control"  asp-for="@Model.Magazine.OpenedDate" />
     </div>
-@*     <div class="mb-3">
+    <div class="mb-3">
         <label class="form-label">Close Date</label>
         <input type="date" class="form-control"  asp-for="@Model.Magazine.ClosedDate" />
-    </div> *@
+    </div>
 
     <div class="mb-3 row">
         <select asp-for="@Model.Magazine.FacultyId" asp-items="@Model.Faculties" class="accordion-button bg-light">
