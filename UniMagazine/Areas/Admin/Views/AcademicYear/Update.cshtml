@@ -16,23 +16,30 @@
     @if (Model != null)
     {
         <form method="post">
-
-            <div class="mb-3">
-                <label class="form-label">Id</label>
-                <input type="text" id="id" class="form-control" asp-for="Id" readonly />
+            <div class="d-flex">
+                <div class="me-2 flex-grow-1">
+                    <div class="pb-3">
+                        <label class="form-label">Id</label>
+                        <input type="text" id="id" class="form-control" asp-for="Id" readonly />
+                    </div>
+                    <div>
+                        <label class="form-label">Opden date</label>
+                        <input type="date" class="form-control" id="OpenedDate" asp-for="OpenedDate" />
+                    </div>
+                </div>
+                <div class="ms-2 flex-grow-1">
+                    <div class="pb-3">
+                        <label class="form-label">Year</label>
+                        <input id="YearDate" class="form-control" asp-for="@year" readonly />
+                    </div>
+                    <div>
+                        <label class="form-label">Close Date</label>
+                        <input class="form-control" id="CloseDate" asp-for="ClosedDate" />
+                    </div>
+                </div>
             </div>
-
-            <div class="mb-3">
-                <label class="form-label">Year</label>
-                <input id="YearDate" class="form-control" asp-for="@year" readonly />
-            </div>
-
-            <div class="mb-3">
-            <label class="form-label">Opden date</label>
-                <input type="date" class="form-control" id="OpenedDate" asp-for="OpenedDate" />
-            </div>
-
-            <div class="mb-3 row">
+            
+            <div class="my-2">
                 <label asp-for="Status"></label>
                 <select class="form-control" asp-for="Status">
                     <option value="" disabled selected>Status</option>
@@ -41,12 +48,9 @@
                 </select>
             </div>
 
-            <div class="mb-3">
-            <label class="form-label">Close Date</label>
-            <input class="form-control" id="CloseDate" asp-for="ClosedDate" />
-            </div>
+            
 
-            <div class="mb-3">
+            <div class="my-3">
 
                 <div class="d-flex">
                     <button type="submit" class="btn btn-dark">Update</button>

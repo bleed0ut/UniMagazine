@@ -11,28 +11,23 @@
 
 <div class="container py-5">
     <form method="post">
-
-        <div class="mb-3">
-            <label class="form-label">Open Date</label>
-            <input type="date" class="form-control" id="openDate" asp-for="OpenedDate" />
-            <span asp-validation-for="OpenedDate" class="text-danger"></span> 
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Close Date</label>
-            <input type="date" class="form-control" id="closeDate" asp-for="ClosedDate" />
-            <span asp-validation-for="ClosedDate" class="text-danger"></span> 
-        </div>
-
+        <div class="d-flex">
+            <div class="mb-3 me-3 flex-grow-1">
+                <label class="form-label">Open Date</label>
+                <input type="date" class="form-control" id="openDate" asp-for="OpenedDate" />
+            </div>
+            <div class="mb-3 ms-3 flex-grow-1">
+                <label class="form-label">Close Date</label>
+                <input type="date" class="form-control" id="closeDate" asp-for="ClosedDate" />
+            </div>
         <div class="mb-3">
             <label asp-for="Status"></label>
-            <select class="form-control" asp-for="Status">
+            <select class="form-control form-select" asp-for="Status">
                 <option value="" disabled selected>Status</option>
                 <option value="Opening">Opening</option>
                 <option value="Closed">Closed</option>
             </select>
         </div>
-
         <div class="mb-3">
             <button type="submit" class="btn btn-dark">Submit</button>
         </div>
