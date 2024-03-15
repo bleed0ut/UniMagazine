@@ -45,7 +45,7 @@ namespace UniMagazine.Areas.Admin.Controllers
                 {
                     academicY.Status = "Closed";
                 }
-                if(date.Year >= academicY.OpenedDate.Year)
+                if(date.Year > academicY.OpenedDate.Year)
                 {
                     TempData["Error"] = "Can't create academic year that is in the past";
                     return View(academicY);
@@ -58,7 +58,7 @@ namespace UniMagazine.Areas.Admin.Controllers
                 {
                     academicY.Status = "Opening";
                 }
-
+                academicY.YearDate = academicY.OpenedDate;
                 _unitOfWork.AcademicYearRepository.Add(academicY);
                 return RedirectToAction("Index");
             }
@@ -119,6 +119,7 @@ namespace UniMagazine.Areas.Admin.Controllers
                 {
                     academicY.Status = "Opening";
                 }
+                academicY.YearDate = academicY.OpenedDate;
                 _unitOfWork.AcademicYearRepository.Update(academicY);
                 _unitOfWork.Save();
             }
