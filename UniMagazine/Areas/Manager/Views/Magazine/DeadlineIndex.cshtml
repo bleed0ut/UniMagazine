@@ -34,6 +34,10 @@
 
                             <input class="form-control" asp-for="@Model.OpenedDate"/>
                         </div>
+                        <div class="mb-3">
+                            <label asp-for="@Model.ClosedDate"> <button class="btn-dark"><strong>Closed Date:</strong></button></label>
+                            <input class="form-control" asp-for="@Model.ClosedDate" />
+                        </div>
                     </td>
                     <td>
                         @mag.Faculty.Name

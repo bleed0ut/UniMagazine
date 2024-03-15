@@ -103,6 +103,11 @@ namespace UniMagazine.Areas.Manager.Controllers
                         if (magazineVm.Magazine.OpenedDate == null)
                             magazineVm.Magazine.Status = "Not Assigned";
                     }
+                    if(magazineVm.Magazine.ClosedDate < magazineVm.Magazine.OpenedDate || magazineVm.Magazine.OpenedDate == null && magazineVm.Magazine.ClosedDate != null)
+                    {
+                        TempData["Error"] = "The deadline not valid";
+                        return RedirectToAction("Add");
+                    }
                     _unitOfWork.MagazineRepository.Add(magazineVm.Magazine);
                     _unitOfWork.Save();
                     return RedirectToAction("Index");
@@ -147,7 +152,12 @@ namespace UniMagazine.Areas.Manager.Controllers
                 if (ModelState.IsValid && magazineVm.Magazine.FacultyId != 0 && magazineVm.Magazine.AcademicYearId != 0)
                 {
                     string wwwRootPath = _webHostEnvironment.WebRootPath;
-                    if (file != null)
+                    if (magazineVm.Magazine.ClosedDate < magazineVm.Magazine.OpenedDate || magazineVm.Magazine.OpenedDate == null && magazineVm.Magazine.ClosedDate != null)
+                    {
+                        TempData["Error"] = "The deadline not valid";
+                        return RedirectToAction("Update", magazineVm.Magazine.Id);
+                    }
+                if (file != null)
                     {
                         string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                         string MagazinePath = Path.Combine(wwwRootPath, @"img\Magazine");
@@ -175,8 +185,8 @@ namespace UniMagazine.Areas.Manager.Controllers
                     }         
                     _unitOfWork.MagazineRepository.Update(magazineVm.Magazine);
                     _unitOfWork.Save();
-                    return RedirectToAction("Index");
-                }
+                    return RedirectToAction("Index"); 
+                   }
             else
             {
                 magazineVm.Faculties = _unitOfWork.FacultyRepository.GetAllFaculty().Select(f => new SelectListItem
@@ -192,7 +202,7 @@ namespace UniMagazine.Areas.Manager.Controllers
                 return View(magazineVm);
             }
 
-
+            
 
         }
 
@@ -209,6 +219,12 @@ namespace UniMagazine.Areas.Manager.Controllers
         {
             var magazine = _unitOfWork.MagazineRepository.Get(m => m.Id == deadlineModel.Id);
             magazine.OpenedDate = deadlineModel.OpenedDate;
+            magazine.ClosedDate = deadlineModel.ClosedDate;
+            if (magazine.ClosedDate < magazine.OpenedDate)
+            {
+                TempData["Error"] = "The closed date not valid";
+                return RedirectToAction("DeadlineIndex");
+            }
             if (ModelState.IsValid)
             {
                 _unitOfWork.MagazineRepository.UpdateStatus(magazine);
