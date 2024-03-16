@@ -220,7 +220,7 @@ namespace UniMagazine.Areas.Manager.Controllers
             var magazine = _unitOfWork.MagazineRepository.Get(m => m.Id == deadlineModel.Id);
             magazine.OpenedDate = deadlineModel.OpenedDate;
             magazine.ClosedDate = deadlineModel.ClosedDate;
-            if (magazine.ClosedDate < magazine.OpenedDate)
+            if (magazine.ClosedDate < magazine.OpenedDate || magazine.OpenedDate == null && magazine.ClosedDate != null)
             {
                 TempData["Error"] = "The closed date not valid";
                 return RedirectToAction("DeadlineIndex");
