@@ -4,48 +4,77 @@
     ViewData["Title"] = "Home Page";
 }
 
+<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <div id="bannerImg"class="carousel-item active">
+            <img src="./img/Banner/mainBanner.jpg" class="d-block w-100 h-100 opacity-75" style="max-height: 420px; object-fit: cover" alt="...">
+        </div>
+    </div>
+</div>
+
+<div id="main-anounment" class="">
+    <div id="anounment-tag">
+        ANOUCEMENT
+    </div>
+    <p id="anounment-text">
+        Wisdom is not a product of school, but a lifelong learning process
+    </p>
+</div>
+
+<div id="main-control">
+    <div class="main-control-left">
+        <a class="main-control-text">
+            Current Topics
+        </a>
+        <a class="main-control-text">
+            End Topics
+        </a>
+    </div>
+    <div class="main-control-text-right">
+        <a>
+            <i class="fa-solid fa-list"></i>
+        </a>
+    </div>
+</div>
+
 <div class="row">
     @foreach(var mag in Model)
     {
-        <div class="col-sm-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title card-header">@mag.Title
-                        @if (@mag.Status == "Not Started")
-                        {
-                            <span class="badge bg-secondary">@mag.Status</span>
-                        }
-                        else if (@mag.Status == "Opening")
-                        {
-                            <span class="d-inline-block badge bg-success">@mag.Status</span>
-                        }
-                        else
-                        {
-                            <span class="badge bg-danger">@mag.Status</span>
-                        }</h5>
-                    <img id="imgOutput" height="300" src="@mag.ImageUrl" class="card-img-top rounded" alt="Uknown Image"/>
-                    <ul class="list-group list-group-flush">
-                        <li class="btn-dark">Faculty: @mag.Faculty.Name</li>
-                        <li class="list-group-item">
-                            <p class="btn btn-dark"><strong>Deadline</strong></p>
-                            <span class="badge bg-success me-2">@mag.OpenedDate - @mag.ClosedDate</span>
-                        </li>
-                        <li class="list-group-item">@mag.Detail</li>
-                    </ul>
- 
-                    <a href="#" class="btn btn-outline-dark">Detail</a>
+        <div class="col-sm-10 col-md-6 col-lg-4 mb-3">
+            <a href="#" style="text-decoration: none; color: black">
+                <div class="card shadow" style="max-width: 438px; min-height: 520px">
+                    <img src="@mag.ImageUrl" class="card-img-top" style="max-height: 210px; object-fit: cover" alt="...">
+                    <div class="card-body">
+                        <p class="card-title" style="font-size: 16px; font-weight: 500; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden">@mag.Title</p>
+                        <p class="card-text" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">@mag.Detail</p>
+                    </div>
+                    <div class="card-footer">
+                        <p class="my-0 fw-light fst-italic">
+                            <span style="font-weight: 500">Status: </span>
+                            @if (@mag.Status == "Not Started")
+                            {
+                                <span class="badge bg-secondary">@mag.Status</span>
+                            }
+                            else if (@mag.Status == "Opening")
+                            {
+                                <span class="d-inline-block badge bg-success">@mag.Status</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">@mag.Status</span>
+                            }
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <p class="my-0 fw-light fst-italic"><span style="font-weight: 500">Falcuty: </span>@mag.Faculty.Name</p>
+                    </div>
+                    <div class="card-footer">
+                        <p class="my-0 fw-light fst-italic"><span style="font-weight: 500">Open Date: </span>@mag.OpenedDate</p>
+                        <p class="my-0 fw-light fst-italic"><span style="font-weight: 500">Closed Date: </span>@mag.ClosedDate</p>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
     }
 </div>
 
-<script>
-    const loadFile = () => {
-        const output = document.getElementById('imgOutput');
-        output.src = URL.createObjectURL(event.target.files[0]);
-        output.onload = function () {
-            URL.revokeObjectURL(output.src)
-        }
-    }
-</script>

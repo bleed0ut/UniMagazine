@@ -11,8 +11,8 @@
     </a>
     <a asp-area="Manager" asp-controller="Magazine" asp-action="DeadlineIndex" class="btn btn-dark shadow btn-hover-change mx-2" style="background-color: var(--primary-color)">
         <span class="btn-label">
-            <i class="fa-solid fa fa-female"></i>
-        </span>   Assign deadline for magazines
+            <i class="fa-solid fa-clock-rotate-left"></i>
+        </span>   Assign deadline
     </a>
 </div>
 
@@ -114,8 +114,8 @@
                     <td>
                         @magazine.Faculty.Name
                     </td>
-                    <td>
-                        <img height="100px" src="@magazine.ImageUrl" class="card-img-top rounded" />
+                    <td style="height: 100px; width: 150px">
+                        <img height="100" width="100" src="@magazine.ImageUrl" class="card-img-top object-fit-cover rounded" />
                     </td>
                     <td>
                         <a asp-area="Manager"

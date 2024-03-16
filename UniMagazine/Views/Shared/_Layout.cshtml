@@ -13,20 +13,16 @@
     <partial name="_Notification" />
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark mb-5" style="background-color: var(--primary-color)">
-        <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-dark mb-3 h6" style="background-color: var(--primary-color); height: 80px">
+        <div class="container" style="height: 80px">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">UniMagazine</a>
+            <a class="navbar-brand h-50" asp-area="" asp-controller="Home" asp-action="Index">
+                <img class="h-75" src="~/img/icon/logo-no-background.png" />
+            </a>
             <div class="collapse navbar-collapse" id="mynavbar">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                    </li>
                     @if (User.IsInRole("Admin")){
                     <li class="nav-item">
                             <a class="nav-link text-white" asp-area="Admin" asp-controller="User" asp-action="UserIndex">Admin Management Page</a>
