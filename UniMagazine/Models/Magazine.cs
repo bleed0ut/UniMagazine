@@ -9,7 +9,7 @@ namespace UniMagazine.Models
         public int Id {  get; set; }
 
         [Required(ErrorMessage = "Title cannot be empty!")]
-        [Column(TypeName = "nvarchar(100)")]
+        //[Column(TypeName = "nvarchar(100)")]
         public string Title { get; set; }
 
         [Required(ErrorMessage = "Detail cannot be empty!")]
