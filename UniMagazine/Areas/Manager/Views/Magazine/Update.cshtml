@@ -30,6 +30,11 @@
                     <label asp-for="@Model.Magazine.Detail">Detail</label>
                     <span asp-validation-for="@Model.Magazine.Detail" class="text-danger"></span>
                 </div>
+                <button type="submit" class="w-100 btn btn-lg btn-secondary mb-3">Update</button>
+                <button asp-area="Manager" asp-controller="Magazine" asp-action="Delete" type="submit" class="w-100 btn btn-lg btn-danger mb-3">Delete</button>
+                <form asp-area="Manager" asp-controller="Magazine" asp-action="Index">
+                    <button type="submit" class="btn btn-outline-danger" style="width:100%">Cancel</button>
+                </form>
             </div>
 
             @* Bọc phải *@
@@ -68,19 +73,15 @@
                     <label asp-for="@Model.Magazine.ImageUrl">Image</label>
                     <input id="imgInp" type="file" name="file" class="form-control" onchange="loadFile(event)" />
                 </div>
-                <div>
+                <div class="d-flex flex-column w-100 h-25">
                     <label>Preview Image:</label>
-                    <img id="imgOutput" width="100" src="@Model.Magazine.ImageUrl" class="card-img-top rounded" />
+                    <img id="imgOutput" src="@Model.Magazine.ImageUrl" class="rounded w-100 object-fit-cover overflow-hidden" />
                 </div>
             </div>
         </div>
 
-        <button type="submit" class="w-100 btn btn-lg btn-secondary mb-3">Update</button>
-        <button asp-area="Manager" asp-controller="Magazine" asp-action="Delete" type="submit" class="w-100 btn btn-lg btn-danger mb-3">Delete</button>
     </form>
-    <form asp-area="Manager" asp-controller="Magazine" asp-action="Index">
-        <button type="submit" class="btn btn-outline-danger" style="width:100%">Cancel</button>
-    </form>
+
 }
 else
 {
