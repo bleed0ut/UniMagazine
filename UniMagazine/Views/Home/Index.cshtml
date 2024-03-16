@@ -6,7 +6,7 @@
 
 <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
-        <div id="bannerImg"class="carousel-item active">
+        <div id="bannerImg" class="carousel-item active">
             <img src="./img/Banner/mainBanner.jpg" class="d-block w-100 h-100 opacity-75" style="max-height: 420px; object-fit: cover" alt="...">
         </div>
     </div>
@@ -23,12 +23,10 @@
 
 <div id="main-control">
     <div class="main-control-left">
-        <a class="main-control-text">
-            Current Topics
-        </a>
-        <a class="main-control-text">
-            End Topics
-        </a>
+         <form asp-action="Index" class="d-flex">
+            <p><button type="submit" id="status" name="status" value="Opening" class="linksex main-control-text">Current Topic</button></p>
+            <p><button type="submit" id="status" name="status" value="Closed" class="linksex main-control-text">End Topic</button></p>
+        </form>
     </div>
     <div class="main-control-text-right">
         <a>

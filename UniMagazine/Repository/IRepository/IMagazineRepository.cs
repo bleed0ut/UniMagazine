@@ -6,8 +6,8 @@ namespace UniMagazine.Repository.IRepository
     {
        IEnumerable<Magazine> GetNotAssigned();
        IEnumerable<Magazine> GetAllMagazines(int facultyId, int academicYearId, string status);
-
-       IEnumerable<Magazine>? GetActiveMagazines(int facultyId);
+       
+       IEnumerable<Magazine>? GetActiveMagazines(int facultyId, string? status);
        void Update(Magazine magazine);
        void UpdateStatus(Magazine magazine);
     }

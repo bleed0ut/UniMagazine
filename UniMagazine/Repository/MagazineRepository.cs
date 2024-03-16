@@ -49,11 +49,16 @@ namespace UniMagazine.Repository
             return magazines;
         }
 
-        public IEnumerable<Magazine>? GetActiveMagazines(int facultyId = 0)
+        public IEnumerable<Magazine>? GetActiveMagazines(int facultyId = 0, string? status = "")
         {
-            var magazines = _dbContext.Magazines.Where(s => s.Status == "Opening")
+            var magazines = _dbContext.Magazines.OrderByDescending(o => o.OpenedDate)
                                         .Include(f => f.Faculty)
                                         .ToList();
+            if (string.IsNullOrEmpty(status) || status == "Opening")
+                magazines = _dbContext.Magazines.Where(s => s.Status == "Opening").ToList();
+            else
+                magazines = _dbContext.Magazines.Where(s => s.Status == "Closed").ToList();
+
             if (facultyId > 0)
                 magazines = magazines.Where(f => f.FacultyId == facultyId).ToList();
 

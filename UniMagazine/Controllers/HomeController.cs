@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using UniMagazine.Models;
+using UniMagazine.Models.ViewModels;
 using UniMagazine.Repository.IRepository;
 
 namespace UniMagazine.Controllers
@@ -19,20 +20,20 @@ namespace UniMagazine.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string status = "")
         {
-            var magazines = _unitOfWork.MagazineRepository.GetActiveMagazines(0);
+            var magazines = _unitOfWork.MagazineRepository.GetActiveMagazines(0, status);
             var userId = _userManager.GetUserId(this.User);
+
             if (userId != null) {
                 var user = _unitOfWork.UserRepository.GetUserById(userId);
-                magazines = _unitOfWork.MagazineRepository.GetActiveMagazines(user.FacultyId);
+                magazines = _unitOfWork.MagazineRepository.GetActiveMagazines(user.FacultyId, status);
                 return View(magazines);
             }
 
             
             return View(magazines);
         }
-
         public IActionResult Privacy()
         {
             return View();
