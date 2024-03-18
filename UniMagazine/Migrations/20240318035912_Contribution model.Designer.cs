@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UniMagazine.Data;
 
@@ -11,9 +12,11 @@ using UniMagazine.Data;
 namespace UniMagazine.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240318035912_Contribution model")]
+    partial class Contributionmodel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -182,7 +185,7 @@ namespace UniMagazine.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AcademicYears", (string)null);
+                    b.ToTable("AcademicYears");
                 });
 
             modelBuilder.Entity("UniMagazine.Models.ApplicationUser", b =>
@@ -304,7 +307,7 @@ namespace UniMagazine.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Contributions", (string)null);
+                    b.ToTable("Contributions");
                 });
 
             modelBuilder.Entity("UniMagazine.Models.Faculty", b =>
@@ -328,7 +331,7 @@ namespace UniMagazine.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Faculties", (string)null);
+                    b.ToTable("Faculties");
                 });
 
             modelBuilder.Entity("UniMagazine.Models.Magazine", b =>
@@ -375,7 +378,7 @@ namespace UniMagazine.Migrations
 
                     b.HasIndex("FacultyId");
 
-                    b.ToTable("Magazines", (string)null);
+                    b.ToTable("Magazines");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
