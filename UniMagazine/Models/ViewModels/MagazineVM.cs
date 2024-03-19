@@ -6,6 +6,7 @@ namespace UniMagazine.Models.ViewModels
 {
     public class MagazineVM
     {
+        [ValidateNever]
         public Magazine? Magazine { get; set; }
         
         [ValidateNever]

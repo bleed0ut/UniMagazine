@@ -24,6 +24,8 @@ namespace UniMagazine.Areas.Manager.Controllers
 
         public IActionResult Index(int facultyId = 0, int acaYearId = 0, string status = "")
         {
+            int notAssignedNumber = _unitOfWork.MagazineRepository.GetAll().Count() - _unitOfWork.MagazineRepository.GetAllMagazines(0, 0, "").Count();
+
             var maga = _unitOfWork.MagazineRepository.GetAll();
             foreach (var mag in maga)
             {
@@ -42,6 +44,7 @@ namespace UniMagazine.Areas.Manager.Controllers
                 FacultiesDisplay = _unitOfWork.FacultyRepository.GetAllFaculty(),
                 AcademicYearsDisplay = _unitOfWork.AcademicYearRepository.GetAllAcademicYear()
             };
+            ViewBag.notAssignedNumber = notAssignedNumber;
             return View(magazineVM);
         }
         [HttpGet]
