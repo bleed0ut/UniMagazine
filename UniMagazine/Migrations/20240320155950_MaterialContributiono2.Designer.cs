@@ -12,8 +12,8 @@ using UniMagazine.Data;
 namespace UniMagazine.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240320153953_MaterialContributiono")]
-    partial class MaterialContributiono
+    [Migration("20240320155950_MaterialContributiono2")]
+    partial class MaterialContributiono2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -381,30 +381,6 @@ namespace UniMagazine.Migrations
                     b.ToTable("Magazines");
                 });
 
-            modelBuilder.Entity("UniMagazine.Models.MaterialContribution", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ContributionId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContributionId");
-
-                    b.ToTable("MaterialContributions");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -503,17 +479,6 @@ namespace UniMagazine.Migrations
                     b.Navigation("Academic");
 
                     b.Navigation("Faculty");
-                });
-
-            modelBuilder.Entity("UniMagazine.Models.MaterialContribution", b =>
-                {
-                    b.HasOne("UniMagazine.Models.Contribution", "Contribution")
-                        .WithMany()
-                        .HasForeignKey("ContributionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Contribution");
                 });
 
             modelBuilder.Entity("UniMagazine.Models.Magazine", b =>

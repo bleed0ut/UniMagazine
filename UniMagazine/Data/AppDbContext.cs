@@ -16,6 +16,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Magazine> Magazines { get; set; }
 
     public DbSet<Contribution> Contributions { get; set; }
+ 
     public DbSet<MaterialContribution> MaterialContributions { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {
