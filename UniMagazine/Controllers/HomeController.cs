@@ -22,6 +22,13 @@ namespace UniMagazine.Controllers
 
         public IActionResult Index(string status = "")
         {
+            var maga = _unitOfWork.MagazineRepository.GetAll();
+            foreach (var mag in maga)
+            {
+                _unitOfWork.MagazineRepository.UpdateStatus(mag);
+            }
+            _unitOfWork.Save();
+
             var magazines = _unitOfWork.MagazineRepository.GetActiveMagazines(0, status);
             var userId = _userManager.GetUserId(this.User);
 
