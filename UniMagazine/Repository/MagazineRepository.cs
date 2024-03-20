@@ -31,7 +31,7 @@ namespace UniMagazine.Repository
 
         public IEnumerable<Magazine>? GetAll(string? includeProperty = null)
         {
-            return _dbContext.Magazines.Where(f => f.Status != "Not Assigned").Include(f => f.Faculty).Include(a => a.Academic).ToList();
+            return _dbContext.Magazines.Include(f => f.Faculty).Include(a => a.Academic).ToList();
             
         }
 
