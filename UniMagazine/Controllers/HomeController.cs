@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Net.NetworkInformation;
 using UniMagazine.Models;
 using UniMagazine.Models.ViewModels;
+using UniMagazine.Repository;
 using UniMagazine.Repository.IRepository;
 
 namespace UniMagazine.Controllers
@@ -44,5 +46,52 @@ namespace UniMagazine.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        public IActionResult MagazineDetail(int id)
+        {
+            var userId = _userManager.GetUserId(this.User);
+            var user = _unitOfWork.UserRepository.GetUserById(userId);
+            var ma = _unitOfWork.MagazineRepository.Get(x => x.Id == id);
+            var con = _unitOfWork.ContributionRepository.GetAll();
+            var contri = new List<Contribution>();
+            var contri2 = new List<Contribution>();
+            foreach (var x in con)
+            {
+                if (x.MagazineId == id && x.Status == "Published")
+                {
+                    contri2.Add(x);
+                    contri.Add(x);
+                }
+                if(userId != null)
+                {
+                    if (x.UserId == user.Id)
+                    {
+                        contri.Add(x);
+                    }
+                }
+                
+            }
+            foreach (var x in contri)
+            {
+
+                x.User = _unitOfWork.UserRepository.GetUserById(x.UserId);
+            }
+            MaConVM magazineVM = new MaConVM()
+            {
+                Magazine = ma,
+                Contributions = contri
+            };
+            if (userId == null)
+            {
+                MaConVM magazineVM2 = new MaConVM()
+                {
+                    Magazine = ma,
+                    Contributions = contri2
+                };
+                return View(magazineVM2);
+            }
+            return View(magazineVM);
+
+        }
+
     }
 }

@@ -182,7 +182,7 @@ namespace UniMagazine.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AcademicYears", (string)null);
+                    b.ToTable("AcademicYears");
                 });
 
             modelBuilder.Entity("UniMagazine.Models.ApplicationUser", b =>
@@ -304,7 +304,7 @@ namespace UniMagazine.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Contributions", (string)null);
+                    b.ToTable("Contributions");
                 });
 
             modelBuilder.Entity("UniMagazine.Models.Faculty", b =>
@@ -328,7 +328,7 @@ namespace UniMagazine.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Faculties", (string)null);
+                    b.ToTable("Faculties");
                 });
 
             modelBuilder.Entity("UniMagazine.Models.Magazine", b =>
@@ -375,7 +375,31 @@ namespace UniMagazine.Migrations
 
                     b.HasIndex("FacultyId");
 
-                    b.ToTable("Magazines", (string)null);
+                    b.ToTable("Magazines");
+                });
+
+            modelBuilder.Entity("UniMagazine.Models.MaterialContribution", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ContributionId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContributionId");
+
+                    b.ToTable("MaterialContributions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -443,7 +467,7 @@ namespace UniMagazine.Migrations
             modelBuilder.Entity("UniMagazine.Models.Contribution", b =>
                 {
                     b.HasOne("UniMagazine.Models.Magazine", "Magazine")
-                        .WithMany()
+                        .WithMany("Contributions")
                         .HasForeignKey("MagazineId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -476,6 +500,22 @@ namespace UniMagazine.Migrations
                     b.Navigation("Academic");
 
                     b.Navigation("Faculty");
+                });
+
+            modelBuilder.Entity("UniMagazine.Models.MaterialContribution", b =>
+                {
+                    b.HasOne("UniMagazine.Models.Contribution", "Contribution")
+                        .WithMany()
+                        .HasForeignKey("ContributionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Contribution");
+                });
+
+            modelBuilder.Entity("UniMagazine.Models.Magazine", b =>
+                {
+                    b.Navigation("Contributions");
                 });
 #pragma warning restore 612, 618
         }

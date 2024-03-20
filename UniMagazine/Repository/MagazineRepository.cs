@@ -24,18 +24,18 @@ namespace UniMagazine.Repository
             _dbContext.Magazines.Remove(entity);
         }
 
-        /*public Magazine Get(int id)
-        {
-            return _dbContext.Magazines.FirstOrDefault(x => x.Id == id);
-        }*/
+        ///*public Magazine Get(int id)
+        //{
+        //    return _dbContext.Magazines.FirstOrDefault(x => x.Id == id);
+        //}*/
 
         public IEnumerable<Magazine>? GetAll(string? includeProperty = null)
         {
             return _dbContext.Magazines.Where(f => f.Status != "Not Assigned").Include(f => f.Faculty).Include(a => a.Academic).ToList();
-            
+
         }
 
-        public IEnumerable<Magazine> GetAllMagazines(int facultyId, int academicYearId, string status = "")
+    public IEnumerable<Magazine> GetAllMagazines(int facultyId, int academicYearId, string status = "")
         {
             var magazines = _dbContext.Magazines.Where(f => f.Status != "Not Assigned").Include(f => f.Faculty).Include(a => a.Academic).ToList();
 
