@@ -365,3 +365,5 @@ FodyWeavers.xsd
 /UniMagazine/appsettings.json
 /UniMagazine/appsettings.Development.json
 /UniMagazine/wwwroot/img/Magazine
+/UniMagazine/wwwroot/upload/Student
+/UniMagazine/wwwroot/img/Student
