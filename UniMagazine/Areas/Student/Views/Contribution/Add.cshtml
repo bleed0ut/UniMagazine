@@ -1,0 +1,30 @@
+﻿@model Contribution
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="container">
+        <h1>Add New Contribution</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    <form method="post" enctype="multipart/form-data">
+        <div class="d-flex">
+            <div class="mb-3 me-3 flex-grow-1">
+                <label class="form-label">Content</label>
+                <input type="text" class="form-control" asp-for="@Model.Content" />
+            </div>
+        </div>
+        <div class="d-flex">
+            <label class="form-label">MagazineId</label>
+            <input type="text"  class="form-control" asp-for="@Model.MagazineId" readonly />
+        </div>
+        <div class="d-flex">
+            <div class="mb-3">
+                <label>Image</label>
+                <input id="imgInp" type="file" name="files" class="form-control" multiple />
+            </div>
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-dark">Submit</button>
+        </div>
+    </form>
+</div> 
