@@ -5,6 +5,8 @@
         //IABCRepository
         public IAcademicYearRepository AcademicYearRepository { get; }
         public IUserRepository UserRepository { get; }
+        public IContributionRepository ContributionRepository { get; }
+        public IMaterialContributionRepository MaterialContributionRepository { get; }
         public IFacultyRepository FacultyRepository { get; }
         public IMagazineRepository MagazineRepository { get; }
 

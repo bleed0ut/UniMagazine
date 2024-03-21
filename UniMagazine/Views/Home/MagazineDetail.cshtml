@@ -1,0 +1,73 @@
+﻿@model MaConVM
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div >
+    <div >
+        <div>
+            <p><h1>@Model.Magazine.Title</h1></p>
+        </div>
+        @if(User.IsInRole("Student")){
+            <div class="d-flex flex-row-reverse">
+                <a asp-area="Student" asp-route-id="@Model.Magazine.Id" asp-controller="Contribution" asp-action="Add">
+                    <p class="btn btn-dark shadow btn-hover-change" style="background-color: var(--secondary-color)">
+                        <i class="fa-solid fa-plus"></i>
+                        Add New Contribution
+                    </p>
+                </a>
+            </div>
+        }
+        <div >
+            <img src="@Model.Magazine.ImageUrl" class="d-block w-100 h-100 opacity-75" style="max-height: 420px; object-fit: cover" alt="...">
+        </div>
+        <div>
+            <p>@Model.Magazine.Detail</p>
+            <label asp-for="@Model.Magazine.OpenedDate"> Opened Date</label>
+            <p>@Model.Magazine.OpenedDate</p>
+            <label asp-for="@Model.Magazine.ClosedDate"> DeadLine</label>
+            <p>@Model.Magazine.ClosedDate</p>
+        </div>
+    </div>
+        
+</div>
+<div>
+    <table id="tblData" class="table table-bordered table-striped text-center" style="width:100%">
+        <thead class="text-center flex-grow-1">
+            <tr>
+                <th>Id</th>
+                <th>Content</th>
+                <th>Submit Date</th>
+                <th>Updated Date</th>
+                <th>User</th>
+                <th>Sattus</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody class="text-center align-middle">
+            @foreach (var con in Model.Contributions)
+            {
+                <tr>
+                    <td>@con.Id</td>
+                    <td>@con.Content</td>
+                    <td>@con.CreatedDate</td>
+                    <td>@con.UpdatedDate</td>
+                    <td>@con.User.FullName</td>
+                    <td>@con.Status</td>
+                    @if (User.IsInRole("Student"))
+                    {
+                        <td>
+                            <a asp-area="Student"
+                               asp-controller="Contribution"
+                               asp-action="Detail"
+                               asp-route-id="@con.Id" class="btn btn-outline-dark">View all Material</a>
+
+                        </td>
+                    }
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
