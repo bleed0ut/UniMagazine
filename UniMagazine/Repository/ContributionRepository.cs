@@ -14,34 +14,9 @@ namespace UniMagazine.Repository
             _dbContext = dbContext;
         }
 
-        public void Add(Magazine entity)
+        public IEnumerable<Contribution> GetAllPublishedContribution(int magazineId)
         {
-            throw new NotImplementedException();
-        }
-
-        public Contribution Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Delete(Magazine entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Contribution Get(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Magazine Get(Expression<Func<Magazine, bool>> filter, string? includeProperty = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Contribution> GetAllContribution(int magazineId)
-        {
-            throw new NotImplementedException();
+            return _dbContext.Contributions.Where(m => m.MagazineId == magazineId).Where(s => s.Status == "Published").Include(u => u.User).ToList();
         }
 
         public void Update(Contribution contribution)

@@ -93,10 +93,6 @@ namespace UniMagazine.Areas.Manager.Controllers
 
                         magazineVm.Magazine.ImageUrl = @"\img\Magazine\" + fileName;
                     }
-                    else
-                    {
-                        magazineVm.Magazine.ImageUrl = @"\img\FallBackImg\fallbackMagazine.jpg";
-                    }
                     if (magazineVm.Magazine.PostedDate >= magazineVm.Magazine.ClosedDate)
                     {
                         magazineVm.Magazine.Status = "Closed";

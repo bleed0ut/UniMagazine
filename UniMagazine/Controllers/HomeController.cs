@@ -31,17 +31,17 @@ namespace UniMagazine.Controllers
             }
             _unitOfWork.Save();
 
-            var magazines = _unitOfWork.MagazineRepository.GetActiveMagazines(0, status);
+            maga = _unitOfWork.MagazineRepository.GetActiveMagazines(0, status);
             var userId = _userManager.GetUserId(this.User);
 
             if (userId != null) {
                 var user = _unitOfWork.UserRepository.GetUserById(userId);
-                magazines = _unitOfWork.MagazineRepository.GetActiveMagazines(user.FacultyId, status);
-                return View(magazines);
+                maga = _unitOfWork.MagazineRepository.GetActiveMagazines(user.FacultyId, status);
+                return View(maga);
             }
 
             
-            return View(magazines);
+            return View(maga);
         }
         public IActionResult Privacy()
         {
@@ -58,47 +58,20 @@ namespace UniMagazine.Controllers
             var userId = _userManager.GetUserId(this.User);
             var user = _unitOfWork.UserRepository.GetUserById(userId);
             var ma = _unitOfWork.MagazineRepository.Get(x => x.Id == id);
-            var con = _unitOfWork.ContributionRepository.GetAll();
-            var contri = new List<Contribution>();
-            var contri2 = new List<Contribution>();
-            foreach (var x in con)
-            {
-                if (x.MagazineId == id && x.Status == "Published")
-                {
-                    contri2.Add(x);
-                    contri.Add(x);
-                }
-                if (userId != null)
-                {
-                    if (x.UserId == user.Id)
-                    {
-                        contri.Add(x);
-                    }
-                }
+            
+            _unitOfWork.MagazineRepository.Update(ma);
+            _unitOfWork.Save();
+            ma = _unitOfWork.MagazineRepository.Get(x => x.Id == id);
 
-            }
-            foreach (var x in contri)
-            {
 
-                x.User = _unitOfWork.UserRepository.GetUserById(x.UserId);
-            }
+            var contributions = _unitOfWork.ContributionRepository.GetAllPublishedContribution(id);
             MaConVM magazineVM = new MaConVM()
             {
                 Magazine = ma,
-                Contributions = contri
+                Contributions = contributions
             };
-            if (userId == null)
-            {
-                MaConVM magazineVM2 = new MaConVM()
-                {
-                    Magazine = ma,
-                    Contributions = contri2
-                };
-                return View(magazineVM2);
-            }
 
             return View(magazineVM);
-
         }
 
     }
