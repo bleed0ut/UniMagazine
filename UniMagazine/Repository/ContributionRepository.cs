@@ -39,9 +39,9 @@ namespace UniMagazine.Repository
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Contribution> GetAllContribution()
+        public IEnumerable<Contribution> GetAllContribution(int magazineId)
         {
-            throw new NotImplementedException();
+            return _dbContext.Contributions.Where(m => m.MagazineId == magazineId).Where(s => s.Status == "Published").Include(u => u.User).ToList();
         }
 
         public void Update(Contribution contribution)
