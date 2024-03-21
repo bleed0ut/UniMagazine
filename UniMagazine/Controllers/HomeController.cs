@@ -22,7 +22,7 @@ namespace UniMagazine.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index(string status = "")
+        public IActionResult Index(string? status = "")
         {
             var magazines = _unitOfWork.MagazineRepository.GetActiveMagazines(0, status);
             var userId = _userManager.GetUserId(this.User);
