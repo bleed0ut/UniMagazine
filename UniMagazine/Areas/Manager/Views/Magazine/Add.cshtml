@@ -23,9 +23,9 @@
                 <span asp-validation-for="@Model.Magazine.Detail" class="text-danger"></span>
             </div>
             <button type="submit" class="w-100 btn btn-lg btn-secondary my-3">Add</button>
-            <form asp-area="Manager" asp-controller="Magazine" asp-action="Index">
-                <button type="submit" class="btn btn-outline-danger" style="width:100%">Cancel</button>
-            </form>
+            <div class="nav-item">
+                <a class="w-100 btn btn-lg btn-danger my-3" asp-area="Manager" asp-controller="Magazine" asp-action="Index">Cancel</a>
+            </div>
         </div>
 
         @* Bọc phải *@
