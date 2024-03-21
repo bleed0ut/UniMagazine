@@ -24,8 +24,8 @@
 <div id="main-control">
     <div class="main-control-left">
          <form asp-action="Index" class="d-flex">
-            <p><button type="submit" id="status" name="status" value="Opening" class="linksex main-control-text">Current Topic</button></p>
-            <p><button type="submit" id="status" name="status" value="Closed" class="linksex main-control-text">End Topic</button></p>
+            <p><button type="submit" id="status" name="status" value="Opening" class="main-control-text">Current Topic</button></p>
+            <p><button type="submit" id="status" name="status" value="Closed" class="main-control-text">End Topic</button></p>
         </form>
     </div>
     <div class="main-control-text-right">
@@ -35,11 +35,12 @@
     </div>
 </div>
 
+@* MAGAZINES *@
 <div class="row">
     @foreach(var mag in Model)
     {
         <div class="col-sm-10 col-md-6 col-lg-4 mb-3">
-            <a href="#" style="text-decoration: none; color: black">
+            <a style="text-decoration: none; color: black" asp-route-id="@mag.Id" asp-controller="Home" asp-action="MagazineDetail">
                 <div class="card shadow" style="max-width: 438px; min-height: 520px">
                     <img src="@mag.ImageUrl" class="card-img-top" style="max-height: 210px; object-fit: cover" alt="...">
                     <div class="card-body">
@@ -69,8 +70,6 @@
                     <div class="card-footer">
                         <p class="my-0 fw-light fst-italic"><span style="font-weight: 500">Open Date: </span>@mag.OpenedDate</p>
                         <p class="my-0 fw-light fst-italic"><span style="font-weight: 500">Closed Date: </span>@mag.ClosedDate</p>
-                            <a class="nav-link text-Dark btn-hover-change" asp-route-id="@mag.Id" asp-controller="Home" asp-action="MagazineDetail">Detail of Magazine</a>
-
                     </div>
                 </div>
             </a>

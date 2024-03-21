@@ -48,17 +48,25 @@ namespace UniMagazine.Repository
             _dbContext.SaveChanges();
 
         }
-        public AcademicYear Delete(int id) {
+        public AcademicYear Delete(int id)
+        {
             var deleteAcademic = _dbContext.AcademicYears.Find(id);
+            var Magazine = _dbContext.Magazines.Where(x => x.AcademicYearId == deleteAcademic.Id).ToList();
+
+            foreach (var magazine in Magazine)
+            {
+                var Contri1 = _dbContext.Contributions.Where(x => x.MagazineId == magazine.Id);
+                _dbContext.Contributions.RemoveRange(Contri1);
+            }
+            _dbContext.Magazines.RemoveRange(Magazine);
             if (deleteAcademic != null)
             {
+
                 _dbContext.AcademicYears.Remove(deleteAcademic);
                 _dbContext.SaveChanges();
                 return deleteAcademic;
             }
             return null;
         }
-
-
     }
 }

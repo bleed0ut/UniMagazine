@@ -1,20 +1,11 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="row justify-content-center">
-    <div class="col-5 mt-5">
-        @* Bọc chứa login *@
-        <div class="card login-logout-card" style="background-color: #7077A1; background: linear-gradient(to bottom, #0f2027, #424769, #7077A1);">
-            <div class="card-body">
-                <div class="row justify-content-center">
-                    <div class="row justify-content-center">
-                        <div class="col-10 mt-4 text-white">
-                            @RenderBody()
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<link rel="stylesheet" href="~/css/login.css" type="text/css" />
+<div class="login-form bg-white shadow mt-5">
+     <img class="w-50" src="~/img/Banner/loginImg.jpg" alt="Girl in a jacket">
+    <div class="login-main">
+        @RenderBody()
     </div>
 </div>
 @section Scripts {

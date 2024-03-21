@@ -44,16 +44,42 @@
         </div>
     </nav>
 
-    <div class="container">
-        <main role="main" class="pb-3">
+    <main class="container">
+        <div role="main" class="pb-3">
             @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - UniMagazine - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
+    </main>
+
+    <footer class="text-muted" style="background-color: var(--primary-color)">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-4">
+                <h4>ABOUT</h4>
+                <p style="text-align: justify;">
+                    Welcome to our student-centric platform dedicated to fostering creativity, expression, and collaboration.
+                    Here, students from diverse backgrounds converge to contribute their unique perspectives, stories, and
+                    talents to our vibrant magazine. Join us in shaping the narrative and celebrating the rich tapestry
+                    of student voices worldwide. Together, let's inspire, inform, and ignite change through the power of storytelling.
+                </p>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4">
+                <h4>CATEGORIES</h4>
+                <ul class="footer--list">
+                    <li class="">Current Topics</li>
+                    <li class="">Ended Topics</li>
+                </ul>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <h4>QUICK LINK</h4>
+                <ul class="footer--list">
+                    <li>About Us</li>
+                    <li>Contact Us</li>
+                    <li>Contribute</li>
+                    <li>Privacy Policy</li>
+                    <li>Sitemap</li>
+                </ul>
+            </div>
+        </div>
+
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

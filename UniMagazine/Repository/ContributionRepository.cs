@@ -41,7 +41,7 @@ namespace UniMagazine.Repository
 
         public IEnumerable<Contribution> GetAllContribution(int magazineId)
         {
-            return _dbContext.Contributions.Where(m => m.MagazineId == magazineId).Where(s => s.Status == "Published").Include(u => u.User).ToList();
+            throw new NotImplementedException();
         }
 
         public void Update(Contribution contribution)

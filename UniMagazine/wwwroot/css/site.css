@@ -5,13 +5,63 @@
 }
 
 html {
-  font-size: 14px;
+    height: 100%;
+    font-size: 14px;
+    box-sizing: border-box
 }
 
-@media (min-width: 768px) {
+body {
+    position: relative;
+    margin-bottom: 0 !important;
+    min-height: 100%;
+    box-sizing: inherit;
+    padding-bottom: 400px !important;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding: 20px;
+}
+
+@media(max-width: 1200px){
+    html {
+        height: 100%;
+        font-size: 14px;
+        box-sizing: border-box
+    }
+
+    body {
+        position: relative;
+        margin-bottom: 0 !important;
+        min-height: 100%;
+        box-sizing: inherit;
+        padding-bottom: 200px !important;
+    }
+
+    footer {
+        padding: 10px;
+        font-size: 12px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        text-align: center;
+        height: 200px
+    }
+}
+
+@media (max-width: 768px) {
   html {
     font-size: 16px;
   }
+ 
+  footer {
+        display: none;
+ }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
