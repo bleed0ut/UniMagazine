@@ -1,0 +1,22 @@
+﻿@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+<partial name="_Notification" />
+<header>
+    <div class="" role="group" aria-label="Tools">
+        <a asp-area="Coordinator" asp-controller="Contribution" asp-action="ContributionModeration" class="btn btn-secondary btn-lg btn-hover-change-jump" style="background-color: var(--primary-color)">
+            <span class="btn-label">
+                <i class="fa-solid fa-circle-user"></i>
+            </span>   View pending contributions
+        </a>
+    </div>
+    <hr />
+</header>
+<body>
+    <div class="container">
+        <main role="main" class="pb-5">
+            @RenderBody()
+        </main>
+    </div>
+    <script src="https://kit.fontawesome.com/c1f40875f2.js" crossorigin="anonymous"></script>
+</body>
