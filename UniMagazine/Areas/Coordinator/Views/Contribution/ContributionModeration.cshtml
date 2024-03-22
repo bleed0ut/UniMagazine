@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Contribution>
+@{
+    Layout = "/Areas/Coordinator/Views/_LayoutCoordinatorPage.cshtml";
+    ViewData["Title"] = "Admin page";
+}
+<div class="row">
+    @foreach (var con in Model)
+    {
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header" style="background-color:lightsteelblue">
+                    <h4>@con.Magazine.Title <span class="badge bg-secondary">@con.Status</span></h4>
+                </div>
+                <div class="card-body">
+                    
+                    <p class="card-title"><strong>@con.User.FullName</strong> (@con.User.Email)</p>
+                    <p><strong>Posted date: </strong><i>@con.CreatedDate</i></p>
+                    
+                    <p class="card-text">@con.Content</p>
+                    <a class="btn btn-dark" asp-area="Coordinator" asp-controller="Contribution" asp-action="Detail" asp-route-id="@con.Id">Detail</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
