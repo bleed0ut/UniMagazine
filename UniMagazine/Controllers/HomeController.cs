@@ -22,26 +22,38 @@ namespace UniMagazine.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index(string? status = "")
+        public IActionResult Index(string? status = "", string? search = "", int academicYearId = 0, int facultyId = 0)
         {
-            var maga = _unitOfWork.MagazineRepository.GetAll();
-            foreach (var mag in maga)
-            {
-                _unitOfWork.MagazineRepository.UpdateStatus(mag);
-            }
+           var maga = _unitOfWork.MagazineRepository.GetActiveMagazines(0, "Opening", 0, search);
+            
+            _unitOfWork.MagazineRepository.UpdateStatusMany(maga);
+
             _unitOfWork.Save();
 
-            maga = _unitOfWork.MagazineRepository.GetActiveMagazines(0, status);
+            maga = _unitOfWork.MagazineRepository.GetActiveMagazines(facultyId, status, academicYearId, search);
+            
             var userId = _userManager.GetUserId(this.User);
+            ViewBag.UserId = userId;
+
+            MagazineFilterVM magaFilterVM = new MagazineFilterVM()
+            {
+                Magazines = maga,
+                Status = status,
+                AcademicYearId = academicYearId,
+                FacultyId = facultyId,
+                Search = search,
+                AcademicYearsDisplay = _unitOfWork.AcademicYearRepository.GetAllAcademicYear(),
+                FacultiesDisplay = _unitOfWork.FacultyRepository.GetAllFaculty()
+            };
 
             if (userId != null) {
                 var user = _unitOfWork.UserRepository.GetUserById(userId);
-                maga = _unitOfWork.MagazineRepository.GetActiveMagazines(user.FacultyId, status);
-                return View(maga);
+                magaFilterVM.Magazines = _unitOfWork.MagazineRepository.GetActiveMagazines(user.FacultyId, status, academicYearId, search);
+                return View(magaFilterVM);
             }
 
             
-            return View(maga);
+            return View(magaFilterVM);
         }
         public IActionResult Privacy()
         {

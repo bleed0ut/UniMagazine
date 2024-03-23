@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Magazine>
+﻿@model MagazineFilterVM
 
 @{
     ViewData["Title"] = "Home Page";
@@ -26,6 +26,46 @@
          <form asp-action="Index" class="d-flex" method="get">
             <p><button type="submit" id="status" name="status" value="Opening" class="main-control-text">Current Topic</button></p>
             <p><button type="submit" id="status" name="status" value="Closed" class="main-control-text">End Topic</button></p>
+
+            @if (Model.Status == "Closed")
+            {
+                <div class="" style="margin-right: 10px">
+                    <label class="visually-hidden" for="acaYearId"></label>
+                    <select class="form-select" id="academicYearId" name="academicYearId">
+                        <option selected disabled>Academic Years</option>
+                        @foreach (var acaYear in Model.AcademicYearsDisplay)
+                        {
+                            <option selected="@(acaYear.Id == Model.AcademicYearId)" value="@acaYear.Id">@acaYear.YearDate.ToString("yyyy")</option>
+                        }
+                    </select>
+                </div>
+            }
+            @if (string.IsNullOrEmpty(ViewBag.UserId))
+            {
+                <div class="" style="margin-right: 10px">
+                    <label class="visually-hidden" for="facultyId"></label>
+                    <select class="form-select" id="facultyId" name="facultyId">
+                        <option selected disabled>Faculties</option>
+                        @foreach (var faculty in Model.FacultiesDisplay)
+                        {
+                            <option selected="@(faculty.Id == Model.FacultyId)" value="@faculty.Id">@faculty.Name</option>
+                        }
+                    </select>
+                </div>
+            }
+
+            <div class="" style="margin-right: 10px">
+                <label class="visually-hidden" for="search"></label>
+                <div class="input-group">
+                    <div class="input-group-text"></div>
+                    <input type="text" class="form-control" value="@Model.Search" id="search" name="search" placeholder="Search by title">
+                    <input type="text" value = "@Model.Status" id="status" name="status" hidden/>
+                </div>
+            </div>
+            <div class="" style="margin-right: 10px">
+                <button type="submit" class="btn btn-light" id ="status" value="@Model.Status">Search</button>
+                <a href="/Home/Index" class="btn btn-danger">Clear</a>
+            </div>
         </form>
     </div>
     <div class="main-control-text-right">
@@ -37,7 +77,7 @@
 
 @* MAGAZINES *@
 <div class="row">
-    @foreach(var mag in Model)
+    @foreach(var mag in Model.Magazines)
     {
         <div class="col-sm-10 col-md-6 col-lg-4 mb-3">
             <a style="text-decoration: none; color: black" asp-route-id="@mag.Id" asp-controller="Home" asp-action="MagazineDetail">
