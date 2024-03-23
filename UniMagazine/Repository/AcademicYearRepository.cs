@@ -5,30 +5,21 @@ using UniMagazine.Repository.IRepository;
 
 namespace UniMagazine.Repository
 {
-    public class AcademicYearRepository: IAcademicYearRepository
+    public class AcademicYearRepository: Repository<AcademicYear>, IAcademicYearRepository
     {
         private readonly AppDbContext _dbContext;
         
 
-        public AcademicYearRepository(AppDbContext dbContext)
+        public AcademicYearRepository(AppDbContext dbContext) : base(dbContext) 
         {
             _dbContext = dbContext;
         }
-        public AcademicYear Add(AcademicYear academicYear)
+
+
+        public IEnumerable<AcademicYear> GetClosedAcademicYear()
         {
-            _dbContext.AcademicYears.Add(academicYear);
-            _dbContext.SaveChanges();
-            return academicYear;
+            return _dbContext.AcademicYears.Where(x => x.Status == "Closed").ToList();
         }
-
-
-        
-
-        public AcademicYear Get(int id)
-        {
-            return _dbContext.AcademicYears.FirstOrDefault(x => x.Id == id);
-        }
-
         public IEnumerable<AcademicYear> GetAllAcademicYear()
         {
             return _dbContext.AcademicYears.ToList();
@@ -45,12 +36,9 @@ namespace UniMagazine.Repository
                 existingAcademic.Status = academicYear.Status;
             }
             _dbContext.AcademicYears.Update(existingAcademic);
-            _dbContext.SaveChanges();
-
         }
-        public AcademicYear Delete(int id)
+        public void Delete(AcademicYear deleteAcademic)
         {
-            var deleteAcademic = _dbContext.AcademicYears.Find(id);
             var Magazine = _dbContext.Magazines.Where(x => x.AcademicYearId == deleteAcademic.Id).ToList();
 
             foreach (var magazine in Magazine)
@@ -60,13 +48,7 @@ namespace UniMagazine.Repository
             }
             _dbContext.Magazines.RemoveRange(Magazine);
             if (deleteAcademic != null)
-            {
-
                 _dbContext.AcademicYears.Remove(deleteAcademic);
-                _dbContext.SaveChanges();
-                return deleteAcademic;
-            }
-            return null;
         }
     }
 }

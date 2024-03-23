@@ -2,12 +2,11 @@
 
 namespace UniMagazine.Repository.IRepository
 {
-    public interface IAcademicYearRepository
+    public interface IAcademicYearRepository : IRepository<AcademicYear>
     {
-        AcademicYear Add(AcademicYear faculty);
-        void Update(AcademicYear faculty);
-        AcademicYear Delete(int id);
-        AcademicYear Get(int id);
+        public void Update(AcademicYear academicYear);
         public IEnumerable<AcademicYear> GetAllAcademicYear();
+
+        public IEnumerable<AcademicYear> GetClosedAcademicYear();
     }
 }
