@@ -22,5 +22,7 @@ namespace UniMagazine.Models
         [ValidateNever]
         [ForeignKey("MagazineId")]
         public virtual Magazine? Magazine { get; set; }
+
+        public virtual ICollection<FeedbackComment> FeedBacks { get; set; }
     }
 }
