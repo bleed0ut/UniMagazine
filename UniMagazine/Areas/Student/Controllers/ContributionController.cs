@@ -58,7 +58,7 @@ namespace UniMagazine.Areas.Student.Controllers
 
                 foreach (var file in files)
                 {
-                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string fileName = Guid.NewGuid().ToString()+ "_" + file.FileName;
                     string filePath = Path.Combine(wwwRootPath, @"upload\Student");
                     if (!Directory.Exists(filePath))
                     {
