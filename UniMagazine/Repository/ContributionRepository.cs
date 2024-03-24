@@ -24,14 +24,28 @@ namespace UniMagazine.Repository
 
         public IEnumerable<Contribution> GetAllPublishedContribution(int magazineId)
         {
-            return _dbContext.Contributions.Where(m => m.MagazineId == magazineId).Where(s => s.Status == "Published").Include(u => u.User).ToList();
+            var contributions = _dbContext.Contributions.Where(m => m.MagazineId == magazineId)
+                                                        .Where(s => s.Status == "Published")
+                                                        .Include(u => u.User)
+                                                        .Include(m => m.Files)
+                                                        .ToList();
+
+
+            return contributions;
         }
+
 
         public void Update(Contribution contribution)
         {
             _dbContext.Contributions.Update(contribution);
         }
-
+        
+        public Contribution Get(int id)
+        {
+            return _dbContext.Contributions.Include(u => u.User)
+                                           .Include(m => m.Files)
+                                           .FirstOrDefault(x => x.Id == id);
+        }
 
 
     }

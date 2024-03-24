@@ -90,7 +90,7 @@ namespace UniMagazine.Areas.Student.Controllers
                         con2.Add(c);
                     }
                 }
-                var x = new MaConVM()
+                var x = new MagazineDetailVM()
                 {
                     Magazine = _unitOfWork.MagazineRepository.Get(x => x.Id == con.MagazineId),
                     Contributions = con2
@@ -104,24 +104,8 @@ namespace UniMagazine.Areas.Student.Controllers
 
         public async Task<IActionResult> Detail(int id)
         {
-            var con = _unitOfWork.ContributionRepository.Get(x => x.Id == id);
-            var Material = _unitOfWork.MaterialContributionRepository.GetAll();
-            var MaterialCon = new List<MaterialContribution>();
-            foreach (var c in Material)
-            {
-                if (c.ContributionId == id)
-                {
-                    MaterialCon.Add(c);
-                }
-            }
-
-            ConMaVM conMaVM = new ConMaVM()
-            {
-                Contribution = con,
-                MaterialContribution = MaterialCon
-            };
-            
-            return View(conMaVM);
+            var contribution = _unitOfWork.ContributionRepository.Get(id);
+            return View(contribution);
         }
 
 

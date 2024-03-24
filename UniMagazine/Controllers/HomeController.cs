@@ -77,7 +77,7 @@ namespace UniMagazine.Controllers
 
 
             var contributions = _unitOfWork.ContributionRepository.GetAllPublishedContribution(id);
-            MaConVM magazineVM = new MaConVM()
+            MagazineDetailVM magazineVM = new MagazineDetailVM()
             {
                 Magazine = ma,
                 Contributions = contributions
