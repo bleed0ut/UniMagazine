@@ -2,7 +2,7 @@
 {
     public class FeedBackVM
     {
-        public int ContributionId { get; set; }
+        public int Id { get; set; }
         public string Status { get; set; }
         public Contribution Contribution { get; set; }
         public string Comment { get; set; }
