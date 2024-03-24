@@ -27,6 +27,7 @@ namespace UniMagazine.Repository
             var contributions = _dbContext.Contributions.Where(m => m.MagazineId == magazineId)
                                                         .Where(s => s.Status == "Published")
                                                         .Include(u => u.User)
+                                                        .ThenInclude(f => f.Faculty)
                                                         .Include(m => m.Files)
                                                         .OrderByDescending(c => c.CreatedDate)
                                                         .ToList();

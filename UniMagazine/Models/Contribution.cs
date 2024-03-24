@@ -8,6 +8,7 @@ namespace UniMagazine.Models
     {
         [Key]
         public int Id { get; set; }
+        [Required(ErrorMessage = "Content cannot be empty!")]
         public string Content { get; set; }
         [ValidateNever]
         public string Status { get; set; }
