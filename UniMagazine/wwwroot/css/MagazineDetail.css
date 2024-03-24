@@ -1,0 +1,161 @@
+﻿.magazine-detail-box{
+    margin-bottom: 50px;
+}
+
+.magazine-detail {
+    flex-grow: 2;
+    max-width: 70%;
+}
+
+.magazine-detail-post{
+    text-align: center;
+    color: white;
+    background-color: var(--secondary-color)
+}
+
+.magazine-detail-img {
+    display: block;
+    width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+/*    border-left: 2px solid var(--secondary-color);
+    border-right: 2px solid var(--secondary-color);*/
+    background-color: white;
+}
+
+/*DETAIL BODY*/
+.magazine-detail-body{
+    margin-top: 40px;
+}
+
+.magazine-detail-body-heading {
+    margin-bottom: 20px
+}
+
+.magazine-detail-subdes{
+    margin-bottom: 20px
+}
+
+.magazine-detail-body-des {
+    text-align: justify
+}
+
+.magazine-detail-status-open {
+    width: 100%;
+    text-align: center;
+    background-color: var(--success-color);
+    color: white;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.magazine-detail-status-close {
+    width: 100%;
+    text-align: center;
+    background-color: var(--failed-color);
+    color: white;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+/*SUBMIT SECTION*/
+.magazine-detail-submit {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 448px;
+    justify-content: space-between;
+
+
+}
+
+/*TIME AND SUBMIT*/
+.magazine-detail-timebox {
+    text-align: center;
+    border: 2px solid var(--failed-color);
+    padding: 10px;
+    margin: 0 0;
+    background-color: white;
+    font-weight: 700;
+    color: var(--failed-color);
+}
+
+.magazine-detail-upload {
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    padding: 25px 27px;
+    border-radius: 5px;
+    background-color: white;
+    transition: background-color ease-out 0.5s;
+}
+
+.magazine-detail-upload:hover {
+    background-color: var(--primary-color);
+    color: white;
+    border: 2px solid var(--primary-color);
+}
+
+/*CONTRIBUTION*/
+.contribution-file {
+    margin-left: 54px;
+    margin-top: 10px;
+}
+.button-contribution {
+    border: none;
+    border-bottom: 2px solid var(--third-color);
+}
+
+.contribution-file-list {
+    padding: 20px 20px 0 20px;
+    background-color: white;
+    border-bottom: 2px solid var(--third-color);
+    border-left: 2px solid var(--third-color);
+}
+
+/*Breadcrumb*/
+
+/*FORM INPUT*/
+.input-contribution{
+    border: unset;
+    border-bottom: 2px solid var(--primary-color);
+    background-color: unset;
+    width: 100%;
+    outline: none;
+}
+
+.submit-contribution-btn {
+    border: 2px solid var(--success-color);
+    background-color: var(--success-color);
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    font-weight: 400;
+}
+
+.submit-contribution-btn:hover {
+    border: 2px solid var(--success-color);
+    background-color: white;
+    color: var(--primary-color);
+    text-decoration: none;
+    padding: 10px 20px;
+    font-weight: 400;
+}
+
+.cancel-contribution-btn {
+    border: 2px solid var(--failed-color);
+    background-color: var(--failed-color);
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    font-weight: 400;
+}
+
+.cancel-contribution-btn:hover {
+    border: 2px solid var(--failed-color);
+    background-color: white;
+    color: var(--primary-color);
+    text-decoration: none;
+    padding: 10px 20px;
+    font-weight: 400;
+}

@@ -2,56 +2,62 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-<div class="card border-dark mb-3">
 
-    <h1 class="card-header" style="background-color:lightgray"> @ViewData["MagazineTitle"]</h1>
+<link rel="stylesheet" href="~/css/MagazineDetail.css" type="text/css" />
 
-    <span class="small text-muted mb-0 float-end btn">Posted in @ViewData["PostedDate"] by Manager</span>
+<nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Home" style="text-decoration: none; color: var(--primary-color)">Home</a></li>
+        <li class="breadcrumb-item"><a asp-area="" asp-route-id="@Model.MagazineId" asp-controller="Home" asp-action="MagazineDetail" style="text-decoration: none; color: var(--primary-color)">Magazine Detail</a></li>
+        <li class="breadcrumb-item active" style="color: var(--four-color); font-weight: 700" aria-current="page">Magazine Detail</li>
+    </ol>
+</nav>
 
-    <div class="card-body">
-        <h5 class="card-title">@ViewData["MagazineDescription"]</h5>
-
-        <div>
-            <img src="@ViewData["ImgUrl"]" class="d-block w-100 h-100" style="max-height: 420px; object-fit: cover" alt="...">
+<div class="magazine-detail-box d-flex">
+    <div class="magazine-detail">
+        <div class="magazine-detail-post">
+            Posted by Manager
         </div>
-</div>
 
+        <img class="magazine-detail-img" src="@ViewData["ImgUrl"]" alt="...">
 
-
-<div class="container py-5">
-        <div class="bg-secondary bg-opacity-10 py-2">
-            <div class="container">
-                <h1>Request a contribution</h1>
-            </div>
+        <div class="magazine-detail-post">
+            @ViewData["PostedDate"]
         </div>
-    <form method="post" enctype="multipart/form-data">
-            <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
-                <input type="number" asp-for="MagazineId" value="@Model.MagazineId" hidden/>
-                <div class="d-flex flex-start w-100">
-                    
-                    <div class="form-outline w-100">
-                        <label class="form-label" id="inputtext">Contribution</label>
-                        <input type="text" for="inputtext" class="form-control" style="background: #fff" asp-for="@Model.Content" />
-                        <p><span class="form-outline d-flex flex-start w-100 text-danger" asp-validation-for="Content"></span></p>
-                    </div>
-                </div>
-                <div class="d-flex flex-start w-100">
-                    <div class="form-outline w-100">
-                        <label>File upload</label>
+
+        <div class="magazine-detail-body">
+            <h3 class="magazine-detail-body-heading">@ViewData["MagazineTitle"] </h3>
+            <p class="magazine-detail-subdes text-muted">Upload by Manager at @ViewData["PostedDate"]</p>
+            <p class="magazine-detail-body-des">@ViewData["MagazineDescription"]</p>
+        </div>
+    </div>
+
+    <div class="magazine-detail-submit">
+        <div class="magazine-detail-status-open">submission</div>
+            <form method="post" enctype="multipart/form-data">
+                    <input type="number" asp-for="MagazineId" value="@Model.MagazineId" hidden />
+                        
+            <p id="inputtext" style="font-weight: 600">Contribution</p>
+            <input class="input-contribution" type="text" for="inputtext" asp-for="@Model.Content" autofocus placeholder="Enter title" />
+                        <p><span class="w-100 text-danger" asp-validation-for="Content"></span></p>
                         <input id="imgInp" type="file" name="files" class="form-control" multiple />
+
+                    <div class="d-flex flex-column align-content-center mt-3">
+                        <div class="text-center">
+                            <input type="checkbox" id="terms" class="p-5" name="terms" required style="width:15px; height:15px; cursor: pointer">
+                            <span for="terms">I accept to the <a href="#">Terms & Conditions</a></span>
+                        </div>
+
+                        <div class="d-flex mt-3 justify-content-around align-items-center">
+                            <button class="submit-contribution-btn" type="submit">Submit</button>
+                            <a asp-area="" asp-route-id="@Model.MagazineId" asp-controller="Home" asp-action="MagazineDetail" style="text-decoration: none">
+                                <p type="button" class="cancel-contribution-btn m-0">
+                                    Cancel
+                                </p>
+                            </a>
+                        </div>
                     </div>
-                </div>
-                <div class="container mt-2 pt-1">
-                    <input type="checkbox" id="terms" name="terms" required>
-                    <label for="terms">I accept to the <a href="#">Terms & Conditions</a></label>
-                    <br>
-                    <button type="submit" class="btn btn-dark">Submit</button>
-                    <a asp-area="" asp-route-id="@Model.MagazineId" asp-controller="Home" asp-action="MagazineDetail">
-                        <button type="button" class="btn btn-danger shadow btn-hover-change" style="background-color: var(--secondary-color)">
-                            Cancel
-                        </button>
-                    </a>
-                </div>
-            </div>
-    </form>
+            </form>
+        <div class="magazine-detail-status-open">submission</div>
+    </div>
 </div>
