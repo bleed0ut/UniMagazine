@@ -2,15 +2,34 @@
 
 @{
     ViewData["Title"] = "Home Page";
+    int i = 0;
+    DateTime closedDate = (DateTime) Model.Magazine.ClosedDate;
+    TimeSpan ts = closedDate - DateTime.Now;
+    string timeleft = string.Format("{0} Days, {1} Hours, {2} Minutes, {3} left !", ts.Days, ts.Hours, ts.Minutes, ts.Seconds);
 }
 
-<div >
-    <div >
+<div class="card border-dark mb-3">
+    
+    <h1 class="card-header" style="background-color:lightgray">@Model.Magazine.Title 
+        @if (Model.Magazine.Status == "Opening")
+        {
+            <span class="btn btn-dark float-end">@timeleft Left!</span>
+            <span class="btn btn-success">@Model.Magazine.Status</span>
+        }
+        else{ <span class="btn btn-danger">@Model.Magazine.Status</span>}
+    </h1>
+
+    <span class="small text-muted mb-0 float-end btn">Posted in @Model.Magazine.PostedDate by Manager</span>
+    
+    <div class="card-body">
+        <h5 class="card-title">@Model.Magazine.Detail</h5>
+        
         <div>
-            <p><h1>@Model.Magazine.Title</h1></p>
+            <img src="@Model.Magazine.ImageUrl" class="d-block w-100 h-100" style="max-height: 420px; object-fit: cover" alt="...">
         </div>
-        @if(User.IsInRole("Student")){
-            <div class="d-flex flex-row-reverse">
+        @if (User.IsInRole("Student"))
+        {
+            <div class="d-flex flex-row-reverse ">
                 <a asp-area="Student" asp-route-id="@Model.Magazine.Id" asp-controller="Contribution" asp-action="Add">
                     <p class="btn btn-dark shadow btn-hover-change" style="background-color: var(--secondary-color)">
                         <i class="fa-solid fa-plus"></i>
@@ -19,55 +38,44 @@
                 </a>
             </div>
         }
-        <div >
-            <img src="@Model.Magazine.ImageUrl" class="d-block w-100 h-100 opacity-75" style="max-height: 420px; object-fit: cover" alt="...">
-        </div>
-        <div>
-            <p>@Model.Magazine.Detail</p>
-            <label asp-for="@Model.Magazine.OpenedDate"> Opened Date</label>
-            <p>@Model.Magazine.OpenedDate</p>
-            <label asp-for="@Model.Magazine.ClosedDate"> DeadLine</label>
-            <p>@Model.Magazine.ClosedDate</p>
+    </div>
+</div>
+
+@* Contribution section *@
+<div class="row d-flex justify-content-center ">
+    <div class="col-md-15 col-lg-15">
+        <div class="card shadow-0 border-dark" style="background-color: lightsteelblue;">
+             @foreach (var con in Model.Contributions)
+            {
+                 <div class="card-body p-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div class="d-flex flex-row align-items-center">
+                                    <img src="https://erowall.com/wallpapers/large/11847.jpg" alt="avatar" width="45"
+                                         height="45" />
+                                    <p class="small mb-0 ms-2">@con.User.FullName - (@con.User.Role)</p>
+                                </div>
+                                <div class="d-flex flex-row align-items-center">
+                                    <p class="small text-muted mb-0">@con.CreatedDate</p
+                                    <p class="small text-muted mb-0"></p>
+                                </div>
+                            </div>
+                            <p>@con.Content</p>
+                             @if (User.IsInRole("Student") || User.IsInRole("Coordinator"))
+                            {
+                                <div class="card-body" style="background-color:gainsboro"> 
+                                    @foreach(var file in con.Files)
+                                    {
+                                        i++;
+                                        <p><strong>File @i: </strong> @file.ImageUrl</p>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     </div>
-        
-</div>
-<div>
-    <table id="tblData" class="table table-bordered table-striped text-center" style="width:100%">
-        <thead class="text-center flex-grow-1">
-            <tr>
-                <th>Id</th>
-                <th>Content</th>
-                <th>Submit Date</th>
-                <th>Updated Date</th>
-                <th>User</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody class="text-center align-middle">
-            @foreach (var con in Model.Contributions)
-            {
-                <tr>
-                    <td>@con.Id</td>
-                    <td>@con.Content</td>
-                    <td>@con.CreatedDate</td>
-                    <td>@con.UpdatedDate</td>
-                    <td>@con.User.FullName</td>
-                    <td>@con.Status</td>
-                    @if (User.IsInRole("Student"))
-                    {
-                        <td>
-                            <a asp-area="Student"
-                               asp-controller="Contribution"
-                               asp-action="Detail"
-                               asp-route-id="@con.Id" class="btn btn-outline-dark">View all Material</a>
-
-                        </td>
-                    }
-
-                </tr>
-            }
-        </tbody>
-    </table>
 </div>

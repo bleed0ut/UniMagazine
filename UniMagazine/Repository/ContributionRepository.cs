@@ -28,6 +28,7 @@ namespace UniMagazine.Repository
                                                         .Where(s => s.Status == "Published")
                                                         .Include(u => u.User)
                                                         .Include(m => m.Files)
+                                                        .OrderByDescending(c => c.CreatedDate)
                                                         .ToList();
 
 
