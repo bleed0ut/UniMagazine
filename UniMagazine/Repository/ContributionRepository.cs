@@ -32,7 +32,10 @@ namespace UniMagazine.Repository
             _dbContext.Contributions.Update(contribution);
         }
 
-
+        public Contribution Get(int id)
+        {
+            return _dbContext.Contributions.Include(u => u.User).Include(m => m.Magazine).FirstOrDefault(x => x.Id == id);
+        }
 
     }
 }

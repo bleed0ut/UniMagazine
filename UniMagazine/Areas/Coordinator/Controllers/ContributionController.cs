@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using UniMagazine.Models;
 using UniMagazine.Models.ViewModels;
 using UniMagazine.Repository.IRepository;
+using UniMagazine.Utility;
 
 namespace UniMagazine.Areas.Coordinator.Controllers
 {
@@ -13,11 +14,13 @@ namespace UniMagazine.Areas.Coordinator.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private UserManager<ApplicationUser> _userManager;
+        private readonly IEmailSender _emailSender;
 
-        public ContributionController(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager)
+        public ContributionController(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager, IEmailSender emailSender)
         {
             _unitOfWork = unitOfWork;
             _userManager = userManager;
+            _emailSender = emailSender;
         }
 
         public IActionResult ContributionModeration()
@@ -54,7 +57,7 @@ namespace UniMagazine.Areas.Coordinator.Controllers
         [HttpPost]
         public IActionResult Detail(FeedBackVM feedbackVM)
         {
-            var con = _unitOfWork.ContributionRepository.Get(x=> x.Id == feedbackVM.Id);
+            var con = _unitOfWork.ContributionRepository.Get(feedbackVM.Id);
             if (con == null)
             {
                 return NotFound();
@@ -72,9 +75,14 @@ namespace UniMagazine.Areas.Coordinator.Controllers
 
             _unitOfWork.FeedBackCommentRepository.Add(feedback);
             _unitOfWork.Save();
+            _emailSender.SendFeedBackEmail(con,feedback);
+            
 
             return RedirectToAction("ContributionModeration");
         }
+
+
+
     }
 }
 
