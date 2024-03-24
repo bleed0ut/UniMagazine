@@ -22,7 +22,7 @@ namespace UniMagazine.Repository
             return contributions;
         }
 
-        public IEnumerable<Contribution> GetAllPublishedContribution(int magazineId)
+        public IEnumerable<Contribution> GetAllPublishedContribution(int magazineId, string? search = "", string? userId = "")
         {
             var contributions = _dbContext.Contributions.Where(m => m.MagazineId == magazineId)
                                                         .Where(s => s.Status == "Published")
@@ -32,6 +32,10 @@ namespace UniMagazine.Repository
                                                         .OrderByDescending(c => c.CreatedDate)
                                                         .ToList();
 
+            if(!string.IsNullOrEmpty(search))
+                contributions = contributions.Where(e => e.User.Email.ToLower().Contains(search.ToLower())).ToList();
+            if(!string.IsNullOrEmpty(userId))
+                contributions = contributions.Where(e => e.User.Id == userId).ToList();
 
             return contributions;
         }
