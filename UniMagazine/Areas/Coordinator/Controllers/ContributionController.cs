@@ -23,29 +23,31 @@ namespace UniMagazine.Areas.Coordinator.Controllers
             _emailSender = emailSender;
         }
 
-        public IActionResult ContributionModeration()
+        public IActionResult ContributionModeration(string? searchT ="", string? searchC ="")
         {
             var userId = _userManager.GetUserId(this.User);
             var user = _unitOfWork.UserRepository.GetUserById(userId);
 
-            var pendingContributions = _unitOfWork.ContributionRepository.GetAllPendingContribution(user.FacultyId);
+            PendingContributionVM pcVM = new PendingContributionVM()
+            { 
+                Contributions = _unitOfWork.ContributionRepository.GetAllPendingContribution(user.FacultyId, searchT, searchC),
+                SearchByTitle = searchT,
+                SearchByContributorEmail = searchC
+        };
 
-            return View(pendingContributions);
+            return View(pcVM);
         }
 
         [HttpGet]
         public IActionResult Detail(int id)
         {
-
             if (id == null || id == 0)
-            {
                 return NotFound();
-            }
+            
             var con = _unitOfWork.ContributionRepository.Get(x=> x.Id == id);
             if (con == null)
-            {
                 return NotFound();
-            }
+            
             var feedbackVM = new FeedBackVM()
             {
                 Id = id,
@@ -75,9 +77,10 @@ namespace UniMagazine.Areas.Coordinator.Controllers
 
             _unitOfWork.FeedBackCommentRepository.Add(feedback);
             _unitOfWork.Save();
+
+            TempData["succes"] = "Give feedback successfully!. An email notification will be sent to this student";
             _emailSender.SendFeedBackEmail(con,feedback);
             
-
             return RedirectToAction("ContributionModeration");
         }
 
