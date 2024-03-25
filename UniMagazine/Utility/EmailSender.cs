@@ -42,15 +42,7 @@ namespace UniMagazine.Utility
 
             mm.Body = content;
 
-            SmtpClient smtp = new SmtpClient()
-            {
-                Host = "smtp.gmail.com",
-                Port = 587,
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(sender, pwd),
-            };
+            SmtpClient smtp = GetSmtpClient();
 
             smtp.Send(mm);
         }
@@ -63,7 +55,7 @@ namespace UniMagazine.Utility
 
             mm.To.Add(con.User.Email);
 
-            mm.Subject = "Feed Back Contribution";
+            mm.Subject = "Feedback of your submisstion";
             mm.IsBodyHtml = true;
 
             string content = $"<h1>About your Contributionn</h1>";
@@ -79,7 +71,14 @@ namespace UniMagazine.Utility
 
             mm.Body = content;
 
-            SmtpClient smtp = new SmtpClient()
+            SmtpClient smtp = GetSmtpClient() ;
+
+            smtp.Send(mm);
+        }
+
+        private SmtpClient GetSmtpClient()
+        {
+            return new SmtpClient()
             {
                 Host = "smtp.gmail.com",
                 Port = 587,
@@ -88,8 +87,6 @@ namespace UniMagazine.Utility
                 UseDefaultCredentials = false,
                 Credentials = new NetworkCredential(sender, pwd),
             };
-
-            smtp.Send(mm);
         }
     }
 }

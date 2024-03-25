@@ -39,12 +39,12 @@ namespace UniMagazine.Areas.Coordinator.Controllers
         }
 
         [HttpGet]
-        public IActionResult Detail(int id)
+        public IActionResult GiveFeedback(int id)
         {
             if (id == null || id == 0)
                 return NotFound();
             
-            var con = _unitOfWork.ContributionRepository.Get(x=> x.Id == id);
+            var con = _unitOfWork.ContributionRepository.Get(id);
             if (con == null)
                 return NotFound();
             
@@ -57,13 +57,12 @@ namespace UniMagazine.Areas.Coordinator.Controllers
         }
 
         [HttpPost]
-        public IActionResult Detail(FeedBackVM feedbackVM)
+        public IActionResult GiveFeedback(FeedBackVM feedbackVM)
         {
             var con = _unitOfWork.ContributionRepository.Get(feedbackVM.Id);
             if (con == null)
-            {
                 return NotFound();
-            }
+            
             con.Status = feedbackVM.Status;
             _unitOfWork.Save();
 
@@ -83,9 +82,6 @@ namespace UniMagazine.Areas.Coordinator.Controllers
             
             return RedirectToAction("ContributionModeration");
         }
-
-
-
     }
 }
 

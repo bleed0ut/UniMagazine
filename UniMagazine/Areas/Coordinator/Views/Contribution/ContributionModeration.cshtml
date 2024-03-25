@@ -9,7 +9,7 @@
         @* LEFT *@
         <div class="main-control-left">
             <button type="button" value="" class="main-control-text
-                <a href="/Coordinator/Contribution/ContributionModeration"> All pending contritution</a>
+                <a href="/Coordinator/Contribution/ContributionModeration"> All pending submisstion</a>
             </button>
            
         </div>
@@ -46,7 +46,7 @@
                     <p><strong>Posted date: </strong><i>@con.CreatedDate</i></p>
                     
                     <p class="card-text">@con.Content</p>
-                    <a class="btn btn-dark" asp-area="Coordinator" asp-controller="Contribution" asp-action="Detail" asp-route-id="@con.Id">Detail</a>
+                    <a class="btn btn-dark" asp-area="Coordinator" asp-controller="Contribution" asp-action="GiveFeedback" asp-route-id="@con.Id">Detail</a>
                 </div>
             </div>
         </div>
