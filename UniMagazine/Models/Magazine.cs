@@ -32,6 +32,6 @@ namespace UniMagazine.Models
         [ForeignKey("AcademicYearId")]
         public virtual AcademicYear? Academic { get; set; }
 
-        public virtual IEnumerable<Contribution> Contributions { get; set;}
+        public virtual ICollection<Contribution> Contributions { get; set;}
     }
 }

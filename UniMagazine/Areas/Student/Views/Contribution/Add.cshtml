@@ -1,57 +1,30 @@
 ﻿@model Contribution
-@{
-    ViewData["Title"] = "Home Page";
-}
-<div class="card border-dark mb-3">
-
-    <h1 class="card-header" style="background-color:lightgray"> @ViewData["MagazineTitle"]</h1>
-
-    <span class="small text-muted mb-0 float-end btn">Posted in @ViewData["PostedDate"] by Manager</span>
-
-    <div class="card-body">
-        <h5 class="card-title">@ViewData["MagazineDescription"]</h5>
-
-        <div>
-            <img src="@ViewData["ImgUrl"]" class="d-block w-100 h-100" style="max-height: 420px; object-fit: cover" alt="...">
-        </div>
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="container">
+        <h1>Add New Contribution</h1>
+    </div>
 </div>
-
-
 
 <div class="container py-5">
-        <div class="bg-secondary bg-opacity-10 py-2">
-            <div class="container">
-                <h1>Request a contribution</h1>
+    <form method="post" enctype="multipart/form-data">
+        <div class="d-flex">
+            <div class="mb-3 me-3 flex-grow-1">
+                <label class="form-label">Content</label>
+                <input type="text" class="form-control" asp-for="@Model.Content" />
             </div>
         </div>
-    <form method="post" enctype="multipart/form-data">
-            <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
-                <input type="number" asp-for="MagazineId" value="@Model.MagazineId" hidden/>
-                <div class="d-flex flex-start w-100">
-                    
-                    <div class="form-outline w-100">
-                        <label class="form-label" id="inputtext">Contribution</label>
-                        <input type="text" for="inputtext" class="form-control" style="background: #fff" asp-for="@Model.Content" />
-                        <p><span class="form-outline d-flex flex-start w-100 text-danger" asp-validation-for="Content"></span></p>
-                    </div>
-                </div>
-                <div class="d-flex flex-start w-100">
-                    <div class="form-outline w-100">
-                        <label>File upload</label>
-                        <input id="imgInp" type="file" name="files" class="form-control" multiple />
-                    </div>
-                </div>
-                <div class="container mt-2 pt-1">
-                    <input type="checkbox" id="terms" name="terms" required>
-                    <label for="terms">I accept to the <a href="#">Terms & Conditions</a></label>
-                    <br>
-                    <button type="submit" class="btn btn-dark">Submit</button>
-                    <a asp-area="" asp-route-id="@Model.MagazineId" asp-controller="Home" asp-action="MagazineDetail">
-                        <button type="button" class="btn btn-danger shadow btn-hover-change" style="background-color: var(--secondary-color)">
-                            Cancel
-                        </button>
-                    </a>
-                </div>
+        <div class="d-flex">
+            <label class="form-label">MagazineId</label>
+            <input type="text"  class="form-control" asp-for="@Model.MagazineId" readonly />
+        </div>
+        <div class="d-flex">
+            <div class="mb-3">
+                <label>Image</label>
+                <input id="imgInp" type="file" name="files" class="form-control" multiple />
             </div>
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-dark">Submit</button>
+        </div>
     </form>
-</div>
+</div> 
