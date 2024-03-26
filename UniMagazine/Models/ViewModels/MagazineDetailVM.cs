@@ -1,8 +1,10 @@
 ﻿namespace UniMagazine.Models.ViewModels
 {
-    public class MaConVM
+    public class MagazineDetailVM
     {
         public Magazine Magazine { get; set; }
         public IEnumerable<Contribution> Contributions { get; set; }
+
+        public string Search {  get; set; }
     }
 }

@@ -65,7 +65,7 @@ namespace UniMagazine.Repository
                 magazines = magazines.Where(a => a.AcademicYearId == academicYearId).ToList();
 
             if (!string.IsNullOrEmpty(search))
-                magazines = magazines.Where(s => s.Title.ToLower().Contains(search)).ToList();
+                magazines = magazines.Where(s => s.Title.ToLower().Contains(search.ToLower())).ToList();
 
             if (facultyId > 0)
                 magazines = magazines.Where(f => f.FacultyId == facultyId).ToList();
@@ -77,6 +77,7 @@ namespace UniMagazine.Repository
         {
             return _dbContext.Magazines.Where(f => f.Status == "Not Assigned").Include(f => f.Faculty).ToList();
         }
+
         public void Update(Magazine magazine)
         {
             _dbContext.Magazines.Update(magazine);
