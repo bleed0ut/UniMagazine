@@ -73,6 +73,7 @@ namespace UniMagazine.Areas.Student.Controllers
                     _unitOfWork.Save(); // Save Contribution entity to generate Id
 
                     foreach (var file in files)
+
                     {
                         string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                         string filePath = Path.Combine(wwwRootPath, @"upload\Student");

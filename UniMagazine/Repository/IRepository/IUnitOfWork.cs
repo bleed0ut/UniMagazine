@@ -9,6 +9,7 @@
         public IMaterialContributionRepository MaterialContributionRepository { get; }
         public IFacultyRepository FacultyRepository { get; }
         public IMagazineRepository MagazineRepository { get; }
+        public IFeedBackCommentRepository FeedBackCommentRepository { get; }
 
         public void Save();
 

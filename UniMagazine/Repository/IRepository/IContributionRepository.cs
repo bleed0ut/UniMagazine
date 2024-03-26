@@ -9,5 +9,6 @@ namespace UniMagazine.Repository.IRepository
 
         Contribution Get(int id);
 
+
     }
 }

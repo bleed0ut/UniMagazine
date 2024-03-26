@@ -23,7 +23,8 @@ namespace UniMagazine.Models
         [ValidateNever]
         [ForeignKey("MagazineId")]
         public virtual Magazine? Magazine { get; set; }
-
+      
         public virtual IEnumerable<MaterialContribution> Files { get; set; }
+
     }
 }
