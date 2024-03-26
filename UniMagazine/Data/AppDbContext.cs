@@ -14,8 +14,9 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Faculty> Faculties { get; set; }
     public DbSet<AcademicYear> AcademicYears { get; set; }
     public DbSet<Magazine> Magazines { get; set; }
-
     public DbSet<Contribution> Contributions { get; set; }
+    public DbSet<MaterialContribution> MaterialContributions { get; set; }
+    public DbSet<FeedbackComment> FeedbackComments { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

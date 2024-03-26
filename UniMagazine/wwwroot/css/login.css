@@ -1,0 +1,63 @@
+﻿.login-form{
+    display: flex;
+}
+
+.login-form img{
+    width: 100%;
+    object-fit: cover;
+}
+
+.login-main {
+    padding: 150px;
+    width: 50%;
+}
+
+@media(max-width: 1200px) {
+    .login-form img {
+        display: none;
+    }
+    .login-main{
+        width: 100%;
+        padding: 20px;
+    }
+}
+
+.login-head {
+    color: #607d8b;
+    font-weight: 600;
+    font-size: 1.5em;
+    text-transform: uppercase;
+    border-bottom: 4px solid #607d8b;
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+#account input[type="email"],
+#account input[type="password"] {
+    width: 100%;
+    padding: 10px 20px;
+    outline: none;
+    font-weight: 400;
+    border: 1px solid #607d8b;
+    font-size: 16px;
+    Letter-spacing: 1px;
+    color: #607d8b;
+    background: transparent;
+    border-radius: 30px;
+}
+
+#login-submit {
+    background-color: var(--primary-color);
+    outline: none;
+    font-weight: 400;
+    cursor: pointer;
+    border-radius: 30px;
+}
+
+#account label {
+    margin-left: 10px;
+    margin-bottom: 3px;
+    color: #607d8b;
+}
+
+/*RESPONSIVE LOGIN FORM*/

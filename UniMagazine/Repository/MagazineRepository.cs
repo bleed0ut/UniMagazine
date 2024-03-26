@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using System.Reflection;
 using UniMagazine.Data;
 using UniMagazine.Models;
 using UniMagazine.Models.ViewModels;
@@ -24,18 +25,18 @@ namespace UniMagazine.Repository
             _dbContext.Magazines.Remove(entity);
         }
 
-        /*public Magazine Get(int id)
-        {
-            return _dbContext.Magazines.FirstOrDefault(x => x.Id == id);
-        }*/
+        ///*public Magazine Get(int id)
+        //{
+        //    return _dbContext.Magazines.FirstOrDefault(x => x.Id == id);
+        //}*/
 
         public IEnumerable<Magazine>? GetAll(string? includeProperty = null)
         {
-            return _dbContext.Magazines.Include(f => f.Faculty).Include(a => a.Academic).ToList();
-            
+            return _dbContext.Magazines.Where(f => f.Status != "Not Assigned").Include(f => f.Faculty).Include(a => a.Academic).ToList();
+
         }
 
-        public IEnumerable<Magazine> GetAllMagazines(int facultyId, int academicYearId, string status = "")
+    public IEnumerable<Magazine> GetAllMagazines(int facultyId, int academicYearId, string status = "")
         {
             var magazines = _dbContext.Magazines.Where(f => f.Status != "Not Assigned").Include(f => f.Faculty).Include(a => a.Academic).ToList();
 
@@ -49,15 +50,22 @@ namespace UniMagazine.Repository
             return magazines;
         }
 
-        public IEnumerable<Magazine>? GetActiveMagazines(int facultyId = 0, string? status = "")
+        public IEnumerable<Magazine>? GetActiveMagazines(int facultyId = 0, string? status = "", int? academicYearId = 0, string? search = "")
         {
             var magazines = _dbContext.Magazines.OrderByDescending(o => o.OpenedDate)
                                         .Include(f => f.Faculty)
                                         .ToList();
+
             if (string.IsNullOrEmpty(status) || status == "Opening")
                 magazines = _dbContext.Magazines.Where(s => s.Status == "Opening").ToList();
             else
                 magazines = _dbContext.Magazines.Where(s => s.Status == "Closed").ToList();
+
+            if (academicYearId > 0)
+                magazines = magazines.Where(a => a.AcademicYearId == academicYearId).ToList();
+
+            if (!string.IsNullOrEmpty(search))
+                magazines = magazines.Where(s => s.Title.ToLower().Contains(search)).ToList();
 
             if (facultyId > 0)
                 magazines = magazines.Where(f => f.FacultyId == facultyId).ToList();
@@ -91,6 +99,27 @@ namespace UniMagazine.Repository
             }
 
             Update(magazine);
+        }
+
+        public void UpdateStatusMany(IEnumerable<Magazine> magazines)
+        {
+            foreach (var magazine in magazines)
+            {
+                DateTime today = DateTime.Now;
+                if (magazine.OpenedDate == null)
+                    magazine.Status = "Not Assigned";
+                if (today >= magazine.ClosedDate)
+                    magazine.Status = "Closed";
+                else
+                {
+                    if (today > magazine.OpenedDate)
+                        magazine.Status = "Opening";
+                    else if (today < magazine.OpenedDate)
+                        magazine.Status = "Not Started";
+                }
+
+                Update(magazine);
+            }
         }
     }
 }

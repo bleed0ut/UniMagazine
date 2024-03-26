@@ -1,0 +1,92 @@
+﻿@model IEnumerable<Magazine>
+
+<div class="d-flex text-center shadow mb-2 mt-3 card-header bg-secondary bg-gradient ml-0 py-3 text-white">
+    <div class="container">
+        <h1>Magazines</h1>
+    </div>
+</div>
+
+<div class="container">
+    <table class="table table-striped text-center align-middle">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th class="text-center">Status</th>
+                <th>Posted Date</th>
+                <th class="text-center">Deadline</th>
+                <th>Faculty</th>
+                <th>Image</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var magazine in Model)
+            {
+                <tr>
+                    <td>@magazine.Id</td>
+                    <td>@magazine.Title</td>
+                    @if (magazine.Status == "Not Started")
+                    {
+                        <td>
+                            <span class="badge rounded-pill bg-secondary">@magazine.Status</span>
+                        </td>
+                    }
+                    else if (magazine.Status == "Opening")
+                    {
+                        <td>
+                            <span class="badge rounded-pill bg-success">@magazine.Status</span>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            <span class="badge rounded-pill bg-danger">@magazine.Status</span>
+                        </td>
+                    }
+
+                    <td>@magazine.PostedDate.ToString("dd/MM/yyyy")</td>
+                    @if (magazine.OpenedDate != null)
+                    {
+                        <td class="text-start">
+                            <p><span class="badge bg-success me-2">Opened date:</span>@magazine.OpenedDate</p>
+                            <p><span class="badge bg-danger me-4" style="margin-right: 1px">Close date:</span>@magazine.ClosedDate</p>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>This magazine has not had a deadline date yet!</td>
+                    }
+                    <td>
+                        @magazine.Faculty.Name
+                    </td>
+                    <td style="height: 100px; width: 150px">
+                        <img height="100" width="100" src="@magazine.ImageUrl" class="card-img-top object-fit-cover rounded" />
+                    </td>
+                    @if (magazine.Status == "Not Started")
+                    {
+                        <td>
+                            Not started can't edit
+                        </td>
+                    }
+                    @if (magazine.Status == "Closed")
+                    {
+                        <td>
+                            Closed can't edit
+                        </td>
+                    }
+                    @if (magazine.Status == "Opening")
+                    {
+                        <td>
+                            <a asp-area="Student"
+                               asp-controller="Contribution"
+                               asp-action="Add"
+                               asp-route-id="@magazine.Id" class="btn btn-dark">Add contribution</a>
+                        </td>
+                    }
+                    
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

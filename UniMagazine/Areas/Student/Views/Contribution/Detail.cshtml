@@ -1,0 +1,42 @@
+﻿@model ConMaVM
+
+<div class="">
+    <figure class="text-center">
+        <blockquote class="blockquote">
+            <p>@Model.Contribution.Content</p>
+        </blockquote>
+        <figcaption class="blockquote-footer">
+            Better Contribute some shit son :))))
+        </figcaption>
+    </figure>
+</div>
+<div class="card-body p-0">
+    <table id="tblData" class="table table-bordered table-striped text-center" style="width:100%">
+        <thead class="text-center flex-grow-1">
+            <tr>
+                <th>Id</th>
+                <th>Created Date</th>
+                <th>Image</th>
+                <th>Contribution ID</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody class="text-center align-middle">
+            @foreach (var material in Model.MaterialContribution)
+            {
+                <tr>
+                    <td>@material.Id</td>
+                    <td>@material.CreatedDate</td>
+                    <td>@material.ImageUrl" </td>
+                    <td>@material.ContributionId</td>
+                    <td>
+                        @* <a asp-area="Admin"
+                           asp-action="Update"
+                           asp-route-id="@academic.Id" class="btn btn-outline-dark">Detail</a>
+ *@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

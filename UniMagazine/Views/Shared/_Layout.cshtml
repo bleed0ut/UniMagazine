@@ -10,7 +10,9 @@
     <link rel="stylesheet" href="~/UniMagazine.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <partial name="_Notification" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nanum+Myeongjo&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark mb-3 h6" style="background-color: var(--primary-color); height: 80px">
@@ -34,6 +36,12 @@
                             <a class="nav-link text-white" asp-area="Manager" asp-controller="Magazine" asp-action="Index">Marketing Management Page</a>
                      </li>
                     }
+                    @if (User.IsInRole("Coordinator"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="Coordinator" asp-controller="Contribution" asp-action="ContributionModeration">Marketing Management Page</a>
+                        </li>
+                    }
                 </ul>
             </div>
             <div class="d-flex">
@@ -44,16 +52,44 @@
         </div>
     </nav>
 
-    <div class="container">
-        <main role="main" class="pb-3">
+    <main class="container">
+        <div role="main" class="pb-3 position-relative">
             @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - UniMagazine - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
+@*         <div>
+            <partial name="_Notification" />
+        </div> *@
+    </main>
+
+    <footer class="text-muted" style="background-color: var(--primary-color)">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-4">
+                <h4>ABOUT</h4>
+                <p style="text-align: justify;">
+                    Welcome to our student-centric platform dedicated to fostering creativity, expression, and collaboration.
+                    Here, students from diverse backgrounds converge to contribute their unique perspectives, stories, and
+                    talents to our vibrant magazine.
+                </p>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4">
+                <h4>CATEGORIES</h4>
+                <ul class="footer--list">
+                    <li class="">Current Topics</li>
+                    <li class="">Ended Topics</li>
+                </ul>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <h4>QUICK LINK</h4>
+                <ul class="footer--list">
+                    <li>About Us</li>
+                    <li>Contact Us</li>
+                    <li>Contribute</li>
+                    <li>Privacy Policy</li>
+                    <li>Sitemap</li>
+                </ul>
+            </div>
+        </div>
+
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

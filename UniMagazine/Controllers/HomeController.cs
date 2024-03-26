@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Net.NetworkInformation;
 using UniMagazine.Models;
 using UniMagazine.Models.ViewModels;
+using UniMagazine.Repository;
 using UniMagazine.Repository.IRepository;
 
 namespace UniMagazine.Controllers
@@ -20,26 +22,38 @@ namespace UniMagazine.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index(string status = "")
+        public IActionResult Index(string? status = "", string? search = "", int academicYearId = 0, int facultyId = 0)
         {
-            var maga = _unitOfWork.MagazineRepository.GetAll();
-            foreach (var mag in maga)
-            {
-                _unitOfWork.MagazineRepository.UpdateStatus(mag);
-            }
+           var maga = _unitOfWork.MagazineRepository.GetActiveMagazines(0, "Opening", 0, search);
+            
+            _unitOfWork.MagazineRepository.UpdateStatusMany(maga);
+
             _unitOfWork.Save();
 
-            var magazines = _unitOfWork.MagazineRepository.GetActiveMagazines(0, status);
+            maga = _unitOfWork.MagazineRepository.GetActiveMagazines(facultyId, status, academicYearId, search);
+            
             var userId = _userManager.GetUserId(this.User);
+            ViewBag.UserId = userId;
+
+            MagazineFilterVM magaFilterVM = new MagazineFilterVM()
+            {
+                Magazines = maga,
+                Status = status,
+                AcademicYearId = academicYearId,
+                FacultyId = facultyId,
+                Search = search,
+                AcademicYearsDisplay = _unitOfWork.AcademicYearRepository.GetAllAcademicYear(),
+                FacultiesDisplay = _unitOfWork.FacultyRepository.GetAllFaculty()
+            };
 
             if (userId != null) {
                 var user = _unitOfWork.UserRepository.GetUserById(userId);
-                magazines = _unitOfWork.MagazineRepository.GetActiveMagazines(user.FacultyId, status);
-                return View(magazines);
+                magaFilterVM.Magazines = _unitOfWork.MagazineRepository.GetActiveMagazines(user.FacultyId, status, academicYearId, search);
+                return View(magaFilterVM);
             }
 
             
-            return View(magazines);
+            return View(magaFilterVM);
         }
         public IActionResult Privacy()
         {
@@ -51,5 +65,26 @@ namespace UniMagazine.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        public IActionResult MagazineDetail(int id)
+        {
+            var userId = _userManager.GetUserId(this.User);
+            var user = _unitOfWork.UserRepository.GetUserById(userId);
+            var ma = _unitOfWork.MagazineRepository.Get(x => x.Id == id);
+            
+            _unitOfWork.MagazineRepository.Update(ma);
+            _unitOfWork.Save();
+            ma = _unitOfWork.MagazineRepository.Get(x => x.Id == id);
+
+
+            var contributions = _unitOfWork.ContributionRepository.GetAllPublishedContribution(id);
+            MaConVM magazineVM = new MaConVM()
+            {
+                Magazine = ma,
+                Contributions = contributions
+            };
+
+            return View(magazineVM);
+        }
+
     }
 }

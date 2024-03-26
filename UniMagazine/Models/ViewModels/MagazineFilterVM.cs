@@ -18,5 +18,7 @@ namespace UniMagazine.Models.ViewModels
         public int AcademicYearId = 0;
 
         public string Status = "";
+
+        public string Search = "";
     }
 }
