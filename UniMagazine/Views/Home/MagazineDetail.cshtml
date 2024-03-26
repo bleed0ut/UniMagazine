@@ -1,6 +1,4 @@
-﻿@using Microsoft.AspNetCore.Identity
-@model MagazineDetailVM
-@inject UserManager<ApplicationUser> userManager
+﻿@model MaConVM
 
 @{
     ViewData["Title"] = "Home Page";
@@ -83,10 +81,9 @@
         {
             <div class="magazine-detail-status-close">@Model.Magazine.Status</div>
         }
-
     </div>
+        
 </div>
-
 @* Filter contribution section *@
 <div class="main-control">
     <form asp-action="MagazineDetail" asp-route-id="@Model.Magazine.Id" class="d-flex w-100 justify-content-between" method="get">
@@ -116,7 +113,6 @@
     </div>
     </form>
 </div>
-
 
 @* Contribution section *@
 <div class="w-100" style="border-top: 2px solid var(--primary-color)">

@@ -8,7 +8,6 @@ namespace UniMagazine.Models
     {
         [Key]
         public int Id { get; set; }
-        [Required(ErrorMessage = "Content cannot be empty!")]
         public string Content { get; set; }
         [ValidateNever]
         public string Status { get; set; }
@@ -24,6 +23,6 @@ namespace UniMagazine.Models
         [ForeignKey("MagazineId")]
         public virtual Magazine? Magazine { get; set; }
 
-        public virtual IEnumerable<MaterialContribution> Files { get; set; }
+        public virtual ICollection<FeedbackComment> FeedBacks { get; set; }
     }
 }

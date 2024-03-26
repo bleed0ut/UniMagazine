@@ -1,9 +1,9 @@
-﻿@model Contribution
+﻿@model ConMaVM
 
 <div class="">
     <figure class="text-center">
         <blockquote class="blockquote">
-            <p>@Model.Content</p>
+            <p>@Model.Contribution.Content</p>
         </blockquote>
         <figcaption class="blockquote-footer">
             Better Contribute some shit son :))))
@@ -22,7 +22,7 @@
             </tr>
         </thead>
         <tbody class="text-center align-middle">
-            @foreach (var material in Model.Files)
+            @foreach (var material in Model.MaterialContribution)
             {
                 <tr>
                     <td>@material.Id</td>
