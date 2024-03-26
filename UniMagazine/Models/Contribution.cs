@@ -23,6 +23,9 @@ namespace UniMagazine.Models
         [ForeignKey("MagazineId")]
         public virtual Magazine? Magazine { get; set; }
 
-        public virtual ICollection<FeedbackComment> FeedBacks { get; set; }
+        public virtual IEnumerable<MaterialContribution> Files { get; set; }
+
+        public virtual IEnumberable<FeedbackComment> FeedBacks { get; set; }
+
     }
 }
