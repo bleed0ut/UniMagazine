@@ -65,22 +65,21 @@ namespace UniMagazine.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        public IActionResult MagazineDetail(int id)
+        public IActionResult MagazineDetail(int id, string? search = "", string? userId = "")
         {
-            var userId = _userManager.GetUserId(this.User);
-            var user = _unitOfWork.UserRepository.GetUserById(userId);
             var ma = _unitOfWork.MagazineRepository.Get(x => x.Id == id);
-            
+
             _unitOfWork.MagazineRepository.Update(ma);
             _unitOfWork.Save();
             ma = _unitOfWork.MagazineRepository.Get(x => x.Id == id);
 
 
-            var contributions = _unitOfWork.ContributionRepository.GetAllPublishedContribution(id);
-            MaConVM magazineVM = new MaConVM()
+            var contributions = _unitOfWork.ContributionRepository.GetAllPublishedContribution(id, search, userId);
+            MagazineDetailVM magazineVM = new MagazineDetailVM()
             {
                 Magazine = ma,
-                Contributions = contributions
+                Contributions = contributions,
+                Search = search
             };
 
             return View(magazineVM);

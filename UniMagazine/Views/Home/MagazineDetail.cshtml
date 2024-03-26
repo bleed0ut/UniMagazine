@@ -1,8 +1,10 @@
-﻿@model MaConVM
+﻿﻿@using Microsoft.AspNetCore.Identity
+@model MagazineDetailVM
+@inject UserManager<ApplicationUser> userManager
 
 @{
     ViewData["Title"] = "Home Page";
-    DateTime closedDate = (DateTime) Model.Magazine.ClosedDate;
+    DateTime closedDate = (DateTime)Model.Magazine.ClosedDate;
     TimeSpan ts = closedDate - DateTime.Now;
     string timeleft = string.Format("{0} Days, {1} Hours, {2} Minutes", ts.Days, ts.Hours, ts.Minutes);
 }
@@ -36,9 +38,10 @@
             <p class="magazine-detail-body-des">@Model.Magazine.Detail</p>
         </div>
     </div>
-    
+
     <div class="magazine-detail-submit">
-        @if(Model.Magazine.Status == "Opening"){
+        @if (Model.Magazine.Status == "Opening")
+        {
             <div class="magazine-detail-status-open">@Model.Magazine.Status</div>
             <div class="magazine-detail-timebox">
                 <div class="magazine-detail-clock">
@@ -63,98 +66,101 @@
         }
 
         <div>
-        @if (User.IsInRole("Student"))
-        {
-            <a asp-area="Student" asp-route-id="@Model.Magazine.Id" asp-controller="Contribution" asp-action="Add" style="text-decoration: none;">
-                <div class="magazine-detail-upload">
-                    <i class="fa-solid fa-upload"></i>
-                    Add New Contribution
-                </div>
-             </a>
-        }
+            @if (User.IsInRole("Student"))
+            {
+                <a asp-area="Student" asp-route-id="@Model.Magazine.Id" asp-controller="Contribution" asp-action="Add" style="text-decoration: none;">
+                    <div class="magazine-detail-upload">
+                        <i class="fa-solid fa-upload"></i>
+                        Add New Contribution
+                    </div>
+                </a>
+            }
         </div>
 
-        @if(Model.Magazine.Status == "Opening"){
+        @if (Model.Magazine.Status == "Opening")
+        {
             <div class="magazine-detail-status-open">@Model.Magazine.Status</div>
         }
         else
         {
             <div class="magazine-detail-status-close">@Model.Magazine.Status</div>
         }
+
     </div>
-        
 </div>
+
 @* Filter contribution section *@
 <div class="main-control">
     <form asp-action="MagazineDetail" asp-route-id="@Model.Magazine.Id" class="d-flex w-100 justify-content-between" method="get">
-    @* LEFT *@
-    <div class="main-control-left">
+        @* LEFT *@
+        <div class="main-control-left">
             <button type="submit" id="userId" name="userId" value="" class="main-control-text">All contritution</button>
-            @if(User.IsInRole("Student"))
-            { 
+            @if (User.IsInRole("Student"))
+            {
                 <button type="submit" id="userId" name="userId" value="@userManager.GetUserId(this.User)" class="main-control-text">My contribution</button>
             }
-    </div>
-    
-    @* RIGHT *@
-    <div class="main-control-right">
-        <div class="main-control-search">
-            <label class="visually-hidden" for="search"></label>
-            <div class="main-control-search--input">
-                <input type="text" value="@Model.Search" id="search" name="search" placeholder="Search by contributor's email">
-                <button type="submit" class="search-icon">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
+        </div>
+
+        @* RIGHT *@
+        <div class="main-control-right">
+            <div class="main-control-search">
+                <label class="visually-hidden" for="search"></label>
+                <div class="main-control-search--input">
+                    <input type="text" value="@Model.Search" id="search" name="search" placeholder="Search by contributor's email">
+                    <button type="submit" class="search-icon">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="search-cancel" style="margin-right: 10px">
+                <a href="/Home/MagazineDetail/@Model.Magazine.Id">Clear</a>
             </div>
         </div>
-        <div class="search-cancel" style="margin-right: 10px">
-            <a href="/Home/MagazineDetail/@Model.Magazine.Id">Clear</a>
-        </div>
-    </div>
     </form>
 </div>
 
+
 @* Contribution section *@
 <div class="w-100" style="border-top: 2px solid var(--primary-color)">
-             @foreach (var con in Model.Contributions)
-            {
-                int i = 0;
-                <div class="w-100 p-3">
-                <div class="d-flex flex-row align-items-center justify-content-between">
-                    <div class="d-flex flex-row align-items-center">
-                        <img src="https://cdn.donmai.us/sample/b4/b5/__hoshimachi_suisei_and_hoshimachi_suisei_hololive_drawn_by_profnote__sample-b4b54b16dc2b92dfdfc489b25af97513.jpg"
+    @foreach (var con in Model.Contributions)
+    {
+        int i = 0;
+        <div class="w-100 p-3">
+            <div class="d-flex flex-row align-items-center justify-content-between">
+                <div class="d-flex flex-row align-items-center">
+                    <img src="https://cdn.donmai.us/sample/b4/b5/__hoshimachi_suisei_and_hoshimachi_suisei_hololive_drawn_by_profnote__sample-b4b54b16dc2b92dfdfc489b25af97513.jpg"
                          class="rounded-circle object-fit-scale" alt="avatar" width="45" height="45" />
-                        <div>
-                            <p class="small mb-0 ms-2">[@con.User.Faculty.Name] @con.User.FullName - (@con.User.Role)</p>
-                            <span class="small text-muted mx-0 ms-2">@con.User.Email</span>
-                        </div>
-                    </div>
                     <div>
-                        <p class="small text-muted mb-0">@con.CreatedDate</p>
+                        <p class="small mb-0 ms-2">[@con.User.Faculty.Name] @con.User.FullName - (@con.User.Role)</p>
+                        <span class="small text-muted mx-0 ms-2">@con.User.Email</span>
                     </div>
                 </div>
+                <div>
+                    <p class="small text-muted mb-0">@con.CreatedDate</p>
+                </div>
+            </div>
 
-                <div class="contribution-file">
-                    <button class="button-contribution" type="button" data-bs-toggle="collapse"
+            <div class="contribution-file">
+                <button class="button-contribution" type="button" data-bs-toggle="collapse"
                         data-bs-target="#contri-id-@con.Id" aria-expanded="false" aria-controls="contri-id-@con.Id">
                     @con.Content <i class="fa-solid fa-chevron-down"></i>
-                    </button>
+                </button>
 
-                    @* FILE URL SECTION*@
+                @* FILE URL SECTION*@
                 <div class="collapse contribution-file-list" id="contri-id-@con.Id">
-                        @if (User.IsInRole("Student") || User.IsInRole("Coordinator"))
+                    @if (User.IsInRole("Student") || User.IsInRole("Coordinator"))
+                    {
+                        <div>
+                            @foreach (var file in con.Files)
                             {
-                                <div>
-                                    @foreach (var file in con.Files)
-                                    {
-                                        i++;
-                                        <p><strong>----File @i</strong> &colon; @file.ImageUrl</p>
-                                    }
-                                </div>
-                            }  
-                    </div>
+                                i++;
+                                <p><strong>----File @i</strong> &colon; @file.ImageUrl</p>
+                            }
+                        </div>
+                    }
+                </div>
 
-                </div>
-                </div>
-            }
+            </div>
+        </div>
+    }
 </div>
