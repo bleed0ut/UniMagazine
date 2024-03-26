@@ -14,10 +14,21 @@ namespace UniMagazine.Repository
             _dbContext = dbContext;
         }
 
-        public IEnumerable<Contribution> GetAllPendingContribution(int facultyId)
+        public IEnumerable<Contribution> GetAllPendingContribution(int facultyId, string? searchByTitle = "", string? searchByContibutorEmail = "")
         {
-            var contributions = _dbContext.Contributions.Where(s => s.Status == "Pending").Include(m => m.Magazine).Include(u => u.User).ToList();
-            contributions = contributions.Where(c => c.Magazine.FacultyId  == facultyId).OrderByDescending(c => c.CreatedDate).ToList();
+            var contributions = _dbContext.Contributions.Where(s => s.Status == "Pending")
+                                                        .Include(m => m.Magazine)
+                                                        .Include(u => u.User)
+                                                        .ToList();
+            contributions = contributions.Where(c => c.Magazine.FacultyId  == facultyId)
+                                         .OrderByDescending(c => c.CreatedDate)
+                                         .ToList();
+
+            if(!string.IsNullOrEmpty(searchByTitle))
+                contributions = contributions.Where(s => s.Magazine.Title.ToLower().Contains(searchByTitle.ToLower())).ToList();
+
+            if (!string.IsNullOrEmpty(searchByContibutorEmail))
+                contributions = contributions.Where(s => s.User.Email.ToLower().Contains(searchByContibutorEmail.ToLower())).ToList();
 
             return contributions;
         }
@@ -45,14 +56,13 @@ namespace UniMagazine.Repository
         {
             _dbContext.Contributions.Update(contribution);
         }
-        
+
         public Contribution Get(int id)
         {
             return _dbContext.Contributions.Include(u => u.User)
                                            .Include(m => m.Files)
                                            .FirstOrDefault(x => x.Id == id);
         }
-
 
     }
 }

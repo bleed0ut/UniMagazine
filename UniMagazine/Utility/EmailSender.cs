@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Net.Mail;
 using UniMagazine.Models;
 using UniMagazine.Repository;
+using UniMagazine.Repository.IRepository;
 
 namespace UniMagazine.Utility
 {
@@ -10,6 +13,12 @@ namespace UniMagazine.Utility
     {
         private string sender = "chubedan6424@gmail.com";
         private string pwd = "wwhvsauojsiwthdn";
+        private UserManager<ApplicationUser> _userManager;
+
+        public EmailSender( UserManager<ApplicationUser> userManager)
+        {
+            _userManager = userManager;
+        }
 
 
         public void SendRegistrationEmail(ApplicationUser user, string userPwd)
@@ -33,7 +42,43 @@ namespace UniMagazine.Utility
 
             mm.Body = content;
 
-            SmtpClient smtp = new SmtpClient()
+            SmtpClient smtp = GetSmtpClient();
+
+            smtp.Send(mm);
+        }
+
+        public void SendFeedBackEmail(Contribution con,FeedbackComment feedback)
+        {
+            MailMessage mm = new MailMessage();
+            mm.From = new MailAddress(sender);
+
+
+            mm.To.Add(con.User.Email);
+
+            mm.Subject = "Feedback of your submisstion";
+            mm.IsBodyHtml = true;
+
+            string content = $"<h1>About your Contributionn</h1>";
+            if (feedback.Status == "Published")
+                content += $"<p>Your contribution ha been published! Please check</p>";
+            else
+                content += $"<p>Your contribution ha been rejected! Please check</p>";
+
+            content += $"<p><strong>Topic Magazine: {con.Magazine.Title}</strong></p>";
+            content += $"<p>{con.Content}</p>";
+            content += $"<p>Coordinator has give u a feedback:<i>>{feedback.Comment}</i></p>";
+           
+
+            mm.Body = content;
+
+            SmtpClient smtp = GetSmtpClient() ;
+
+            smtp.Send(mm);
+        }
+
+        private SmtpClient GetSmtpClient()
+        {
+            return new SmtpClient()
             {
                 Host = "smtp.gmail.com",
                 Port = 587,
@@ -42,8 +87,6 @@ namespace UniMagazine.Utility
                 UseDefaultCredentials = false,
                 Credentials = new NetworkCredential(sender, pwd),
             };
-
-            smtp.Send(mm);
         }
     }
 }

@@ -25,5 +25,6 @@ namespace UniMagazine.Models
         public virtual Magazine? Magazine { get; set; }
 
         public virtual IEnumerable<MaterialContribution> Files { get; set; }
+        public virtual ICollection<FeedbackComment> FeedBacks { get; set; }
     }
 }

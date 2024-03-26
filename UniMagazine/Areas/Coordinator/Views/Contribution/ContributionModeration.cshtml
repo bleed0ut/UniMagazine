@@ -1,10 +1,39 @@
-﻿@model IEnumerable<Contribution>
+﻿@model PendingContributionVM
 @{
     Layout = "/Areas/Coordinator/Views/_LayoutCoordinatorPage.cshtml";
     ViewData["Title"] = "Admin page";
 }
+
+<div class="main-control">
+    <form asp-area="Coordinator" asp-controller="Contribution" asp-action="ContributionModeration" class="d-flex w-100 justify-content-between" method="get">
+        @* LEFT *@
+        <div class="main-control-left">
+            <button type="button" value="" class="main-control-text
+                <a href="/Coordinator/Contribution/ContributionModeration"> All pending submisstion</a>
+            </button>
+           
+        </div>
+
+        @* RIGHT *@
+        <div class="main-control-right">
+            <div class="main-control-search">
+                <label class="visually-hidden" for="search"></label>
+                <div class="main-control-search--input">
+                    <input type="text" value="@Model.SearchByTitle" id="searchT" name="searchT" placeholder="Search by magazine's title">
+                    <input type="text" value="@Model.SearchByContributorEmail" id="searchC" name="searchC" placeholder="Search by contributor's email">
+                    <button type="submit" class="search-icon">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="search-cancel" style="margin-right: 10px">
+                <a href="/Coordinator/Contribution/ContributionModeration">Clear</a>
+            </div>
+        </div>
+    </form>
+</div>
 <div class="row">
-    @foreach (var con in Model)
+    @foreach (var con in Model.Contributions)
     {
         <div class="col-sm-6">
             <div class="card">
@@ -17,7 +46,7 @@
                     <p><strong>Posted date: </strong><i>@con.CreatedDate</i></p>
                     
                     <p class="card-text">@con.Content</p>
-                    <a class="btn btn-dark" asp-area="Coordinator" asp-controller="Contribution" asp-action="Detail" asp-route-id="@con.Id">Detail</a>
+                    <a class="btn btn-dark" asp-area="Coordinator" asp-controller="Contribution" asp-action="GiveFeedback" asp-route-id="@con.Id">Detail</a>
                 </div>
             </div>
         </div>

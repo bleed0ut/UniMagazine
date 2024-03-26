@@ -8,6 +8,5 @@ namespace UniMagazine.Repository.IRepository
         IEnumerable<Contribution> GetAllPendingContribution(int facultyId);
 
         Contribution Get(int id);
-
     }
 }

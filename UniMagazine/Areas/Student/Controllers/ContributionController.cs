@@ -72,7 +72,15 @@ namespace UniMagazine.Areas.Student.Controllers
                     _unitOfWork.ContributionRepository.Add(conTri);
                     _unitOfWork.Save(); // Save Contribution entity to generate Id
 
-                    foreach (var file in files)
+                foreach (var file in files)
+                {
+                    string fileName = Guid.NewGuid().ToString()+ "_" + file.FileName;
+                    string filePath = Path.Combine(wwwRootPath, @"upload\Student");
+                    if (!Directory.Exists(filePath))
+                    {
+                        Directory.CreateDirectory(filePath);
+                    }
+                    using (var fileStream = new FileStream(Path.Combine(filePath, fileName), FileMode.Create))
                     {
                         string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                         string filePath = Path.Combine(wwwRootPath, @"upload\Student");

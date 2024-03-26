@@ -15,6 +15,8 @@ namespace UniMagazine.Repository
 
         public IMagazineRepository MagazineRepository { get; private set; }
 
+        public IFeedBackCommentRepository FeedBackCommentRepository { get; private set; }
+
         public UnitOfWork(AppDbContext dbContext)
         {
             MagazineRepository = new MagazineRepository(dbContext);
@@ -24,6 +26,7 @@ namespace UniMagazine.Repository
             UserRepository = new UserRepository(dbContext);
             FacultyRepository = new FacultyRepository(dbContext);
             AcademicYearRepository = new AcademicYearRepository(dbContext);
+            FeedBackCommentRepository = new FeedbackCommentRepository(dbContext);
         }
 
         public void Save()
