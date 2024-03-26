@@ -38,7 +38,7 @@
 #anounment-tag {
     padding: 16px 15px;
     font-size: 16px;
-    font-weight: 900;
+    font-weight: 700;
     background-color: white;
     margin: 13px 0 13px 15px;
 }
@@ -49,25 +49,27 @@
     margin-left: 14px;
 }
 
-#main-control{
+/*HOME CONTROL*/
+.main-control{
     display: flex;
     width: 100%;
     background-color: white;
     height: 54px;
-    margin-top: 19px;
-    margin-bottom: 9px;
+    margin-top: 20px;
+    margin-bottom: 10px;
     padding: 15px;
     justify-content: space-between;
 }
 
 .main-control-left{
     display: flex;
+    align-items: center;
 }
 
 .main-control-text {
-    font-weight: 900;
+    font-weight: 700;
+    letter-spacing: 0.2px;
     display: block;
-    font-size: 18px;
     margin-right: 50px;
     color: black;
     text-decoration: none;
@@ -89,6 +91,98 @@
     background-size: 100% 2px;
 }
 
-.main-control-text-right {
+.main-control-right {
+    display: flex;
     cursor: pointer;
+}
+
+.faculty-options{
+    margin-right: 20px;
+}
+.faculty-option {
+    cursor: pointer;
+    outline: none;
+    border: unset;
+}
+
+.main-control-search{
+
+}
+
+.main-control-search--input input{
+    outline: none;
+    border: unset;
+}
+
+.search-icon {
+    border: unset;
+    background-color: white;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+#search {
+    border-bottom: 1px solid #808080;
+}
+
+.search-cancel a {
+    font-weight: 600;
+    text-decoration: none;
+    background-color: #EE4266;
+    padding: 8px;
+    color: white;
+}
+
+.search-cancel a:hover{
+    background-color: #EE4266;
+}
+
+/*MAGAZINES*/
+.card-box {
+    max-width: 438px;
+    min-height: 480px;
+}
+
+.card-img-top {
+    max-height: 210px;
+    object-fit: cover
+}
+
+.card-body-heading{
+    font-weight: 500;
+}
+
+.card-body-text{
+    color: #808080;
+}
+
+.faculty-text {
+    background-color: #7077A1;
+    letter-spacing: 1px;
+    font-size: 13px;
+    line-height: 13px;
+    padding: 3px 0;
+}
+
+.faculty-text-p{
+    margin-bottom: 0;
+}
+
+.status-text-open {
+    background-color: #609966;
+    letter-spacing: 1px;
+    font-size: 13px;
+    line-height: 13px;
+    padding: 3px 0;
+}
+.status-text-close {
+    background-color: #de3a3b;
+    letter-spacing: 1px;
+    font-size: 13px;
+    line-height: 13px;
+    padding: 3px 0;
+}
+
+.status-text {
+    color: white;
+    margin-bottom: 0;
 }

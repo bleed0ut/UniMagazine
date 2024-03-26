@@ -33,17 +33,33 @@ namespace UniMagazine.Areas.Student.Controllers
 
             Contribution con = new Contribution();
             con.MagazineId = id;
+            var magazine = _unitOfWork.MagazineRepository.Get(x => x.Id == id);
+            
+            ViewData["MagazineTitle"] = magazine.Title;
+            ViewData["MagazineDescription"] = magazine.Detail;
+            ViewData["MagazineStatus"] = magazine.Status;
+            ViewData["PostedDate"] = magazine.PostedDate.ToString();
+            ViewData["ImgUrl"] = magazine.ImageUrl;
 
             return View(con);
         }
         [HttpPost]
         public async Task<IActionResult> Add(Contribution con, List<IFormFile> files)
         {
-            var con1 = _unitOfWork.ContributionRepository.GetAll();
-            if (con != null)
+            var magazine = _unitOfWork.MagazineRepository.Get(x => x.Id == con.MagazineId);
+
+            ViewData["MagazineTitle"] = magazine.Title;
+            ViewData["MagazineDescription"] = magazine.Detail;
+            ViewData["MagazineStatus"] = magazine.Status;
+            ViewData["PostedDate"] = magazine.PostedDate.ToString();
+            ViewData["ImgUrl"] = magazine.ImageUrl;
+
+            if(ModelState.IsValid)
             {
-                string wwwRootPath = _webHostEnvironment.WebRootPath;
-                var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+                if (con != null)
+                {
+                    string wwwRootPath = _webHostEnvironment.WebRootPath;
+                    var currentUser = await _userManager.GetUserAsync(HttpContext.User);
                     var conTri = new Contribution()
                     {
                         Content = con.Content,
@@ -69,59 +85,31 @@ namespace UniMagazine.Areas.Student.Controllers
                         file.CopyTo(fileStream);
                     }
 
-                    // Save file info to the database
-                    if (_unitOfWork != null && _unitOfWork.MaterialContributionRepository != null)
-                    {
-                        var MaCon = new MaterialContribution()
+                        // Save file info to the database
+                        if (_unitOfWork != null && _unitOfWork.MaterialContributionRepository != null)
                         {
-                            CreatedDate = DateTime.Now,
-                            ImageUrl = @"\upload\Magazine\" + fileName,
-                            ContributionId = conTri.Id // Set ContributionId with the generated Id of Contribution entity
-                        };
-                        _unitOfWork.MaterialContributionRepository.Add(MaCon);
+                            var MaCon = new MaterialContribution()
+                            {
+                                CreatedDate = DateTime.Now,
+                                ImageUrl = @"\upload\Magazine\" + fileName,
+                                ContributionId = conTri.Id // Set ContributionId with the generated Id of Contribution entity
+                            };
+                            _unitOfWork.MaterialContributionRepository.Add(MaCon);
+                        }
                     }
+                    TempData["success"] = "Request successfully! Your contribution is pending!";
+                    _unitOfWork.Save();
+                    // Save MaterialContribution entities
+                    return RedirectToAction("MagazineDetail", "Home", new { id = con.MagazineId, area = "" });
                 }
-                
-                var con2 = new List<Contribution>();
-                foreach(var c in con1)
-                {
-                    if (c.Id == con.MagazineId)
-                    {
-                        con2.Add(c);
-                    }
-                }
-                var x = new MaConVM()
-                {
-                    Magazine = _unitOfWork.MagazineRepository.Get(x => x.Id == con.MagazineId),
-                    Contributions = con2
-                };
-                _unitOfWork.Save();
-                // Save MaterialContribution entities
-                return RedirectToAction("MagazineDetail", "Home", new { id = con.MagazineId, area = "" });
             }
             return View(con);
         }
 
         public async Task<IActionResult> Detail(int id)
         {
-            var con = _unitOfWork.ContributionRepository.Get(x => x.Id == id);
-            var Material = _unitOfWork.MaterialContributionRepository.GetAll();
-            var MaterialCon = new List<MaterialContribution>();
-            foreach (var c in Material)
-            {
-                if (c.ContributionId == id)
-                {
-                    MaterialCon.Add(c);
-                }
-            }
-
-            ConMaVM conMaVM = new ConMaVM()
-            {
-                Contribution = con,
-                MaterialContribution = MaterialCon
-            };
-            
-            return View(conMaVM);
+            var contribution = _unitOfWork.ContributionRepository.Get(id);
+            return View(contribution);
         }
 
 
