@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using UniMagazine.Data;
 using UniMagazine.Models;
@@ -59,10 +60,16 @@ namespace UniMagazine.Repository
 
         public Contribution Get(int id)
         {
-            return _dbContext.Contributions.Include(u => u.User)
+            var contribution = _dbContext.Contributions.Include(u => u.User).ThenInclude(f => f.Faculty)
                                            .Include(m => m.Files)
                                            .Include(m => m.Magazine)
                                            .FirstOrDefault(x => x.Id == id);
+
+            if (contribution != null)
+                return contribution;
+            else
+                return null;
+
         }
 
 

@@ -10,7 +10,7 @@
 @* MAGAZINE DETAIL SECTION *@
 <link rel="stylesheet" href="~/css/MagazineDetail.css" type="text/css" />
 
-<nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+<nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34);" aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/Home" style="text-decoration: none; color: var(--primary-color)">Home</a></li>
         <li class="breadcrumb-item"><a href="/Coordinator/Contribution/ContributionModeration" style="text-decoration: none; color: var(--primary-color)">View all pending submissions</a></li>
@@ -79,13 +79,48 @@
 
 <div class="bg-secondary bg-opacity-10 py-2">
     <div class="container">
-        <h1>Give feedback for submition</h1>
+        <h1>Give feedback for submission</h1>
+    </div>
+</div>
+<div class="w-100" style="border-top: 2px solid var(--primary-color)">
+    <div class="w-100 p-3">
+        <div class="d-flex flex-row align-items-center justify-content-between">
+            <div class="d-flex flex-row align-items-center">
+                <img src="https://cdn.donmai.us/sample/b4/b5/__hoshimachi_suisei_and_hoshimachi_suisei_hololive_drawn_by_profnote__sample-b4b54b16dc2b92dfdfc489b25af97513.jpg"
+                     class="rounded-circle object-fit-scale" alt="avatar" width="45" height="45" />
+                <div>
+                    <p class="small mb-0 ms-2">[@Model.Contribution.User.Faculty.Name] @Model.Contribution.User.FullName - (@Model.Contribution.User.Role)</p>
+                    <span class="small text-muted mx-0 ms-2">@Model.Contribution.User.Email</span>
+                </div>
+            </div>
+            <div>
+                <p class="small text-muted mb-0">@Model.Contribution.CreatedDate</p>
+            </div>
+        </div>
+
+        <div class="contribution-file">
+            <button class="button-contribution" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#contri-id-@Model.Contribution.Id" aria-expanded="false" aria-controls="contri-id-@Model.Contribution.Id">
+                @Model.Contribution.Content <i class="fa-solid fa-chevron-down"></i>
+            </button>
+
+            @* FILE URL SECTION*@
+            <div class="collapse contribution-file-list" id="contri-id-@Model.Contribution.Id">
+                <div>
+                    @foreach (var file in Model.Contribution.Files)
+                    {
+                        <p><strong>----File: </strong> &colon; @file.ImageUrl</p>
+                    }
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>
 
 <div class="container py-5">
     <form method="post" enctype="multipart/form-data">
-        <div class="d-flex">
+      @*   <div class="d-flex">
             <div class="mb-3 me-3 flex-grow-1">
                 <label class="form-label">Status</label>
                 <select class="form-select" asp-for="@Model.Status">
@@ -93,16 +128,21 @@
                     <option value="Reject">Reject</option>
                 </select>
             </div>
-        </div>
+        </div> *@
         <div class="d-flex">
             <div class="mb-3">
                 <label class="form-label" for="comment">Feedback Comment</label>
-                <textarea class="form-control" id="comment" name="Comment" rows="3" asp-for="@Model.Comment"></textarea>
+                <textarea class="form-control" id="comment" name="Comment" asp-for="@Model.Comment" rows="3" cols="100"></textarea>
             </div>
         </div>
 
         <div class="mb-3">
-            <button type="submit" class="btn btn-dark">Submit</button>
+            <button type="submit" class="btn btn-success" value="Published" id="status" name="status">Apply</button>
+            <button type="submit" class="btn btn-danger" value="Rejected" id="status" name="status">Reject</button>
+
+            <a asp-area="Coordinator" asp-controller="Contribution" asp-action="ContributionModeration" style="text-decoration: none" class="btn btn-dark">
+                    Cancel
+            </a>
         </div>
     </form>
 </div>

@@ -57,13 +57,13 @@ namespace UniMagazine.Areas.Coordinator.Controllers
         }
 
         [HttpPost]
-        public IActionResult GiveFeedback(FeedBackVM feedbackVM)
+        public IActionResult GiveFeedback(FeedBackVM feedbackVM, string? status)
         {
             var con = _unitOfWork.ContributionRepository.Get(feedbackVM.Id);
             if (con == null)
                 return NotFound();
             
-            con.Status = feedbackVM.Status;
+            con.Status = status;
             _unitOfWork.Save();
 
             var feedback = new FeedbackComment()
@@ -71,7 +71,7 @@ namespace UniMagazine.Areas.Coordinator.Controllers
                 Comment = feedbackVM.Comment,
                 ContributionID = feedbackVM.Id,
                 UserID = _userManager.GetUserId(this.User),
-                Status = feedbackVM.Status,
+                Status = status,
             };
 
             _unitOfWork.FeedBackCommentRepository.Add(feedback);
