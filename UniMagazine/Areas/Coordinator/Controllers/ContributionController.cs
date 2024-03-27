@@ -28,12 +28,16 @@ namespace UniMagazine.Areas.Coordinator.Controllers
             var userId = _userManager.GetUserId(this.User);
             var user = _unitOfWork.UserRepository.GetUserById(userId);
 
+            var contributions = _unitOfWork.ContributionRepository.GetAllPendingContribution(user.FacultyId, searchT, searchC);
+            _unitOfWork.ContributionRepository.CheckManyPendingContribution(contributions);
+            _unitOfWork.Save();
+
             PendingContributionVM pcVM = new PendingContributionVM()
             { 
                 Contributions = _unitOfWork.ContributionRepository.GetAllPendingContribution(user.FacultyId, searchT, searchC),
                 SearchByTitle = searchT,
                 SearchByContributorEmail = searchC
-        };
+            };
 
             return View(pcVM);
         }
@@ -62,24 +66,36 @@ namespace UniMagazine.Areas.Coordinator.Controllers
             var con = _unitOfWork.ContributionRepository.Get(feedbackVM.Id);
             if (con == null)
                 return NotFound();
-            
-            con.Status = status;
-            _unitOfWork.Save();
 
-            var feedback = new FeedbackComment()
+            DateTime today = DateTime.Now;
+            TimeSpan ts = today - con.CreatedDate;
+
+            if (ts.Days >= 14)
+            { 
+                feedbackVM.Contribution = con;
+                TempData["error"] = "Cannot give a feedback comment.This submission been expired in 14 days.";
+                return View(feedbackVM);
+            }
+            else
             {
-                Comment = feedbackVM.Comment,
-                ContributionID = feedbackVM.Id,
-                UserID = _userManager.GetUserId(this.User),
-                Status = status,
-            };
+                con.Status = status;
+                _unitOfWork.Save();
 
-            _unitOfWork.FeedBackCommentRepository.Add(feedback);
-            _unitOfWork.Save();
+                var feedback = new FeedbackComment()
+                {
+                    Comment = feedbackVM.Comment,
+                    ContributionID = feedbackVM.Id,
+                    UserID = _userManager.GetUserId(this.User),
+                    Status = status,
+                };
 
-            TempData["succes"] = "Give feedback successfully!. An email notification will be sent to this student";
-            _emailSender.SendFeedBackEmail(con,feedback);
-            
+                _unitOfWork.FeedBackCommentRepository.Add(feedback);
+                _unitOfWork.Save();
+
+                TempData["success"] = "Give feedback successfully!. An email notification will be sent to this student";
+                _emailSender.SendFeedBackEmail(con, feedback);
+            }
+                
             return RedirectToAction("ContributionModeration");
         }
     }

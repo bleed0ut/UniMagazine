@@ -72,6 +72,27 @@ namespace UniMagazine.Repository
 
         }
 
+        public void CheckAPendingContribution(Contribution contribution)
+        {
+            DateTime today = DateTime.Now;
+            TimeSpan ts = today - contribution.CreatedDate;
+            if (ts.Days >= 14)
+                contribution.Status = "Expired";
 
+            Update(contribution);
+        }
+        
+        public void CheckManyPendingContribution(IEnumerable<Contribution> contributions)
+        {
+            DateTime today = DateTime.Now;
+            TimeSpan ts;
+            foreach(var con in contributions)
+            {
+                ts = today - con.CreatedDate;
+                if (ts.Days >= 14)
+                    con.Status = "Expired";
+                Update(con);
+            }
+        }
     }
 }

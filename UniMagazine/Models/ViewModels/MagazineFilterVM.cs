@@ -19,6 +19,8 @@ namespace UniMagazine.Models.ViewModels
 
         public string Status = "";
 
+        public string StatusTemp = "Closed";
+
         public string Search = "";
     }
 }

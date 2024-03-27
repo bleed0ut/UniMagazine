@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Home Page";
+    Layout = "/Areas/Coordinator/Views/_LayoutCoordinatorPage.cshtml";
+    int i = 0;
     DateTime closedDate = (DateTime)Model.Contribution.Magazine.ClosedDate;
     TimeSpan ts = closedDate - DateTime.Now;
     string timeleft = string.Format("{0} Days, {1} Hours, {2} Minutes", ts.Days, ts.Hours, ts.Minutes);
@@ -109,7 +111,8 @@
                 <div>
                     @foreach (var file in Model.Contribution.Files)
                     {
-                        <p><strong>----File: </strong> &colon; @file.ImageUrl</p>
+                        i++;
+                        <p><strong>----File @i: </strong> &colon; @file.ImageUrl</p>
                     }
                 </div>
             </div>
@@ -137,12 +140,21 @@
         </div>
 
         <div class="mb-3">
-            <button type="submit" class="btn btn-success" value="Published" id="status" name="status">Apply</button>
-            <button type="submit" class="btn btn-danger" value="Rejected" id="status" name="status">Reject</button>
+            @if(Model.Contribution.Status != "Reject" && Model.Contribution.Status != "Expired")
+            {
+                <button type="submit" class="btn btn-success" value="Published" id="status" name="status">Apply</button>
+                <button type="submit" class="btn btn-danger" value="Rejected" id="status" name="status">Reject</button>
 
-            <a asp-area="Coordinator" asp-controller="Contribution" asp-action="ContributionModeration" style="text-decoration: none" class="btn btn-dark">
+                <a asp-area="Coordinator" asp-controller="Contribution" asp-action="ContributionModeration" style="text-decoration: none" class="btn btn-dark">
                     Cancel
-            </a>
+                </a>
+            }
+            else
+            {
+                <a asp-area="Coordinator" asp-controller="Contribution" asp-action="ContributionModeration" style="text-decoration: none" class="btn btn-dark">
+                    Back
+                </a>
+            }
         </div>
     </form>
 </div>
