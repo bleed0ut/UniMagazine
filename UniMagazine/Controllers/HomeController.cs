@@ -22,9 +22,9 @@ namespace UniMagazine.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index(string? status = "", string? search = "", int academicYearId = 0, int facultyId = 0)
+        public IActionResult Index(MagazineFilterVM magaFilterVM, string? status = "", string? search = "", int academicYearId = 0, int facultyId = 0)
         {
-           var maga = _unitOfWork.MagazineRepository.GetActiveMagazines(0, "Opening", 0, search);
+           var maga = _unitOfWork.MagazineRepository.GetActiveMagazines(0, status, 0, search);
             
             _unitOfWork.MagazineRepository.UpdateStatusMany(maga);
 
@@ -35,16 +35,17 @@ namespace UniMagazine.Controllers
             var userId = _userManager.GetUserId(this.User);
             ViewBag.UserId = userId;
 
-            MagazineFilterVM magaFilterVM = new MagazineFilterVM()
-            {
-                Magazines = maga,
-                Status = status,
-                AcademicYearId = academicYearId,
-                FacultyId = facultyId,
-                Search = search,
-                AcademicYearsDisplay = _unitOfWork.AcademicYearRepository.GetAllAcademicYear(),
-                FacultiesDisplay = _unitOfWork.FacultyRepository.GetAllFaculty()
-            };
+
+            magaFilterVM.Magazines = maga;
+            if(!string.IsNullOrEmpty(magaFilterVM.Status))
+                magaFilterVM.StatusTemp = magaFilterVM.Status;
+            magaFilterVM.Status = status;
+            magaFilterVM.AcademicYearId = academicYearId;
+            magaFilterVM.FacultyId = facultyId;
+            magaFilterVM.Search = search;
+            magaFilterVM.AcademicYearsDisplay = _unitOfWork.AcademicYearRepository.GetAllAcademicYear();
+            magaFilterVM.FacultiesDisplay = _unitOfWork.FacultyRepository.GetAllFaculty();
+            
 
             if (userId != null) {
                 var user = _unitOfWork.UserRepository.GetUserById(userId);

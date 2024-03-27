@@ -32,7 +32,7 @@
 
             @* RIGHT *@
             <div class="main-control-right">
-                @if (Model.Status == "Closed")
+                @if (Model.Status == "Closed" && Model.Status == Model.StatusTemp)
                 {
                     <div class="faculty-options">
                         <select class="faculty-option" id="academicYearId" name="academicYearId">
@@ -62,7 +62,7 @@
                     <div class="main-control-search--input">
                         <input type="text" value="@Model.Search" id="search" name="search" placeholder="Search by title">
                         <input type="text" value="@Model.Status" id="status" name="status" hidden />
-                        <button type="submit" class="search-icon" id="status" value="@Model.Status">
+                        <button type="submit" class="search-icon" id="status" name="status" value="@Model.Status">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </button>
                     </div>
