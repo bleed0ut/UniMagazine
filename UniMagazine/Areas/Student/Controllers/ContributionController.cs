@@ -94,7 +94,7 @@ namespace UniMagazine.Areas.Student.Controllers
                             var MaCon = new MaterialContribution()
                             {
                                 CreatedDate = DateTime.Now,
-                                ImageUrl = @"\upload\Student\" + fileName,
+                                ImageUrl = filePath + fileName,
                                 ContributionId = conTri.Id // Set ContributionId with the generated Id of Contribution entity
                             };
                             _unitOfWork.MaterialContributionRepository.Add(MaCon);
