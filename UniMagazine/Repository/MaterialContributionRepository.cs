@@ -21,5 +21,9 @@ namespace UniMagazine.Repository
         {
             throw new NotImplementedException();
         }
+        public MaterialContribution Get(int id)
+        {
+            return _dbContext.MaterialContributions.FirstOrDefault(mc => mc.Id == id);
+        }
     }
 }
