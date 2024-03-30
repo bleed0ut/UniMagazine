@@ -111,5 +111,22 @@ namespace UniMagazine.Areas.Student.Controllers
             var contribution = _unitOfWork.ContributionRepository.Get(id);
             return View(contribution);
         }
+
+        public IActionResult MyContribution(string? status = "", string? search = "")
+        {
+            var userId = _userManager.GetUserId(this.User);
+
+            var myContributions = _unitOfWork.ContributionRepository.GetMyContribution(userId, status, search);
+
+            MyContributionVM mcVM = new MyContributionVM()
+            {
+                Contributions = myContributions,
+                Status = status,
+                Search = search
+            };
+
+            return View(mcVM);
+        }
+
     }
 }

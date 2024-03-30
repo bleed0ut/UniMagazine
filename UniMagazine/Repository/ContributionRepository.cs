@@ -94,5 +94,26 @@ namespace UniMagazine.Repository
                 Update(con);
             }
         }
+
+        public IEnumerable<Contribution> GetMyContribution(string userId, string? status = "", string? search = "")
+        {
+            var contributions = _dbContext.Contributions.Where(x => x.UserId == userId)
+                                                        .Include(u => u.User)
+                                                        .ThenInclude(f => f.Faculty)
+                                                        .Include(m => m.Magazine)
+                                                        .OrderByDescending(c => c.CreatedDate)
+                                                        .ToList();
+            if(string.IsNullOrEmpty(status) || status == "Published")
+                contributions = contributions.Where(x => x.Status == "Published").ToList();
+            else if (status == "Pending")
+                contributions = contributions.Where(x => x.Status == "Pending").ToList();
+            else if (status == "Rejected")
+                contributions = contributions.Where(x => x.Status == "Rejected").ToList();
+            //
+            if (!string.IsNullOrEmpty(search))
+                contributions = contributions.Where(s => s.Magazine.Title.ToLower().Contains(search.ToLower())).ToList();
+
+            return contributions;
+        }
     }
 }
