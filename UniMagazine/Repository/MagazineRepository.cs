@@ -121,5 +121,21 @@ namespace UniMagazine.Repository
                 Update(magazine);
             }
         }
+
+        public IEnumerable<Magazine> GetByYear(int academicYearId)
+        {
+            var magazines = _dbContext.Magazines.Where(m => m.AcademicYearId == academicYearId)
+                                                .Include(f => f.Faculty)
+                                                
+
+                                                .Include(c => c.Contributions)
+                                                .ThenInclude(c => c.Files)
+                                                .Include(c => c.Contributions)
+                                                .ThenInclude(c => c.User)
+
+                                                .Where(f => f.Faculty.Name != "Sample Faculty")
+                                                .ToList();
+            return magazines;
+        }
     }
 }

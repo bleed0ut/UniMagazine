@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 using System;
 using System.IO;
 using System.IO.Compression;
@@ -116,13 +117,56 @@ namespace UniMagazine.Areas.Admin.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult DownloadFilesByAcademicYear(int academicYearId)
+        {
+            // Lấy thông tin về Contribution từ cơ sở dữ liệu
+            var magazines = _unitOfWork.MagazineRepository.GetByYear(academicYearId);
+            var contributions = _unitOfWork.ContributionRepository.GetByYear(academicYearId);
+            // Tạo một tên tệp zip duy nhất bằng cách sử dụng ngày giờ hiện tại
+            string zipFileName = $"AcademicYear_{DateTime.Now.ToString("yyyyMMddHHmmss")}_She_ride_a_dick_like_a_carnival_Kanye_East.zip";
+
+            // Tạo thư mục tạm để chứa tất cả các tệp
+            string tempFolderPath = Path.Combine(_webHostEnvironment.WebRootPath, "TempZip");
+            Directory.CreateDirectory(tempFolderPath);
+
+            // Lấy đường dẫn đến tệp zip tạm
+            string zipFilePath = Path.Combine(tempFolderPath, zipFileName);
+
+            // Tạo tệp zip
+            using (var zipArchive = ZipFile.Open(zipFilePath, ZipArchiveMode.Create))
+            {
+                foreach (var con in contributions)
+                {
+                    string facultyName = $"{con.User.Faculty.Name}/";
+                    string magazineName = $"Magazine_{con.Magazine.Id}/";
+                    string contributionName = $"Contribution_{con.User.Email}_{con.Id}/";
+
+                    if (con.Files.Count() > 0)
+                    {
+                        foreach (var file in con.Files)
+                        {
+                            string filePath = _webHostEnvironment.WebRootPath + $"/{file.ImageUrl}";
+                            if (System.IO.File.Exists(filePath))
+                            {
+                                string entryName = Path.GetFileName(filePath);
+                                zipArchive.CreateEntryFromFile(filePath, facultyName + magazineName + contributionName + entryName);
+                            }
+                        }
+                    }
+
+                }
+            }
+
+            // Đọc tệp zip và trả về nó để tải xuống
+            byte[] fileBytes = System.IO.File.ReadAllBytes(zipFilePath);
+
+            // Xóa thư mục tạm và tệp zip sau khi trả về
+            Directory.Delete(tempFolderPath, true);
+
+            return File(fileBytes, "application/zip", zipFileName);
 
 
-
-
-
-
-
-
+        }
     }
 }

@@ -45,7 +45,7 @@
                             <a asp-area="Admin"
                                asp-action="Update"
                                asp-route-id="@academic.Id" class="btn btn-outline-dark">Detail</a>
-
+                            <a asp-area="Admin" asp-controller="Contribution" asp-action="DownloadFilesByAcademicYear" asp-route-academicYearId="@academic.Id" class="btn btn-success">Download Contributions</a>
                         </td>
                     </tr>
                 }
