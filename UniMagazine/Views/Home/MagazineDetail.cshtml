@@ -148,7 +148,7 @@
 
                 @* FILE URL SECTION*@
                 <div class="collapse contribution-file-list" id="contri-id-@con.Id">
-                    @if (User.IsInRole("Student") || User.IsInRole("Coordinator") || User.IsInRole("Admin"))
+                    @if (User.IsInRole("Student") || User.IsInRole("Coordinator") || User.IsInRole("Manager"))
                     {
                         <div>
                             @foreach (var file in con.Files)
@@ -160,8 +160,8 @@
                     }
                 </div>
                 <div>
-                    <a asp-area="Admin" asp-controller="Contribution" asp-action="DownloadFiles" asp-route-contributionId="@con.Id">Download Files</a>
-                    <a asp-area="Admin" asp-controller="Contribution" asp-action="DownloadAllFiles" asp-route-contributionId="@con.Id">Download all Files</a>
+                    <a asp-area="Manager" asp-controller="Contribution" asp-action="DownloadFiles" asp-route-contributionId="@con.Id">Download Files</a>
+                    <a asp-area="Manager" asp-controller="Contribution" asp-action="DownloadAllFiles" asp-route-contributionId="@con.Id">Download all Files</a>
                 </div>
 
 

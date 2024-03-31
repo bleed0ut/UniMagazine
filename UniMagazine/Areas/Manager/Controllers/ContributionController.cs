@@ -10,10 +10,10 @@ using UniMagazine.Models;
 using UniMagazine.Repository;
 using UniMagazine.Repository.IRepository;
 
-namespace UniMagazine.Areas.Admin.Controllers
+namespace UniMagazine.Areas.Manager.Controllers
 {
-    [Area("Admin")]
-    [Authorize(Roles = "Admin")]
+    [Area("Manager")]
+    [Authorize(Roles = "Manager")]
     public class ContributionController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -124,7 +124,8 @@ namespace UniMagazine.Areas.Admin.Controllers
             var magazines = _unitOfWork.MagazineRepository.GetByYear(academicYearId);
             var contributions = _unitOfWork.ContributionRepository.GetByYear(academicYearId);
             // Tạo một tên tệp zip duy nhất bằng cách sử dụng ngày giờ hiện tại
-            string zipFileName = $"AcademicYear_{DateTime.Now.ToString("yyyyMMddHHmmss")}_She_ride_a_dick_like_a_carnival_Kanye_East.zip";
+            string zipFileName = $"AcademicYear_{_unitOfWork.AcademicYearRepository.Get(x => x.Id == academicYearId).OpenedDate.ToString("yyyy")}" +
+                                 $"_{DateTime.Now.ToString("yyyyMMddHHmmss")}_She_ride_a_dick_like_a_carnival_Kanye_East.zip";
 
             // Tạo thư mục tạm để chứa tất cả các tệp
             string tempFolderPath = Path.Combine(_webHostEnvironment.WebRootPath, "TempZip");
@@ -165,7 +166,6 @@ namespace UniMagazine.Areas.Admin.Controllers
             Directory.Delete(tempFolderPath, true);
 
             return File(fileBytes, "application/zip", zipFileName);
-
 
         }
     }
