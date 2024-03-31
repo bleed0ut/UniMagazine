@@ -5,6 +5,9 @@ using UniMagazine.Repository.IRepository;
 using UniMagazine.Models;
 using NuGet.Protocol.Plugins;
 using System.Net.NetworkInformation;
+using Microsoft.AspNetCore.Hosting;
+using System.IO.Compression;
+using Microsoft.AspNetCore.Identity;
 
 namespace UniMagazine.Areas.Admin.Controllers
 {
@@ -12,11 +15,15 @@ namespace UniMagazine.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class AcademicYearController : Controller
     {
-        
-        public IUnitOfWork _unitOfWork { get; set; }
-        public AcademicYearController(IUnitOfWork unitOfWork)
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public AcademicYearController(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment)
         {
+            _userManager = userManager;
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
 
         }
         public IActionResult Index()
@@ -123,6 +130,64 @@ namespace UniMagazine.Areas.Admin.Controllers
             _unitOfWork.AcademicYearRepository.Delete(academicYear);
             _unitOfWork.Save();
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult DownloadFilesByAcademicYear(int academicYearId)
+        {
+            // Lấy thông tin về Contribution từ cơ sở dữ liệu
+            var magazines = _unitOfWork.MagazineRepository.GetByYear(academicYearId);
+            var contributions = _unitOfWork.ContributionRepository.GetByYear(academicYearId);
+            // Tạo một tên tệp zip duy nhất bằng cách sử dụng ngày giờ hiện tại
+            string zipFileName = $"AcademicYear_{_unitOfWork.AcademicYearRepository.Get(x => x.Id == academicYearId).OpenedDate.ToString("yyyy")}" +
+                                 $"_{DateTime.Now.ToString("yyyyMMddHHmmss")}_She_ride_a_dick_like_a_carnival_Kanye_East.zip";
+
+            // Tạo thư mục tạm để chứa tất cả các tệp
+            string tempFolderPath = Path.Combine(_webHostEnvironment.WebRootPath, "TempZip");
+            Directory.CreateDirectory(tempFolderPath);
+
+            // Lấy đường dẫn đến tệp zip tạm
+            string zipFilePath = Path.Combine(tempFolderPath, zipFileName);
+            
+            if(contributions.Count() > 0)
+            {
+
+                // Tạo tệp zip
+                using (var zipArchive = ZipFile.Open(zipFilePath, ZipArchiveMode.Create))
+                {
+                    foreach (var con in contributions)
+                    {
+                        string facultyName = $"{con.User.Faculty.Name}/";
+                        string magazineName = $"Magazine_{con.Magazine.Id}/";
+                        string contributionName = $"Contribution_{con.User.Email}_{con.Id}/";
+
+                        if (con.Files.Count() > 0)
+                        {
+                            foreach (var file in con.Files)
+                            {
+                                string filePath = _webHostEnvironment.WebRootPath + $"/{file.ImageUrl}";
+                                if (System.IO.File.Exists(filePath))
+                                {
+                                    string entryName = Path.GetFileName(filePath);
+                                    zipArchive.CreateEntryFromFile(filePath, facultyName + magazineName + contributionName + entryName);
+                                }
+                            }
+                        }
+
+                    }
+                }
+
+                // Đọc tệp zip và trả về nó để tải xuống
+                byte[] fileBytes = System.IO.File.ReadAllBytes(zipFilePath);
+
+                // Xóa thư mục tạm và tệp zip sau khi trả về
+                Directory.Delete(tempFolderPath, true);
+
+                return File(fileBytes, "application/zip", zipFileName);
+            }
+
+            return RedirectToAction("Index");
+
         }
     }
 }
