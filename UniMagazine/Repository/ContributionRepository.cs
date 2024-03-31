@@ -65,6 +65,5 @@ namespace UniMagazine.Repository
                                            .FirstOrDefault(x => x.Id == id);
         }
 
-
     }
 }

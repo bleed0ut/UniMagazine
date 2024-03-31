@@ -9,10 +9,10 @@ using UniMagazine.Models;
 using UniMagazine.Repository;
 using UniMagazine.Repository.IRepository;
 
-namespace UniMagazine.Areas.Admin.Controllers
+namespace UniMagazine.Areas.Manager.Controllers
 {
-    [Area("Admin")]
-    [Authorize(Roles = "Admin")]
+    [Area("Manager")]
+    [Authorize(Roles = "Manager")]
     public class ContributionController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -115,6 +115,7 @@ namespace UniMagazine.Areas.Admin.Controllers
                 return File(memoryStream.ToArray(), "application/zip", zipFileName);
             }
         }
+
 
 
 

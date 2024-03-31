@@ -36,7 +36,7 @@ namespace UniMagazine.Repository
 
         }
 
-    public IEnumerable<Magazine> GetAllMagazines(int facultyId, int academicYearId, string status = "")
+        public IEnumerable<Magazine> GetAllMagazines(int facultyId, int academicYearId, string status = "")
         {
             var magazines = _dbContext.Magazines.Where(f => f.Status != "Not Assigned").Include(f => f.Faculty).Include(a => a.Academic).ToList();
 
