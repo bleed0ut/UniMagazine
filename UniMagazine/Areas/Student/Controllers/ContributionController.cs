@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using GroupDocs.Viewer.Options;
+using GroupDocs.Viewer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -6,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using UniMagazine.Models;
 using UniMagazine.Models.ViewModels;
 using UniMagazine.Repository.IRepository;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace UniMagazine.Areas.Student.Controllers
 {
@@ -25,7 +28,6 @@ namespace UniMagazine.Areas.Student.Controllers
         }
         public IActionResult Index()
         {
-
             return View();
         }
         public async Task<IActionResult> Add(int id)
@@ -91,7 +93,7 @@ namespace UniMagazine.Areas.Student.Controllers
                             var MaCon = new MaterialContribution()
                             {
                                 CreatedDate = DateTime.Now,
-                                ImageUrl = @"\upload\Magazine\" + fileName,
+                                ImageUrl = @"upload\Student\" + fileName,
                                 ContributionId = conTri.Id // Set ContributionId with the generated Id of Contribution entity
                             };
                             _unitOfWork.MaterialContributionRepository.Add(MaCon);
@@ -106,11 +108,120 @@ namespace UniMagazine.Areas.Student.Controllers
             return View(con);
         }
 
-        public async Task<IActionResult> Detail(int id)
+        public IActionResult Detail(int id)
         {
             var contribution = _unitOfWork.ContributionRepository.Get(id);
-            return View(contribution);
+            var material = _unitOfWork.MaterialContributionRepository.GetMaterial(id);
+
+            var ContriMa = new ConMaVM()
+            {
+                Contribution = contribution,
+                MaterialContribution = material,
+            };
+            if (material == null)
+            {
+                TempData["Error"] = "null";
+            }
+            return View(ContriMa);
+            
         }
+        public IActionResult AddMaterial(int id)
+        {
+            var contribution = _unitOfWork.ContributionRepository.Get(id);
+            Contribution cpn = new Contribution()
+            {
+                Status = contribution.Status,
+                Content = contribution.Content,
+                UserId = contribution.UserId,
+                MagazineId = contribution.MagazineId,
+            };
+            return View(cpn);
+
+        }
+        [HttpPost]
+        public IActionResult AddMaterial(Contribution con, List<IFormFile> files)
+        {
+            string wwwRootPath = _webHostEnvironment.WebRootPath;
+            _unitOfWork.ContributionRepository.Update(con);
+            _unitOfWork.Save();
+            if (ModelState.IsValid)
+            {
+                if (con.Status != null)
+                {
+                    foreach (var file in files)
+                    {
+                        string fileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+                        string filePath = Path.Combine(wwwRootPath, @"upload\Student");
+                        if (!Directory.Exists(filePath))
+                        {
+                            Directory.CreateDirectory(filePath);
+                        }
+                        using (var fileStream = new FileStream(Path.Combine(filePath, fileName), FileMode.Create))
+                        {
+                            file.CopyTo(fileStream);
+                        }
+
+                        // Save file info to the database
+                        if (_unitOfWork != null && _unitOfWork.MaterialContributionRepository != null)
+                        {
+                            var MaCon = new MaterialContribution()
+                            {
+                                CreatedDate = DateTime.Now,
+                                ImageUrl = @"upload\Student\" + fileName,
+                                ContributionId = con.Id // Set ContributionId with the generated Id of Contribution entity
+                            };
+                            _unitOfWork.MaterialContributionRepository.Add(MaCon);
+                            _unitOfWork.Save();
+
+                        }
+                    }
+                }
+                return RedirectToAction("Detail", "Contribution", new { id = con.Id, area = "Student" });
+            }
+            
+            _unitOfWork.ContributionRepository.Update(con);
+            _unitOfWork.Save();
+            var contribution = _unitOfWork.ContributionRepository.Get(con.Id);
+
+            return View(contribution);
+
+        }
+        //public IActionResult ViewFile()
+        //{
+        //    var filePath = "C:\\Users\\PC\\source\\repos\\UniMagazine\\UniMagazine\\wwwroot\\upload\\Student\\3ac8ad29-c241-4c68-a9f6-309b751707b3_A1 project.docx";
+        //    if (!System.IO.File.Exists(filePath))
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    // Get the file extension
+        //    string fileExtension = Path.GetExtension(filePath);
+
+        //    // Set the appropriate content type based on the file extension
+        //    string contentType;
+        //    switch (fileExtension)
+        //    {
+        //        case ".pdf":
+        //            contentType = "application/pdf";
+        //            break;
+        //        case ".txt":
+        //            contentType = "text/plain";
+        //            break;
+        //        // Add more cases for other file types if needed
+        //        default:
+        //            contentType = "application/octet-stream";
+        //            break;
+        //    }
+
+        //    // Read the file into a byte array
+        //    byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+
+        //    // Return the file content to the browser
+        //    return File(fileBytes, contentType, Path.GetFileName(filePath));
+        //}
+
+
+
 
         public IActionResult MyContribution(string? status = "", string? search = "")
         {

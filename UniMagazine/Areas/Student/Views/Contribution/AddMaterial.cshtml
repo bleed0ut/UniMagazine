@@ -1,0 +1,21 @@
+﻿@model Contribution
+
+<form method="post" enctype="multipart/form-data">
+                        
+    <p id="inputtext" style="font-weight: 600">Contribution</p>
+            <input class="input-contribution" type="text" for="inputtext" asp-for="@Model.Content" autofocus placeholder="Enter title" />
+    <p><span class="w-100 text-danger" asp-validation-for="@Model.Content"></span></p>
+    <input class="input-contribution" type="text" for="inputtext" asp-for="@Model.Status" autofocus readonly/>
+    <input class="input-contribution" type="text" for="inputtext" asp-for="@Model.UserId" autofocus readonly />
+    <input class="input-contribution" type="text" for="inputtext" asp-for="@Model.MagazineId" autofocus readonly />
+    <p><span class="w-100 text-danger" asp-validation-for="@Model.Content"></span></p>
+            <input id="imgInp" type="file" name="files" class="form-control" multiple />
+    <div class="d-flex mt-3 justify-content-around align-items-center">
+        <button class="submit-contribution-btn" type="submit">Submit</button>
+        @* <a asp-area="" asp-route-id="@Model.Contribution.Id" asp-controller="Mater" asp-action="MagazineDetail" style="text-decoration: none">
+            <p type="button" class="cancel-contribution-btn m-0">
+                Cancel
+            </p>
+        </a> *@
+    </div>
+</form>

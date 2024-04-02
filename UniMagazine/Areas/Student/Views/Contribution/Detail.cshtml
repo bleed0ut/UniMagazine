@@ -1,4 +1,6 @@
-﻿@model ConMaVM
+﻿﻿
+@model ConMaVM
+
 
 <div class="">
     <figure class="text-center">
@@ -10,6 +12,12 @@
         </figcaption>
     </figure>
 </div>
+<a asp-area="Student" asp-route-id="@Model.Contribution.Id" asp-controller="Contribution" asp-action="AddMaterial" style="text-decoration: none;">
+    <div class="magazine-detail-upload">
+        <i class="fa-solid fa-upload"></i>
+        Add New Material
+    </div>
+</a>
 <div class="card-body p-0">
     <table id="tblData" class="table table-bordered table-striped text-center" style="width:100%">
         <thead class="text-center flex-grow-1">
@@ -27,7 +35,7 @@
                 <tr>
                     <td>@material.Id</td>
                     <td>@material.CreatedDate</td>
-                    <td>@material.ImageUrl" </td>
+                    <td>@material.ImageUrl </td>
                     <td>@material.ContributionId</td>
                     <td>
                         @* <a asp-area="Admin"
@@ -35,7 +43,9 @@
                            asp-route-id="@academic.Id" class="btn btn-outline-dark">Detail</a>
  *@
                     </td>
+                    
                 </tr>
+                
             }
         </tbody>
     </table>

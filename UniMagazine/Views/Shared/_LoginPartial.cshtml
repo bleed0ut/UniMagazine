@@ -44,6 +44,16 @@
                 </div>
             </a>
         }
+        @if (User.IsInRole("Student"))
+        {
+            <p class="header__nav--role">Student</p>
+            <hr class="bg-white" />
+            <a class="header__nav--role-function" asp-area="Student" asp-controller="Contribution" asp-action="MyContribution">
+                <div class="header__nav--role-hover">
+                    My Submission
+                </div>
+            </a>
+        }
     </div>
     <div class="w-100">
         <hr class="bg-white" />

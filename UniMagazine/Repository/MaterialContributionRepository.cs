@@ -1,4 +1,5 @@
-﻿using UniMagazine.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using UniMagazine.Data;
 using UniMagazine.Models;
 using UniMagazine.Repository.IRepository;
 
@@ -20,6 +21,13 @@ namespace UniMagazine.Repository
         public void UpdateStatus(MaterialContribution macon)
         {
             throw new NotImplementedException();
+        }
+        public IEnumerable<MaterialContribution> GetMaterial(int conId)
+        {
+            var materialContribution = _dbContext.MaterialContributions.Where(x => x.ContributionId == conId).ToList();
+                                                        
+
+            return materialContribution;
         }
     }
 }

@@ -6,5 +6,6 @@ namespace UniMagazine.Repository.IRepository
     {
         void Update(MaterialContribution maCon);
         void UpdateStatus(MaterialContribution maCon);
+        public IEnumerable<MaterialContribution> GetMaterial(int conId);
     }
 }
