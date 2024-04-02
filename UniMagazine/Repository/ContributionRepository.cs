@@ -113,6 +113,10 @@ namespace UniMagazine.Repository
             //
             if (!string.IsNullOrEmpty(search))
                 contributions = contributions.Where(s => s.Magazine.Title.ToLower().Contains(search.ToLower())).ToList();
+        
+
+            return contributions;
+        }
         public IEnumerable<Contribution> GetByYear(int academicYearId)
         {
             var contributions = _dbContext.Contributions.Include(m => m.Magazine)
@@ -126,9 +130,6 @@ namespace UniMagazine.Repository
                                                         .Where(c => c.Files.Count() > 0)
                                                         .OrderByDescending(c => c.CreatedDate)
                                                         .ToList();
-
-            return contributions;
-        }
 
             return contributions;
         }
