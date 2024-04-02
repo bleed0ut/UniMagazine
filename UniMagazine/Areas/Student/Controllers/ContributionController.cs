@@ -5,8 +5,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using System.IO.Compression;
 using UniMagazine.Models;
 using UniMagazine.Models.ViewModels;
+using UniMagazine.Repository;
 using UniMagazine.Repository.IRepository;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
@@ -77,7 +79,8 @@ namespace UniMagazine.Areas.Student.Controllers
                     foreach (var file in files)
                     {
                         string fileName = Guid.NewGuid().ToString() + "_" + file.FileName;
-                        string filePath = Path.Combine(wwwRootPath, @"upload\Student");
+                        string filePath = Path.Combine(wwwRootPath, @"upload\Student\");
+
                         if (!Directory.Exists(filePath))
                         {
                             Directory.CreateDirectory(filePath);

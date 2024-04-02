@@ -22,6 +22,10 @@ namespace UniMagazine.Repository
         {
             throw new NotImplementedException();
         }
+        public MaterialContribution Get(int id)
+        {
+            return _dbContext.MaterialContributions.FirstOrDefault(mc => mc.Id == id);
+        }
         public IEnumerable<MaterialContribution> GetMaterial(int conId)
         {
             var materialContribution = _dbContext.MaterialContributions.Where(x => x.ContributionId == conId).ToList();

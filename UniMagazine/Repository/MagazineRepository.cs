@@ -36,7 +36,7 @@ namespace UniMagazine.Repository
 
         }
 
-    public IEnumerable<Magazine> GetAllMagazines(int facultyId, int academicYearId, string status = "")
+        public IEnumerable<Magazine> GetAllMagazines(int facultyId, int academicYearId, string status = "")
         {
             var magazines = _dbContext.Magazines.Where(f => f.Status != "Not Assigned").Include(f => f.Faculty).Include(a => a.Academic).ToList();
 
@@ -120,6 +120,22 @@ namespace UniMagazine.Repository
 
                 Update(magazine);
             }
+        }
+
+        public IEnumerable<Magazine> GetByYear(int academicYearId)
+        {
+            var magazines = _dbContext.Magazines.Where(m => m.AcademicYearId == academicYearId)
+                                                .Include(f => f.Faculty)
+                                                
+
+                                                .Include(c => c.Contributions)
+                                                .ThenInclude(c => c.Files)
+                                                .Include(c => c.Contributions)
+                                                .ThenInclude(c => c.User)
+
+                                                .Where(f => f.Faculty.Name != "Sample Faculty")
+                                                .ToList();
+            return magazines;
         }
     }
 }
