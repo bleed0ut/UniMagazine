@@ -28,32 +28,32 @@
                     <button type="submit" id="status" name="status" value="Closed" class="main-control-text">Ended Magazine</button>
                 </div>
 
-                @* RIGHT *@
-                <div class="main-control-right">
-                    @if (Model.Status == "Closed" && Model.Status == Model.StatusTemp)
-                    {
-                        <div class="faculty-options">
-                            <select class="faculty-option" id="academicYearId" name="academicYearId">
-                                <option selected disabled>Academic Years</option>
-                                @foreach (var acaYear in Model.AcademicYearsDisplay)
-                                {
-                                    <option selected="@(acaYear.Id == Model.AcademicYearId)" value="@acaYear.Id">@acaYear.YearDate.ToString("yyyy")</option>
-                                }
-                            </select>
-                        </div>
-                    }
-                    @if (string.IsNullOrEmpty(ViewBag.UserId))
-                    {
-                        <div class="faculty-options">
-                            <select class="faculty-option" id="facultyId" name="facultyId">
-                                <option selected disabled>Faculties</option>
-                                @foreach (var faculty in Model.FacultiesDisplay)
-                                {
-                                    <option selected="@(faculty.Id == Model.FacultyId)" value="@faculty.Id">@faculty.Name</option>
-                                }
-                            </select>
-                        </div>
-                    }
+            @* RIGHT *@
+            <div class="main-control-right">
+                @if (Model.Status == "Closed" && Model.Status == Model.StatusTemp)
+                {
+                    <div class="faculty-options">
+                        <select class="faculty-option" id="academicYearId" name="academicYearId">
+                            <option selected disabled>Academic Years</option>
+                            @foreach (var acaYear in Model.AcademicYearsDisplay)
+                            {
+                                <option selected="@(acaYear.Id == Model.AcademicYearId)" value="@acaYear.Id">@acaYear.YearDate.ToString("yyyy")</option>
+                            }
+                        </select>
+                    </div>
+                }
+                @if (string.IsNullOrEmpty(ViewBag.UserId) || this.User.IsInRole("Manager"))
+                {
+                    <div class="faculty-options">
+                        <select class="faculty-option" id="facultyId" name="facultyId">
+                            <option selected disabled>Faculties</option>
+                            @foreach (var faculty in Model.FacultiesDisplay)
+                            {
+                                <option selected="@(faculty.Id == Model.FacultyId)" value="@faculty.Id">@faculty.Name</option>
+                            }
+                        </select>
+                    </div>
+                }
 
                     <div class="main-control-search">
                         <label class="visually-hidden" for="search"></label>

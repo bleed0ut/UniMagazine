@@ -47,7 +47,7 @@ namespace UniMagazine.Controllers
             magaFilterVM.FacultiesDisplay = _unitOfWork.FacultyRepository.GetAllFaculty();
             
 
-            if (userId != null) {
+            if (userId != null && !this.User.IsInRole("Manager")) {
                 var user = _unitOfWork.UserRepository.GetUserById(userId);
                 magaFilterVM.Magazines = _unitOfWork.MagazineRepository.GetActiveMagazines(user.FacultyId, status, academicYearId, search);
                 return View(magaFilterVM);
