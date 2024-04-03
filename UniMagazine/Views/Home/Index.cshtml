@@ -4,14 +4,10 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-        <div id="bannerImg" class="carousel-item active">
+        <div id="bannerImg" class="">
             <img src="~/img/Banner/mainBanner.jpg" class="d-block w-100 h-100 opacity-75" style="max-height: 420px; object-fit: cover" alt="...">
         </div>
-    </div>
-</div>
-<div></div>
+
 <div id="main-anounment" class="">
     <div id="anounment-tag">
         ANOUCEMENT
@@ -22,99 +18,102 @@
 </div>
 
 @* HOME CONTROL *@
-<div class="main-control">
-         <form asp-action="Index" method="get" class="d-flex w-100 justify-content-between">
-             @* LEFT *@
-            <div class="main-control-left">
-                <button type="submit" id="status" name="status" value="Opening" class="main-control-text">Current Magazine</button>
-                <button type="submit" id="status" name="status" value="Closed" class="main-control-text">Ended Magazine</button>
-            </div>
-
-            @* RIGHT *@
-            <div class="main-control-right">
-                @if (Model.Status == "Closed" && Model.Status == Model.StatusTemp)
-                {
-                    <div class="faculty-options">
-                        <select class="faculty-option" id="academicYearId" name="academicYearId">
-                            <option selected disabled>Academic Years</option>
-                            @foreach (var acaYear in Model.AcademicYearsDisplay)
-                            {
-                                <option selected="@(acaYear.Id == Model.AcademicYearId)" value="@acaYear.Id">@acaYear.YearDate.ToString("yyyy")</option>
-                            }
-                        </select>
-                    </div>
-                }
-                @if (string.IsNullOrEmpty(ViewBag.UserId))
-                {
-                    <div class="faculty-options">
-                        <select class="faculty-option" id="facultyId" name="facultyId">
-                            <option selected disabled>Faculties</option>
-                            @foreach (var faculty in Model.FacultiesDisplay)
-                            {
-                                <option selected="@(faculty.Id == Model.FacultyId)" value="@faculty.Id">@faculty.Name</option>
-                            }
-                        </select>
-                    </div>
-                }
-
-                <div class="main-control-search">
-                    <label class="visually-hidden" for="search"></label>
-                    <div class="main-control-search--input">
-                        <input type="text" value="@Model.Search" id="search" name="search" placeholder="Search by title">
-                        <input type="text" value="@Model.Status" id="status" name="status" hidden />
-                        <button type="submit" class="search-icon" id="status" name="status" value="@Model.Status">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </button>
-                    </div>
+<div class="container">
+    @* MAIN CONTROL *@
+    <div class="main-control">
+             <form asp-action="Index" method="get" class="d-flex w-100 justify-content-between">
+                 @* LEFT *@
+                <div class="main-control-left">
+                    <button type="submit" id="status" name="status" value="Opening" class="main-control-text">Current Magazine</button>
+                    <button type="submit" id="status" name="status" value="Closed" class="main-control-text">Ended Magazine</button>
                 </div>
-                <div class="search-cancel" style="margin-right: 10px">
-                    <a href="/Home/Index">Clear</a>
-                </div>
-            </div>
-        </form>
-</div>
 
-@* MAGAZINES -- DONE *@
-<div class="row">
-    @foreach(var mag in Model.Magazines)
-    {
-        <div class="col-sm-10 col-md-6 col-lg-4 mb-3 mt-3">
-            <a style="text-decoration: none; color: black" asp-route-id="@mag.Id" asp-controller="Home" asp-action="MagazineDetail">
-                <div class="card-box card mb-2" style="border: none; border-radius: unset">
-                    <img src="@mag.ImageUrl" class="card-img-top" style="border-radius: unset" alt="This image cannot show right now">
-                    <div class="faculty-text text-center">
-                        <p class="faculty-text-p text-white text-uppercase">@mag.Faculty.Name</p>
-                    </div>
-
-                    <div class="card-body">
-                        <h5 class="card-body-heading card-title" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden">@mag.Title</h5>
-                        <p class="card-body-text card-text" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">Description: @mag.Detail</p>
-                    </div>
-                    <div class="d-flex border-top">
-                        <div class="d-flex flex-column flex-grow-1 align-items-center pt-1">
-                            <p class="my-0">Open: </p>
-                            <p class="mb-1">Close: </p>
-                        </div>
-                        <div class="d-flex flex-column flex-grow-1 align-items-center pt-1">
-                            <p class="my-0">@mag.OpenedDate</p>
-                            <p class="mb-1">@mag.ClosedDate </p>
-                        </div>
-                    </div>
-                    @if (mag.Status == "Opening")
-                        {
-                            <div class="status-text-open text-center">
-                                <p class="status-text text-uppercase">@mag.Status</p>
-                        </div>
-                    }
-                    else
+                @* RIGHT *@
+                <div class="main-control-right">
+                    @if (Model.Status == "Closed" && Model.Status == Model.StatusTemp)
                     {
-                        <div class="status-text-close text-center">
-                            <p class="status-text text-uppercase">@mag.Status</p>
+                        <div class="faculty-options">
+                            <select class="faculty-option" id="academicYearId" name="academicYearId">
+                                <option selected disabled>Academic Years</option>
+                                @foreach (var acaYear in Model.AcademicYearsDisplay)
+                                {
+                                    <option selected="@(acaYear.Id == Model.AcademicYearId)" value="@acaYear.Id">@acaYear.YearDate.ToString("yyyy")</option>
+                                }
+                            </select>
                         </div>
                     }
+                    @if (string.IsNullOrEmpty(ViewBag.UserId))
+                    {
+                        <div class="faculty-options">
+                            <select class="faculty-option" id="facultyId" name="facultyId">
+                                <option selected disabled>Faculties</option>
+                                @foreach (var faculty in Model.FacultiesDisplay)
+                                {
+                                    <option selected="@(faculty.Id == Model.FacultyId)" value="@faculty.Id">@faculty.Name</option>
+                                }
+                            </select>
+                        </div>
+                    }
+
+                    <div class="main-control-search">
+                        <label class="visually-hidden" for="search"></label>
+                        <div class="main-control-search--input">
+                            <input type="text" value="@Model.Search" id="search" name="search" placeholder="Search by title">
+                            <input type="text" value="@Model.Status" id="status" name="status" hidden />
+                            <button type="submit" class="search-icon" id="status" name="status" value="@Model.Status">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="search-cancel" style="margin-right: 10px">
+                        <a href="/Home/Index">Clear</a>
+                    </div>
                 </div>
-            </a>
-        </div>
-    }
+            </form>
+    </div>
+
+    @* MAGAZINES LIST *@
+    <div class="row">
+        @foreach(var mag in Model.Magazines)
+        {
+            <div class="col-sm-10 col-md-6 col-lg-4 mb-3 mt-3">
+                <a style="text-decoration: none; color: black" asp-route-id="@mag.Id" asp-controller="Home" asp-action="MagazineDetail">
+                    <div class="card-box card mb-2" style="border: none; border-radius: unset">
+                        <img src="@mag.ImageUrl" class="card-img-top" style="border-radius: unset" alt="This image cannot show right now">
+                        <div class="faculty-text text-center">
+                            <p class="faculty-text-p text-white text-uppercase">@mag.Faculty.Name</p>
+                        </div>
+
+                        <div class="card-body">
+                            <h5 class="card-body-heading card-title" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden">@mag.Title</h5>
+                            <p class="card-body-text card-text" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">Description: @mag.Detail</p>
+                        </div>
+                        <div class="d-flex border-top">
+                            <div class="d-flex flex-column flex-grow-1 align-items-center pt-1">
+                                <p class="my-0">Open: </p>
+                                <p class="mb-1">Close: </p>
+                            </div>
+                            <div class="d-flex flex-column flex-grow-1 align-items-center pt-1">
+                                <p class="my-0">@mag.OpenedDate</p>
+                                <p class="mb-1">@mag.ClosedDate </p>
+                            </div>
+                        </div>
+                        @if (mag.Status == "Opening")
+                            {
+                                <div class="status-text-open text-center">
+                                    <p class="status-text text-uppercase">@mag.Status</p>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="status-text-close text-center">
+                                <p class="status-text text-uppercase">@mag.Status</p>
+                            </div>
+                        }
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
 </div>
 

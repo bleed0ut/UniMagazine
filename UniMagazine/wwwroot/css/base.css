@@ -30,9 +30,9 @@
 
 #main-anounment {
     display: flex;
-    background-color: var(--primary-color);
-    margin-top: 1rem;
     height: 80px;
+    background-color: var(--primary-color);
+    padding-left: 10px;
 }
 
 #anounment-tag {
@@ -59,6 +59,7 @@
     margin-bottom: 10px;
     padding: 15px;
     justify-content: space-between;
+    border-radius: 10px;
 }
 
 .main-control-left{
@@ -130,6 +131,7 @@
     background-color: #EE4266;
     padding: 8px;
     color: white;
+    border-radius: 10px;
 }
 
 .search-cancel a:hover{
@@ -143,7 +145,7 @@
 }
 
 .card-img-top {
-    max-height: 210px;
+    height: 210px;
     object-fit: cover
 }
 

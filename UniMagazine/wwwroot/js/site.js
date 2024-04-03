@@ -5,7 +5,7 @@
 
 //Navbar side
 $("#nav-bar-toggle").click(function () {
-    $("#nav-bar-side").slideToggle()
+    $("#nav-bar-side").show()
 })
 
 $("#header__nav--close-icon").click(function () {

@@ -2,10 +2,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link rel="stylesheet" href="~/css/login.css" type="text/css" />
-<div class="login-form bg-white shadow mt-5">
-     <img class="w-50" src="~/img/Banner/loginImg.jpg" alt="Girl in a jacket">
-    <div class="login-main">
-        @RenderBody()
+<div class="container">
+    <div class="login-form bg-white shadow mt-5">
+         <img class="w-50" src="~/img/Banner/loginImg.png" alt="Girl in a jacket">
+        <div class="login-main">
+            @RenderBody()
+        </div>
     </div>
 </div>
 @section Scripts {

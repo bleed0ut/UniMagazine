@@ -21,6 +21,7 @@ body {
     min-height: 100%;
     box-sizing: inherit;
     padding-bottom: 400px !important;
+    background-color: #F1F2F3;
 }
 
 footer {
@@ -80,18 +81,22 @@ html {
 
 body {
     margin-bottom: 60px;
-    background-color: #F1F2F3;
 }
 
-/*HEADER*/
+/*SIDEBAR*/
 #nav-bar-side {
     display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: auto;
 }
 
 .header__nav {
-    position: absolute;
+    position: sticky;
     min-height: 100vh;
-    width: 500px;
+    width: 300px;
     background-color: var(--secondary-color);
     opacity: 0.95;
     top: 0;
@@ -102,15 +107,18 @@ body {
     flex-direction: column;
     align-items: center;
     padding-top: 30px;
-    animation: navShowUp ease-in 0.2s;
+    animation: navShowUp ease-in 0.5s;
+    border-left: 2px solid #F1F2F3;
 }
 
 @keyframes navShowUp{
     0%{
+        opacity: 0;
         width: 0;
     }
-    50%{
-        width: 500px;
+    50% {
+        opacity: 1;
+        width: 300px;
     }
 }
 
@@ -118,7 +126,7 @@ body {
     width: 100%;
     color: #F1F2F3;
     font-weight: 500;
-    font-size: 30px;
+    font-size: 25px;
     letter-spacing: 5px;
     text-align: center;
 }

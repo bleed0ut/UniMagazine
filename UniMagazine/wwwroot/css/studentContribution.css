@@ -1,0 +1,61 @@
+﻿.stu-contribution-box{
+    display: flex;
+    height: 150px;
+    flex-direction: row;
+    background-color: white;
+}
+.stu-contribution-box-img{
+    flex-grow: 1;
+    max-height: 150px;
+    min-height: 150px;
+    max-width: 150px;
+    min-height: 150px;
+    object-fit: cover;
+}
+
+.stu-contribution-box-body{
+    flex-grow: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.contri-box-body-title {
+    background-color: var(--third-color);
+    color: white;
+    padding-left: 10px;
+    font-size: 1rem;
+
+    /*... show*/
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+.contri-box-body-des {
+
+}
+
+.contri-box-status-success{
+    color: white;
+    text-align: center;
+    height: 20px;
+    line-height: 20px;
+    background-color: var(--success-color);
+}
+
+.contri-box-status-pending {
+    color: white;
+    text-align: center;
+    height: 20px;
+    line-height: 20px;
+    background-color: gray;
+}
+
+.contri-box-status-failed {
+    color: white;
+    text-align: center;
+    height: 20px;
+    line-height: 20px;
+    background-color: var(--failed-color);
+}
