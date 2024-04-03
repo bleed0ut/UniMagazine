@@ -107,7 +107,7 @@ body {
     flex-direction: column;
     align-items: center;
     padding-top: 30px;
-    animation: navShowUp ease-in 0.5s;
+    animation: navShowUp ease 0.25s;
     border-left: 2px solid #F1F2F3;
 }
 

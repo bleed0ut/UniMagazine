@@ -22,15 +22,16 @@
 
     <div class="magazine-detail-box d-flex">
         <div class="magazine-detail">
+            <div class="magazine-detail__image-box">
+                <div class="magazine-detail-post">
+                    Posted by Manager
+                </div>
 
-            <div class="magazine-detail-post">
-                Posted by Manager
-            </div>
+                <img class="magazine-detail-img" src="@Model.Magazine.ImageUrl" alt="This image cannot show right now!">
 
-            <img class="magazine-detail-img" src="@Model.Magazine.ImageUrl" alt="...">
-
-            <div class="magazine-detail-post">
-                @Model.Magazine.PostedDate
+                <div class="magazine-detail-post">
+                    @Model.Magazine.PostedDate
+                </div>
             </div>
 
             <div class="magazine-detail-body">
@@ -122,6 +123,17 @@
         </form>
     </div>
 
+    @if (User.IsInRole("Manager"))
+    {
+        @* DOWNLOAD ALL FILE FOR MANAGER *@
+        <div class="d-flex w-100 justify-content-end">
+            @foreach(var con in Model.Contributions)
+            {
+                <a class="btn border ms-2 mb-2 text-white" style="background-color: var(--primary-color)" asp-area="Manager" asp-controller="Contribution" asp-action="DownloadAllFiles" asp-route-contributionId="@con.Id">Download all Files</a>
+                break;
+            }
+        </div> 
+    }
 
     @* Contribution section *@
     <div class="w-100" style="border-top: 2px solid var(--primary-color)">
@@ -142,29 +154,39 @@
                         <p class="small text-muted mb-0">@con.CreatedDate</p>
                     </div>
                 </div>
-
-                <div class="contribution-file">
+                <div class="comment-contribution__tittle">@con.Content</div>
+                <div class="contribution-file ">
                     <button class="button-contribution" type="button" data-bs-toggle="collapse"
                             data-bs-target="#contri-id-@con.Id" aria-expanded="false" aria-controls="contri-id-@con.Id">
-                        @con.Content <i class="fa-solid fa-chevron-down"></i>
+                        Show files <i class="fa-solid fa-chevron-down"></i>
                     </button>
 
                     @* FILE URL SECTION*@
                     <div class="collapse contribution-file-list" id="contri-id-@con.Id">
-                        @if (User.IsInRole("Student") || User.IsInRole("Coordinator") || User.IsInRole("Manager"))
+                        @if (true)
                         {
                             <div>
                                 @foreach (var file in con.Files)
                                 {
                                     i++;
-                                    <p><strong>----File @i</strong> &colon; @file.ImageUrl</p>
+                                    @* Handle File Name *@
+                                    string fileName = @file.ImageUrl;
+                                    int firstIndex = @fileName.IndexOf('_');
+                                    string fileNameRest = fileName.Substring(firstIndex + 1);
+                                    <p><strong>----File @i</strong> &colon;
+                                        <a href="~/@file.ImageUrl" target="_blank" download style="text-decoration: none">
+                                            <i class="fa-regular fa-file me-2"></i>@fileNameRest
+                                        </a>
+                                    </p>
                                 }
                             </div>
                         }
-                    </div>
-                    <div>
-                        <a asp-area="Manager" asp-controller="Contribution" asp-action="DownloadFiles" asp-route-contributionId="@con.Id">Download Files</a>
-                        <a asp-area="Manager" asp-controller="Contribution" asp-action="DownloadAllFiles" asp-route-contributionId="@con.Id">Download all Files</a>
+                        @if (User.IsInRole("Manager"))
+                        {
+                            <div class="pb-2">
+                                <a class="btn border" asp-area="Manager" asp-controller="Contribution" asp-action="DownloadFiles" asp-route-contributionId="@con.Id">Download Files</a>
+                            </div>
+                        }
                     </div>
 
 

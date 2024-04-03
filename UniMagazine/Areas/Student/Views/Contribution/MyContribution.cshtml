@@ -42,17 +42,11 @@
 <div class="row">
     @foreach (var con in Model.Contributions)
     {
-            <div class="col-sm-6 pt-3">
+            <div class="col-sm-12 col-md-6 col-xl-6 pt-3">
             <a style="text-decoration: none; color: black" asp-area="Student" asp-controller="Contribution" asp-action="Detail" asp-route-id="@con.Id">
-                <div class="stu-contribution-box p-0">
-                    <img class="stu-contribution-box-img" src="@con.Magazine.ImageUrl" />
-                    <div class="stu-contribution-box-body">
-                        <div class="contri-box-body-title">@con.Magazine.Title</div>
-                        <div class="ps-2">
-                            <div class="contri-box-body-des">My contribute: @con.Content</div>
-                            <div>Uploaded Date: @con.CreatedDate</div>
-                        </div>
-
+                <div class="stu-contribution-box p-0 shadow">
+                    <div class="stu-contribution-box-imgwstatus">
+                        <img class="stu-contribution-box-img" src="@con.Magazine.ImageUrl" />
                         @if (con.Status == "Published")
                         {
                             <span class="contri-box-status-success">@con.Status</span>
@@ -66,34 +60,15 @@
                             <span class="contri-box-status-failed">@con.Status</span>
                         }
                     </div>
+                    <div class="stu-contribution-box-body">
+                        <div class="contri-box-body-title">@con.Magazine.Title</div>
+                        <div class="ps-2">
+                            <div class="contri-box-body-des">My contribute: @con.Content</div>
+                            <div>Uploaded Date: @con.CreatedDate</div>
+                        </div>
+                    </div>
                 </div>
                 </a>
              </div>
-
-       @*  <div class="col-xl-6">
-            <div class="card">
-                <div class="card-header" style="background-color:lightsteelblue">
-                    <h4>
-                        @con.Magazine.Title
-                        @if(con.Status == "Published"){
-                            <span class="badge bg-success">@con.Status</span>
-                        }else if (con.Status == "Pending")
-                        {
-                            <span class="badge bg-secondary">@con.Status</span>
-                        }
-                        else
-                        {
-                            <span class="badge bg-danger">@con.Status</span>
-                        }
-                    </h4>
-                </div>
-                <div class="card-body">
-                    <p><strong>Posted date: </strong><i>@con.CreatedDate</i></p>
-
-                    <p class="card-text">@con.Content</p>
-                    <a class="btn btn-dark" asp-area="Student" asp-controller="Contribution" asp-action="Detail" asp-route-id="@con.Id">Detail</a>
-                </div>
-            </div>
-        </div> *@
     }
 </div>

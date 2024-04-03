@@ -3,8 +3,8 @@
 }
 
 .magazine-detail {
-    flex-grow: 2;
     max-width: 70%;
+    min-width: 70%;
 }
 
 .magazine-detail-post{
@@ -12,11 +12,13 @@
     color: white;
     background-color: var(--secondary-color)
 }
-
+.magazine-detail__image-box{
+    height: 448px;
+}
 .magazine-detail-img {
     display: block;
     width: 100%;
-    max-height: 400px;
+    height: 400px;
     object-fit: contain;
     border-left: 2px solid var(--secondary-color);
     border-right: 2px solid var(--secondary-color);
@@ -24,8 +26,12 @@
 }
 
 /*DETAIL BODY*/
-.magazine-detail-body{
-    margin-top: 40px;
+.magazine-detail-body {
+    background-color: white;
+    padding: 40px;
+    border-bottom: 2px solid var(--primary-color);
+    border-left: 2px solid var(--primary-color);
+    border-right: 2px solid var(--primary-color);
 }
 
 .magazine-detail-body-heading {
@@ -61,19 +67,19 @@
 /*SUBMIT SECTION*/
 .magazine-submit-box {
     flex-grow: 1;
-    /*position: relative;*/
+    position: relative;
 }
 
 .magazine-detail-submit {
-/*    position: sticky;
-    top: 0;*/
+    position: sticky;
+    top: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     height: 448px;
     justify-content: space-between;
     background-color: white;
-
+    border-right: 2px solid var(--success-color);
 }
 
 /*TIME AND SUBMIT*/
@@ -103,6 +109,13 @@
 }
 
 /*CONTRIBUTION*/
+.comment-contribution__tittle {
+    margin-left: 60px;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
 .contribution-file {
     margin-left: 54px;
     margin-top: 10px;

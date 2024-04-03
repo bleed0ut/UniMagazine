@@ -50,7 +50,7 @@
 }
 
 /*HOME CONTROL*/
-.main-control{
+.main-control {
     display: flex;
     width: 100%;
     background-color: white;
@@ -60,6 +60,8 @@
     padding: 15px;
     justify-content: space-between;
     border-radius: 10px;
+    border-left: 2px solid var(--primary-color);
+    border-right: 2px solid var(--primary-color);
 }
 
 .main-control-left{
@@ -128,13 +130,14 @@
 .search-cancel a {
     font-weight: 600;
     text-decoration: none;
-    background-color: #EE4266;
     padding: 8px;
-    color: white;
+    color: var(--failed-color);
+    border: 1px solid var(--failed-color);
     border-radius: 10px;
 }
 
 .search-cancel a:hover{
+    color: white;
     background-color: #EE4266;
 }
 

@@ -10,45 +10,52 @@
             <p>@Model.Contribution.Content</p>
         </blockquote>
         <figcaption class="blockquote-footer">
-            Better Contribute some shit son :))))
+            Edit my contributions
         </figcaption>
     </figure>
 </div>
 <a asp-area="Student" asp-route-id="@Model.Contribution.Id" asp-controller="Contribution" asp-action="AddMaterial" style="text-decoration: none;">
-    <div class="magazine-detail-upload">
+    <div class="btn btn-secondary border-1 float-end p-2 mb-2">
         <i class="fa-solid fa-upload"></i>
         Add New Material
     </div>
 </a>
-<div class="card-body p-0">
+
+@* File List *@
     <table id="tblData" class="table table-bordered table-striped text-center" style="width:100%">
         <thead class="text-center flex-grow-1">
             <tr>
-                <th>Id</th>
                 <th>Created Date</th>
-                <th>Image</th>
-                <th>Contribution ID</th>
-                <th>Action</th>
+                <th>File</th>
             </tr>
         </thead>
         <tbody class="text-center align-middle">
             @foreach (var material in Model.MaterialContribution)
             {
+                @* Handle File Name *@
+                string fileName = @material.ImageUrl;
+                int firstIndex = @fileName.IndexOf('_');
+                string fileNameRest = fileName.Substring(firstIndex + 1);
                 <tr>
-                    <td>@material.Id</td>
-                    <td>@material.CreatedDate</td>
-                    <td>@material.ImageUrl </td>
-                    <td>@material.ContributionId</td>
-                    <td>
-                        @* <a asp-area="Admin"
-                           asp-action="Update"
-                           asp-route-id="@academic.Id" class="btn btn-outline-dark">Detail</a>
- *@
+                    <td class="col-2">@material.CreatedDate</td>
+                    <td class="col-10">
+                    <a class="material-link" href="#" data="@material.ImageUrl">@fileNameRest </a>
                     </td>
-                    
-                </tr>
-                
+                </tr>                
             }
         </tbody>
     </table>
-</div>
+
+<!-- Display iframe dynamically -->
+@foreach (var material in Model.MaterialContribution)
+{
+    <iframe 
+        id="iframe-contribute"
+        src="/@material.ImageUrl"
+        width="100%"
+        height="800px"
+        loading="lazy"
+        title="PDF-file"></iframe>
+    break;
+}
+

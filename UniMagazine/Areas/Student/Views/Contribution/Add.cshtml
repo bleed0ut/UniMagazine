@@ -10,7 +10,7 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/Home" style="text-decoration: none; color: var(--primary-color)">Home</a></li>
         <li class="breadcrumb-item"><a asp-area="" asp-route-id="@Model.MagazineId" asp-controller="Home" asp-action="MagazineDetail" style="text-decoration: none; color: var(--primary-color)">Magazine Detail</a></li>
-        <li class="breadcrumb-item active" style="color: var(--four-color); font-weight: 700" aria-current="page">New contribution submission</li>
+        <li class="breadcrumb-item active" style="color: var(--primary-color); font-weight: 700" aria-current="page">New contribution submission</li>
     </ol>
 </nav>
 
@@ -33,6 +33,7 @@
         </div>
     </div>
 
+    <div class="magazine-submit-box">
     <div class="magazine-detail-submit">
         <div class="magazine-detail-status-open">Opening</div>
             <form method="post" enctype="multipart/form-data">
@@ -60,5 +61,6 @@
                     </div>
             </form>
         <div class="magazine-detail-status-open">Opening</div>
+    </div>
     </div>
 </div>

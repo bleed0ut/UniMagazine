@@ -4,14 +4,6 @@
     flex-direction: row;
     background-color: white;
 }
-.stu-contribution-box-img{
-    flex-grow: 1;
-    max-height: 150px;
-    min-height: 150px;
-    max-width: 150px;
-    min-height: 150px;
-    object-fit: cover;
-}
 
 .stu-contribution-box-body{
     flex-grow: 2;
@@ -36,7 +28,29 @@
 
 }
 
-.contri-box-status-success{
+/*img with status*/
+.stu-contribution-box-imgwstatus {
+    position: relative;
+    flex-grow: 1;
+    max-height: 150px;
+    min-height: 150px;
+    max-width: 150px;
+    min-width: 150px;
+}
+
+.stu-contribution-box-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.contri-box-status-success {
+    opacity: 0.7;
+    position: absolute;
+    top: 62px;
+    left: 0;
+    right: 0;
+    bottom: auto;
     color: white;
     text-align: center;
     height: 20px;
@@ -45,6 +59,12 @@
 }
 
 .contri-box-status-pending {
+    opacity: 0.7;
+    position: absolute;
+    top: 62px;
+    left: 0;
+    right: 0;
+    bottom: auto;
     color: white;
     text-align: center;
     height: 20px;
@@ -53,9 +73,20 @@
 }
 
 .contri-box-status-failed {
+    opacity: 0.7;
+    position: absolute;
+    top: 62px;
+    left: 0;
+    right: 0;
+    bottom: auto;
     color: white;
     text-align: center;
     height: 20px;
     line-height: 20px;
     background-color: var(--failed-color);
+}
+
+/*Contribution IFrame Student*/
+#iframe-contribute{
+    border: 1px solid var(--primary-color);
 }
