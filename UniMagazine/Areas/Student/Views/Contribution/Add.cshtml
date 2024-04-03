@@ -33,7 +33,7 @@
     </div>
 
     <div class="magazine-detail-submit">
-        <div class="magazine-detail-status-open">Opening</div>
+        <div class="magazine-detail-status-open">@Model.Magazine.Status</div>
             <form method="post" enctype="multipart/form-data">
                     <input type="number" asp-for="MagazineId" value="@Model.MagazineId" hidden />
                         
@@ -58,6 +58,6 @@
                         </div>
                     </div>
             </form>
-        <div class="magazine-detail-status-open">Opening</div>
+        <div class="magazine-detail-status-open">@Model.Magazine.Status</div>
     </div>
 </div>
