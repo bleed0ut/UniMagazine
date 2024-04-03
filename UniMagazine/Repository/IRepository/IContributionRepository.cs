@@ -7,7 +7,7 @@ namespace UniMagazine.Repository.IRepository
         IEnumerable<Contribution> GetAllPublishedContribution(int magazineId, string? search, string? userId);
         IEnumerable<Contribution> GetAllPendingContribution(int facultyId, string? searchByTitle, string? searchByContibutorEmail);
         IEnumerable<Contribution> GetMyContribution(string userId, string? status, string? search);
-        Contribution Get(int id);
+        Contribution? Get(int id);
         public IEnumerable<Contribution> GetByYear(int academicYearId);
         void Update(Contribution con);
         void CheckAPendingContribution(Contribution contribution);

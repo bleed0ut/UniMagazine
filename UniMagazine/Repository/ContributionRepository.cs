@@ -59,18 +59,13 @@ namespace UniMagazine.Repository
             _dbContext.Contributions.Update(contribution);
         }
 
-        public Contribution Get(int id)
+        public Contribution? Get(int id)
         {
             var contribution = _dbContext.Contributions.Include(u => u.User).ThenInclude(f => f.Faculty)
                                            .Include(m => m.Files)
                                            .Include(m => m.Magazine)
                                            .FirstOrDefault(x => x.Id == id);
-
-            if (contribution != null)
-                return contribution;
-            else
-                return null;
-
+            return contribution;
         }
 
         public void CheckAPendingContribution(Contribution contribution)

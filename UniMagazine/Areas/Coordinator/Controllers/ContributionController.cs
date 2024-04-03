@@ -67,6 +67,13 @@ namespace UniMagazine.Areas.Coordinator.Controllers
             if (con == null)
                 return NotFound();
 
+            if(con.Magazine.Status == "Closed")
+            {
+                feedbackVM.Contribution = con;
+                TempData["error"] = "Cannot moderate this contribution, due to the Magazine has been ended!";
+                return View(feedbackVM);
+            }
+                        
             DateTime today = DateTime.Now;
             TimeSpan ts = today - con.CreatedDate;
 
