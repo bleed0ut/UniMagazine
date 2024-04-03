@@ -11,6 +11,7 @@ using UniMagazine.Models.ViewModels;
 using UniMagazine.Repository;
 using UniMagazine.Repository.IRepository;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using UniMagazine.Utility;
 
 namespace UniMagazine.Areas.Student.Controllers
 {
@@ -22,11 +23,13 @@ namespace UniMagazine.Areas.Student.Controllers
         private IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly UserManager<ApplicationUser> _userManager;
-        public ContributionController(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment)
+        private readonly IEmailSender _emailSender;
+        public ContributionController(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment, IEmailSender emailSender)
         {
             _userManager = userManager;
             _unitOfWork = unitOfWork;
             _webHostEnvironment = webHostEnvironment;
+            _emailSender = emailSender;
         }
         public IActionResult Index()
         {
@@ -72,7 +75,6 @@ namespace UniMagazine.Areas.Student.Controllers
                         UserId = currentUser.Id,
                         MagazineId = con.MagazineId,
                         // Assuming Contribution has a UserId property
-
                     };
 
                     _unitOfWork.ContributionRepository.Add(contribution);
@@ -103,6 +105,14 @@ namespace UniMagazine.Areas.Student.Controllers
                     }
                     TempData["success"] = "Request successfully! Your contribution is pending!";
                     _unitOfWork.Save();
+
+                    contribution.User = _unitOfWork.UserRepository.GetUserById(currentUser.Id);
+                    contribution.Magazine = _unitOfWork.MagazineRepository.Get(x => x.Id == con.MagazineId);
+                    //send mail to contribution
+                    var coordinators = _unitOfWork.UserRepository.GetCoordinators(contribution.User.FacultyId);
+                    if(coordinators.Count() > 0)
+                        _emailSender.AnounceSubmission(coordinators, contribution);
+
                     // Save MaterialContribution entities
                     return RedirectToAction("MagazineDetail", "Home", new { id = con.MagazineId, area = "" });
                 }

@@ -9,5 +9,7 @@ namespace UniMagazine.Repository.IRepository
         public ApplicationUser GetUserById(string id);
 
         public void UpdateUser(ApplicationUser user);
+
+        public IEnumerable<ApplicationUser> GetCoordinators(int facultyId);
     }
 }

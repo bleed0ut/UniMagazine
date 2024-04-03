@@ -71,9 +71,30 @@ namespace UniMagazine.Utility
 
             mm.Body = content;
 
-            SmtpClient smtp = GetSmtpClient() ;
+            SmtpClient smtp = GetSmtpClient();
 
             smtp.Send(mm);
+        }
+
+        public void AnounceSubmission(IEnumerable<ApplicationUser> coordinators, Contribution contribution)
+        {
+            MailMessage mm = new MailMessage();
+            mm.From = new MailAddress(sender);
+
+            mm.IsBodyHtml = true;
+
+            mm.Subject = "New pending submissions";
+
+            string content = $"<h1>New pending submissions is waiting for you</h1>";
+            content += $"<p>Student {contribution.User.FullName}<i>({contribution.User.Email})</i> has just submitted a contribution at {contribution.Magazine.Title}</p>";
+            mm.Body= content;
+
+            SmtpClient smtp = GetSmtpClient();
+            foreach (ApplicationUser coordinator in coordinators)
+            {
+                mm.To.Add(coordinator.Email);
+                smtp.Send(mm);
+            }
         }
 
         private SmtpClient GetSmtpClient()

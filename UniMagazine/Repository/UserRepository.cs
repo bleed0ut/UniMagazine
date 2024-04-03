@@ -61,5 +61,11 @@ namespace UniMagazine.Repository
         {
             _dbContext.Users.Update(user);
         }
+
+        public IEnumerable<ApplicationUser> GetCoordinators(int facultyId)
+        {
+            var coordinators = _dbContext.Users.Where(f => f.FacultyId == facultyId).ToList();
+            return coordinators;
+        }
     }
 }
