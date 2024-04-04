@@ -18,12 +18,12 @@ namespace UniMagazine.Repository
 
         public void Add(T entity)
         {
-            _dbContext.Add(entity);
+            DbSet.Add(entity);
         }
 
         public void Delete(T entity)
         {
-            _dbContext.Remove(entity);
+            DbSet.Remove(entity);
         }
 
         public T Get(Expression<Func<T, bool>> filter, string? includeProperty = null)
