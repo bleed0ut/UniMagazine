@@ -13,106 +13,78 @@
     </ol>
 </nav>
 
-<div class="magazine-detail-box d-flex">
-    <div class="magazine-detail">
-        <div class="magazine-detail-post">
-            @Model.User.Faculty.Name Faculty
-        </div>
+
+<div class="magazine-detail-box">
+    <div class="magazine-detail justify-content-start">
         <div class="magazine-detail-body">
+            <div class="magazine-detail-post">
+                @Model.User.Faculty.Name Faculty
+            </div>
             <h3 class="magazine-detail-body-heading">@Model.Magazine.Title </h3>
             <p class="magazine-detail-subdes text-muted">Post by Manager at @Model.Magazine.PostedDate</p>
-            <p class="magazine-detail-body-des">@Model.Magazine.Detail</p>
         </div>
-        <div class="magazine-submit-box">
-            <div class="magazine-detail-submit">
-                <div class="magazine-detail-status-open">Update a contribution</div>
-                <form method="post" enctype="multipart/form-data">
-                    <input type="number" asp-for="MagazineId" value="@Model.MagazineId" hidden />
+        <div class="d-flex justify-content-center">
+            @* form *@
+            <div class="magazine-submit-box">
+                <div class="magazine-detail-submit">
+                    <form method="post" enctype="multipart/form-data">
+                        <input type="number" asp-for="MagazineId" value="@Model.MagazineId" hidden />
 
-                    <p id="inputtext" style="font-weight: 600">Contribution Description</p>
-                    <input class="input-contribution" type="text" for="inputtext" asp-for="@Model.Content" autofocus placeholder="Enter title" />
-                    <p><span class="w-100 text-danger" asp-validation-for="Content"></span></p>
-                    <input id="imgInp" type="file" name="files" class="form-control" multiple />
+                        <p id="inputtext" class="text-muted" style="font-weight: 600">Contribution Description</p>
+                        <input class="input-contribution" type="text" for="inputtext" asp-for="@Model.Content" placeholder="Enter title" />
+                        <p><span class="w-100 text-danger" asp-validation-for="Content"></span></p>
 
-                    <div class="d-flex flex-column align-content-center mt-3">
-                        <div class="text-center">
-                            <input type="checkbox" id="terms" class="p-5" name="terms" required style="width:15px; height:15px; cursor: pointer">
-                            <span for="terms">I accept to the <a href="#">Terms & Conditions</a></span>
+                        <input id="imgInp" type="file" name="files" class="form-control" multiple />
+
+                        <div class="d-flex flex-column align-content-center mt-3">
+                            <div class="text-center">
+                                <input type="checkbox" id="terms" class="p-5" name="terms" required style="width:15px; height:15px; cursor: pointer">
+                                <span for="terms">I accept to the <a href="#">Terms & Conditions</a></span>
+                            </div>
+
+                            <div class="d-flex mt-3 justify-content-around align-items-center">
+                                <button class="submit-contribution-btn" type="submit">Update</button>
+                                <a asp-area="Student" asp-route-id="@Model.Id" asp-controller="Contribution" asp-action="Detail" style="text-decoration: none">
+                                    <p type="button" class="cancel-contribution-btn m-0">
+                                        Cancel
+                                    </p>
+                                </a>
+                            </div>
                         </div>
-
-                        <div class="d-flex mt-3 justify-content-around align-items-center">
-                            <button class="submit-contribution-btn" type="submit">Update</button>
-                            <a asp-area="Student" asp-route-id="@Model.Id" asp-controller="Contribution" asp-action="Detail" style="text-decoration: none">
-                                <p type="button" class="cancel-contribution-btn m-0">
-                                    Cancel
-                                </p>
-                            </a>
-                        </div>
-                    </div>
-                </form>
-                <div class="magazine-detail-status-open">Opening</div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-    <div class="magazine-submit-box">
-        <div class="magazine-detail-post">
-            Magazine Background Image
-        </div>
-        <div class="magazine-detail-submit">
-            <img class="magazine-detail-img" src="@Model.Magazine.ImageUrl" alt="This image cannot show right now!">
-            @* File List *@
-            <h3>All uploaded file</h3>
-            <div class="w-100" style="border-top: 2px solid var(--primary-color)"></div>
-            <table id="tblData" class="table table-bordered" style="width:35%; background-color:lightgray;">
-                <tbody class="align-middle">
-                    @foreach (var material in Model.Files)
-                    {
-                        @* Handle File Name *@
-                        string fileName = @material.ImageUrl;
-                        int firstIndex = @fileName.IndexOf('_');
-                        string fileNameRest = fileName.Substring(firstIndex + 1);
-                        <tr>
-                            <td class="col-10" data="@material.ImageUrl">
-                                <a class="material-link" style="text-decoration: none; color:black" href="#" data="@material.ImageUrl">@fileNameRest </a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+
+    <div class="magazine-img-section">
+        @if (Model.Magazine.Status == "Opening")
+        {
+            <div class="magazine-detail-status-open">@Model.Magazine.Status</div>
+        }
+        else
+        {
+            <div class="magazine-detail-status-close">@Model.Magazine.Status</div>
+        }
+        <img class="magazine-detail-img" src="@Model.Magazine.ImageUrl" />
     </div>
 </div>
-<h1>Preview file</h1>
-<div class="w-100" style="border-top: 2px solid var(--primary-color);"></div>
-<p></p>
-<!-- Display iframe dynamically -->
-@foreach (var material in Model.Files)
-{
-    <iframe 
-        id="iframe-contribute"
-        src="/@material.ImageUrl"
-        width="100%"
-        height="750px"
-        loading="lazy"
-        title="PDF-file"></iframe>
-    break;
-}
+
 @* Feedback *@
-<h1>Feedback Comments</h1>
-<div class="w-100" style="border-top: 2px solid var(--primary-color)"></div>
-@foreach(var feedback in Model.FeedBacks)
-{
-    <div class="w-100" style="border-top: 2px solid var(--primary-color); background-color:white">
+<h4 class="mt-3">Feedback Comments</h4>
+<div class="w-100 p-3" style="border-top: 1px solid var(--primary-color); background-color:white">
+    @foreach (var feedback in Model.FeedBacks)
+    {
         <div class="d-flex flex-row align-items-center justify-content-between">
             <div class="d-flex flex-row align-items-center">
                 <img src="https://cdn.donmai.us/sample/b4/b5/__hoshimachi_suisei_and_hoshimachi_suisei_hololive_drawn_by_profnote__sample-b4b54b16dc2b92dfdfc489b25af97513.jpg"
                      class="rounded-circle object-fit-scale" alt="avatar" width="45" height="45" />
                 <div>
-                    <p class="small mb-0 ms-2">Coordinator</p>
-                    <span class="small text-muted mx-0 ms-2">gave a feedback comment</span>
+                    <p class="small mb-0 ms-2 fw-bold">Coordinator</p>
+                    <span class="small text-muted mx-0 ms-2">Gave a feedback comment</span>
                 </div>
             </div>
-            <div>
+            <div class="d-flex align-items-center">
                 <p class="small text-muted mb-0">
                     @feedback.CreatedDate
                     @if (feedback.Status == "Published")
@@ -127,5 +99,33 @@
             </div>
         </div>
         <div class="comment-contribution__tittle">@feedback.Comment</div>
+    }
+</div>
+@* End feedback *@
+
+@* File List *@
+<h4 class="mt-4">All uploaded file</h4>
+<div class="w-100" style="border-top: 1px solid var(--primary-color)"></div>
+@foreach (var material in Model.Files)
+{
+    @* Handle File Name *@
+    string fileName = @material.ImageUrl;
+    int firstIndex = @fileName.IndexOf('_');
+    string fileNameRest = fileName.Substring(firstIndex + 1);
+    <div class="material-link btn btn-secondary w-100 p-2" style="border-radius: unset;" data="@material.ImageUrl">
+        <a class="material-link" style="text-decoration: none; color:white" href="#">@fileNameRest </a>
     </div>
+
+}
+
+<!-- Display iframe dynamically -->
+@foreach (var material in Model.Files)
+{
+    <iframe id="iframe-contribute"
+            src="/@material.ImageUrl"
+            width="100%"
+            height="750px"
+            loading="lazy"
+            title="PDF-file"></iframe>
+    break;
 }

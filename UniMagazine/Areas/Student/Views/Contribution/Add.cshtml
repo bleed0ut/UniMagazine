@@ -14,53 +14,50 @@
     </ol>
 </nav>
 
-<div class="magazine-detail-box d-flex">
-    <div class="magazine-detail">
-        <div class="magazine-detail-post">
-            Posted by Manager
-        </div>
-
-        <img class="magazine-detail-img" src="@ViewData["ImgUrl"]" alt="...">
-
-        <div class="magazine-detail-post">
-            @ViewData["PostedDate"]
-        </div>
-
+@* MAGAZINE DETAIL *@
+<div class="magazine-detail-box">
+    <div class="magazine-detail justify-content-start">
         <div class="magazine-detail-body">
             <h3 class="magazine-detail-body-heading">@ViewData["MagazineTitle"] </h3>
             <p class="magazine-detail-subdes text-muted">Upload by Manager at @ViewData["PostedDate"]</p>
-            <p class="magazine-detail-body-des">@ViewData["MagazineDescription"]</p>
+        </div>
+        <div class="d-flex justify-content-center">
+            <form method="post" enctype="multipart/form-data">
+                <input type="number" asp-for="MagazineId" value="@Model.MagazineId" hidden />
+                <p id="inputtext" style="font-weight: 600">Contribution</p>
+                <input class="input-contribution" type="text" for="inputtext" asp-for="@Model.Content" autofocus placeholder="Enter title" />
+                <p><span class="w-100 text-danger" asp-validation-for="Content"></span></p>
+                <input id="imgInp" type="file" name="files" class="form-control" multiple />
+
+                <div class="d-flex flex-column align-content-center mt-3">
+                    <div class="text-center">
+                        <input type="checkbox" id="terms" class="p-5" name="terms" required style="width:15px; height:15px; cursor: pointer">
+                        <span for="terms">I accept to the <a href="#">Terms & Conditions</a></span>
+                    </div>
+
+                    <div class="d-flex mt-3 justify-content-around align-items-center">
+                        <button class="submit-contribution-btn" type="submit">Submit</button>
+                        <a asp-area="" asp-route-id="@Model.MagazineId" asp-controller="Home" asp-action="MagazineDetail" style="text-decoration: none">
+                            <p type="button" class="cancel-contribution-btn m-0">
+                                Cancel
+                            </p>
+                        </a>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
-    <div class="magazine-submit-box">
-    <div class="magazine-detail-submit">
-        <div class="magazine-detail-status-open">Opening</div>
-            <form method="post" enctype="multipart/form-data">
-                    <input type="number" asp-for="MagazineId" value="@Model.MagazineId" hidden />
-                        
-            <p id="inputtext" style="font-weight: 600">Contribution</p>
-            <input class="input-contribution" type="text" for="inputtext" asp-for="@Model.Content" autofocus placeholder="Enter title" />
-                        <p><span class="w-100 text-danger" asp-validation-for="Content"></span></p>
-                        <input id="imgInp" type="file" name="files" class="form-control" multiple />
+    <div class="magazine-img-section">
 
-                    <div class="d-flex flex-column align-content-center mt-3">
-                        <div class="text-center">
-                            <input type="checkbox" id="terms" class="p-5" name="terms" required style="width:15px; height:15px; cursor: pointer">
-                            <span for="terms">I accept to the <a href="#">Terms & Conditions</a></span>
-                        </div>
-
-                        <div class="d-flex mt-3 justify-content-around align-items-center">
-                            <button class="submit-contribution-btn" type="submit">Submit</button>
-                            <a asp-area="" asp-route-id="@Model.MagazineId" asp-controller="Home" asp-action="MagazineDetail" style="text-decoration: none">
-                                <p type="button" class="cancel-contribution-btn m-0">
-                                    Cancel
-                                </p>
-                            </a>
-                        </div>
-                    </div>
-            </form>
-        <div class="magazine-detail-status-open">Opening</div>
-    </div>
+        @if ((string)ViewData["Status"] == "Opening")
+        {
+            <div class="magazine-detail-status-open">@ViewData["Status"]</div>
+        }
+        else
+        {
+            <div class="magazine-detail-status-close">@ViewData["Status"]</div>
+        }
+        <img class="magazine-detail-img" src="@ViewData["ImgUrl"]" />
     </div>
 </div>

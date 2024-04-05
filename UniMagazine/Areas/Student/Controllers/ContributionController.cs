@@ -44,6 +44,7 @@ namespace UniMagazine.Areas.Student.Controllers
             ViewData["MagazineStatus"] = magazine.Status;
             ViewData["PostedDate"] = magazine.PostedDate.ToString();
             ViewData["ImgUrl"] = magazine.ImageUrl;
+            ViewData["Status"] = magazine.Status;
 
             return View(con);
         }
