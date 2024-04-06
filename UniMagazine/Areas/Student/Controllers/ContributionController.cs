@@ -127,7 +127,7 @@ namespace UniMagazine.Areas.Student.Controllers
             return View(contribution);
             
         }
-        public IActionResult AddMaterial(int id)
+        public IActionResult Update(int id)
         {
             var contribution = _unitOfWork.ContributionRepository.Get(id);
            
@@ -135,7 +135,7 @@ namespace UniMagazine.Areas.Student.Controllers
 
         }
         [HttpPost]
-        public IActionResult AddMaterial(Contribution con, List<IFormFile> files)
+        public IActionResult Update(Contribution con, List<IFormFile> files)
         {
             string wwwRootPath = _webHostEnvironment.WebRootPath;
             _unitOfWork.ContributionRepository.Update(con);
