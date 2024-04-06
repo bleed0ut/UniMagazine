@@ -8,8 +8,6 @@
     TimeSpan ts = closedDate - DateTime.Now;
     string timeleft = string.Format("{0} Days, {1} Hours, {2} Minutes", ts.Days, ts.Hours, ts.Minutes);
 }
-
-@* MAGAZINE DETAIL SECTION *@
 <link rel="stylesheet" href="~/css/MagazineDetail.css" type="text/css" />
 
 <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34);" aria-label="breadcrumb">
@@ -20,54 +18,31 @@
     </ol>
 </nav>
 
-@* MAGAZINE DETAIL *@
-<div class="magazine-detail-box d-flex">
+
+<div class="magazine-detail-box">
     <div class="magazine-detail">
-
-        <div class="magazine-detail-post">
-            Posted by Manager
-        </div>
-
-        <img class="magazine-detail-img" src="@Model.Contribution.Magazine.ImageUrl" alt="...">
-
-        <div class="magazine-detail-post">
-            @Model.Contribution.Magazine.PostedDate
-        </div>
-
         <div class="magazine-detail-body">
             <h3 class="magazine-detail-body-heading">@Model.Contribution.Magazine.Title </h3>
-            <p class="magazine-detail-subdes text-muted">Upload by Manager at @Model.Contribution.Magazine.PostedDate</p>
+            <div class="d-flex justify-content-between">
+                <p class="magazine-detail-subdes text-muted">Upload by Manager at @Model.Contribution.Magazine.PostedDate</p>
+                @if (@Model.Contribution.Magazine.Status == "Opening")
+                {
+                    <span class="magazine-detail-time">
+                        Time left:
+                        @timeleft
+                    </span>
+                }
+                else
+                {
+                    <span class="magazine-detail-time">0 Days, 0 Hours, 0 Minutes</span>
+                }
+            </div>
             <p class="magazine-detail-body-des">@Model.Contribution.Magazine.Detail</p>
         </div>
     </div>
-    <div class="magazine-submit-box">
-    <div class="magazine-detail-submit">
-        @if (Model.Contribution.Magazine.Status == "Opening")
-        {
-            <div class="magazine-detail-status-open">@Model.Contribution.Magazine.Status</div>
-            <div class="magazine-detail-timebox">
-                <div class="magazine-detail-clock">
-                    TIME
-                    <i class="fa-regular fa-clock"></i>
-                    LEFT
-                </div>
-                <span class="magazine-detail-time">@timeleft</span>
-            </div>
-        }
-        else
-        {
-            <div class="magazine-detail-status-close">@Model.Contribution.Magazine.Status</div>
-            <div class="magazine-detail-timebox">
-                <div class="magazine-detail-clock">
-                    TIME
-                    <i class="fa-regular fa-clock"></i>
-                    LEFT
-                </div>
-                <span class="magazine-detail-time">0 Days, 0 Hours, 0 Minutes</span>
-            </div>
-        }
 
-        @if (Model.Contribution.Magazine.Status == "Opening")
+    <div class="magazine-img-section">
+        @if (@Model.Contribution.Magazine.Status == "Opening")
         {
             <div class="magazine-detail-status-open">@Model.Contribution.Magazine.Status</div>
         }
@@ -75,12 +50,13 @@
         {
             <div class="magazine-detail-status-close">@Model.Contribution.Magazine.Status</div>
         }
-
-    </div>
+        <img class="magazine-detail-img" src="@Model.Contribution.Magazine.ImageUrl" />
     </div>
 </div>
+
+@* Give feedback section *@
 <div class="px-2 py-3 text-white text-center text-uppercase" style="background: var(--third-color)">
-    <h4 class="m-0">Give feedback for submission</h4>
+    <h5 class="m-0">Give feedback for submission</h4>
 </div>
 <div class="w-100" style="border-top: 2px solid var(--primary-color)">
     <div class="w-100 p-3">
@@ -150,9 +126,9 @@
             <div class="mb-3 d-flex justify-content-center gap-5">
                 @if (Model.Contribution.Status != "Reject" && Model.Contribution.Status != "Expired")
                 {
-                    <button type="submit" class="btn btn-success" value="Published" id="status" name="status">Apply</button>
-                    <button type="submit" class="btn btn-danger" value="Rejected" id="status" name="status">Reject</button>
-                    <a asp-area="Coordinator" asp-controller="Contribution" asp-action="ContributionModeration" style="text-decoration: none" class="btn btn-dark">
+                    <button type="submit" class="btn btn-outline-success" value="Published" id="status" name="status">Apply</button>
+                    <button type="submit" class="btn btn-outline-danger" value="Rejected" id="status" name="status">Reject</button>
+                    <a asp-area="Coordinator" asp-controller="Contribution" asp-action="ContributionModeration" style="text-decoration: none" class="btn btn-outline-dark">
                         Cancel
                     </a>
                 }

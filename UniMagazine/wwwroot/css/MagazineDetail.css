@@ -71,7 +71,7 @@
     border-radius: 5px;
     background-color: white;
     transition: background-color ease-out 0.5s;
-    box-shadow: 4px -4px grey;
+    box-shadow: 4px -4px var(--primary-color);
 }
 
 .magazine-detail-upload:hover {

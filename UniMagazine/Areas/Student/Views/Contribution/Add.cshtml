@@ -18,8 +18,8 @@
 <div class="magazine-detail-box">
     <div class="magazine-detail justify-content-start">
         <div class="magazine-detail-body">
-            <h3 class="magazine-detail-body-heading">@ViewData["MagazineTitle"] </h3>
-            <p class="magazine-detail-subdes text-muted">Upload by Manager at @ViewData["PostedDate"]</p>
+            <h3 class="magazine-detail-body-heading">@Model.Magazine.Title </h3>
+            <p class="magazine-detail-subdes text-muted">Upload by Manager at @Model.Magazine.PostedDate</p>
         </div>
         <div class="d-flex justify-content-center">
             <form method="post" enctype="multipart/form-data">
@@ -50,14 +50,14 @@
 
     <div class="magazine-img-section">
 
-        @if ((string)ViewData["Status"] == "Opening")
+        @if (@Model.Magazine.Status == "Opening")
         {
-            <div class="magazine-detail-status-open">@ViewData["Status"]</div>
+            <div class="magazine-detail-status-open">@Model.Magazine.Status</div>
         }
         else
         {
-            <div class="magazine-detail-status-close">@ViewData["Status"]</div>
+            <div class="magazine-detail-status-close">@Model.Magazine.Status</div>
         }
-        <img class="magazine-detail-img" src="@ViewData["ImgUrl"]" />
+        <img class="magazine-detail-img" src="@Model.Magazine.ImageUrl" />
     </div>
 </div>

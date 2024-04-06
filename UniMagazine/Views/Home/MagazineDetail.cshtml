@@ -25,7 +25,8 @@
                     <h3 class="magazine-detail-body-heading">@Model.Magazine.Title </h3>
                     <div class="d-flex justify-content-between">
                         <p class="magazine-detail-subdes text-muted">Upload by Manager at @Model.Magazine.PostedDate</p>
-                        @if(true){
+                        @if (Model.Magazine.Status == "Opening")
+                        {
                             <span class="magazine-detail-time">
                                 Time left: 
                                 @timeleft
