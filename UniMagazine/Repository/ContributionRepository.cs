@@ -64,7 +64,9 @@ namespace UniMagazine.Repository
             var contribution = _dbContext.Contributions.Include(u => u.User).ThenInclude(f => f.Faculty)
                                            .Include(m => m.Files)
                                            .Include(m => m.Magazine)
+                                           .Include(m => m.FeedBacks)
                                            .FirstOrDefault(x => x.Id == id);
+            contribution.FeedBacks = contribution.FeedBacks.OrderByDescending(x => x.CreatedDate).ToList();
             return contribution;
         }
 

@@ -123,31 +123,15 @@ namespace UniMagazine.Areas.Student.Controllers
         public IActionResult Detail(int id)
         {
             var contribution = _unitOfWork.ContributionRepository.Get(id);
-            var material = _unitOfWork.MaterialContributionRepository.GetMaterial(id);
-
-            var ContriMa = new ConMaVM()
-            {
-                Contribution = contribution,
-                MaterialContribution = material,
-            };
-            if (material == null)
-            {
-                TempData["Error"] = "null";
-            }
-            return View(ContriMa);
+           
+            return View(contribution);
             
         }
         public IActionResult AddMaterial(int id)
         {
             var contribution = _unitOfWork.ContributionRepository.Get(id);
-            Contribution cpn = new Contribution()
-            {
-                Status = contribution.Status,
-                Content = contribution.Content,
-                UserId = contribution.UserId,
-                MagazineId = contribution.MagazineId,
-            };
-            return View(cpn);
+           
+            return View(contribution);
 
         }
         [HttpPost]

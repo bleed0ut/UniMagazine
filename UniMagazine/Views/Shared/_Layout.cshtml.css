@@ -57,3 +57,15 @@ button.accept-policy {
     color: #6c757d;
     margin-right: 20px
 }
+
+.navbar {
+    background-color: var(--primary-color);
+    height: 80px
+}
+
+@media (max-width: 1025px){
+    .navbar {
+        background-color: var(--primary-color);
+        height: 50px
+    }
+}

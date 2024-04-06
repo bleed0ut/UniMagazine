@@ -29,23 +29,29 @@
         </div>
     </form>
 </div>
+
+@* Show Pending Contribution *@
+
 <div class="row">
     @foreach (var con in Model.Contributions)
     {
-        <div class="col-sm-6">
-            <div class="card">
-                <div class="card-header" style="background-color:lightsteelblue">
-                    <h4>@con.Magazine.Title <span class="badge bg-secondary">@con.Status</span></h4>
+
+        <div class="col-sm-12 col-md-6 col-xl-6 pt-3">
+            <a style="text-decoration: none; color: black" asp-area="Coordinator" asp-controller="Contribution" asp-action="GiveFeedback" asp-route-id="@con.Id">
+                <div class="stu-contribution-box p-0 shadow">
+                    <div class="stu-contribution-box-imgwstatus">
+                        <img class="stu-contribution-box-img" src="@con.Magazine.ImageUrl" />
+                        <span class="contri-box-status-pending">@con.Status</span>
+                    </div>
+                    <div class="stu-contribution-box-body justify-content-center p-2">
+                        <p class="mb-0"><strong>@con.User.FullName</strong></p>
+                        <p class="card-title">(@con.User.Email)</p>
+                        <p><strong>Posted date: </strong><i>@con.CreatedDate</i></p>
+                        <p class="card-text">@con.Content</p>
+                    </div>
                 </div>
-                <div class="card-body">
-                    
-                    <p class="card-title"><strong>@con.User.FullName</strong> (@con.User.Email)</p>
-                    <p><strong>Posted date: </strong><i>@con.CreatedDate</i></p>
-                    
-                    <p class="card-text">@con.Content</p>
-                    <a class="btn btn-dark" asp-area="Coordinator" asp-controller="Contribution" asp-action="GiveFeedback" asp-route-id="@con.Id">Detail</a>
-                </div>
-            </div>
+            </a>
         </div>
     }
 </div>
+

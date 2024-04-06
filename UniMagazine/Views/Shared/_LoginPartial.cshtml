@@ -10,7 +10,7 @@
         <div class="header__nav--heading">MENU</div>
         <i id="header__nav--close-icon" class="fa-solid fa-xmark" style="color: #ffffff;"></i>
     </div>
-    <div class="header__nav--email">Email: 
+    <div class="header__nav--email">
         <span>@UserManager.GetUserName(User)</span>
     </div>
     <div class="w-100 text-center">
@@ -30,7 +30,7 @@
             <hr class="bg-white" />
             <a class="header__nav--role-function" asp-area="Manager" asp-controller="Magazine" asp-action="Index">
                 <div class="header__nav--role-hover">
-                    Manager anagement Page
+                    Manager Management Page
                 </div>
             </a>
         }
@@ -62,49 +62,3 @@
         </form>
     </div>
 </div>
-@* 
-<ul class="text-black" style="list-style-type: none; padding: 0; margin: 0">
-@if (SignInManager.IsSignedIn(User))
-{
-        <li class="nav-item dropdown">
-            <ul class="navbar-nav me-auto">
-                @if (User.IsInRole("Admin"))
-                {
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="Admin" asp-controller="User" asp-action="UserIndex">Admin Management Page</a>
-                    </li>
-                }
-                @if (User.IsInRole("Manager"))
-                {
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="Manager" asp-controller="Magazine" asp-action="Index">Marketing Management Page</a>
-                    </li>
-                }
-                @if (User.IsInRole("Coordinator"))
-                {
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="Coordinator" asp-controller="Contribution" asp-action="ContributionModeration">Marketing Management Page</a>
-                    </li>
-                }
-            </ul>
-            <a class="nav-link dropdown-toggle px-0 " href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa-solid fa-user-tie pe-2"></i>@UserManager.GetUserName(User)!
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <li><a class="dropdown-item nav-link text-black" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Profile</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li>
-                    <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                        <button class="dropdown-item nav-link btn btn-link text-danger border-0" href="#" id="logout" type="submit">Logout</button>
-                    </form>
-                </li>
-            </ul>
-        </li>
-}
-else
-{
-    <li class="nav-item">
-        <a class="nav-link btn btn-light text-black" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
-}
-</ul> *@

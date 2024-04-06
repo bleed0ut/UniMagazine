@@ -1,4 +1,5 @@
-﻿.btn-hover-change-jump {
+﻿/*BUTTON STYLE IN MANAGE PAGE*/
+.btn-hover-change-jump {
     transition: background-color ease 0.3s;
     transition: transform ease 0.3s;
 }
@@ -20,6 +21,7 @@
     color: black !important;
 }
 
+/*HOMEPAGE*/
 #bannerImg {
     width: 100%;
     max-height: 420px;
@@ -28,11 +30,15 @@
     background: linear-gradient(to right, #24243e, #302b63, #0f0c29); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
+#bannerImg img{
+    max-height: 420px;
+}
+
 #main-anounment {
     display: flex;
-    background-color: var(--primary-color);
-    margin-top: 1rem;
     height: 80px;
+    background-color: var(--primary-color);
+    padding-left: 10px;
 }
 
 #anounment-tag {
@@ -50,7 +56,7 @@
 }
 
 /*HOME CONTROL*/
-.main-control{
+.main-control {
     display: flex;
     width: 100%;
     background-color: white;
@@ -59,6 +65,9 @@
     margin-bottom: 10px;
     padding: 15px;
     justify-content: space-between;
+    border-radius: 10px;
+    border-left: 2px solid var(--primary-color);
+    border-right: 2px solid var(--primary-color);
 }
 
 .main-control-left{
@@ -127,23 +136,24 @@
 .search-cancel a {
     font-weight: 600;
     text-decoration: none;
-    background-color: #EE4266;
     padding: 8px;
-    color: white;
+    color: var(--failed-color);
+    border: 1px solid var(--failed-color);
+    border-radius: 10px;
 }
 
 .search-cancel a:hover{
+    color: white;
     background-color: #EE4266;
 }
 
 /*MAGAZINES*/
 .card-box {
-    max-width: 438px;
     min-height: 480px;
 }
 
 .card-img-top {
-    max-height: 210px;
+    height: 210px;
     object-fit: cover
 }
 
@@ -185,4 +195,53 @@
 .status-text {
     color: white;
     margin-bottom: 0;
+}
+
+/*RESPONSIVE*/
+@media(max-width: 1200px) {
+    .main-control {
+        font-size: 14px;
+    }
+}
+
+@media(max-width: 1000px) {
+    #bannerImg {
+        width: 100%;
+        max-height: 200px;
+        background: #0f0c29; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #24243e, #302b63, #0f0c29); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    }
+
+    #bannerImg img{
+        max-height: 200px;
+    }
+
+    #main-anounment{
+        font-size: 14px;
+        height: 50px;
+    }
+
+    #anounment-tag {
+        font-size: 14px;
+        margin: 12px 2px;
+        padding: 3px 10px;
+    }
+
+    #anounment-text{
+        line-height: 50px;
+    }
+
+    .main-control {
+        height: 100px;
+    }
+
+    .main-control form {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .main-control-left {
+        padding-bottom: 10px;
+    }
 }

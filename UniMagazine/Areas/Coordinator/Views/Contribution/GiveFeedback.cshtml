@@ -16,10 +16,11 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/Home" style="text-decoration: none; color: var(--primary-color)">Home</a></li>
         <li class="breadcrumb-item"><a href="/Coordinator/Contribution/ContributionModeration" style="text-decoration: none; color: var(--primary-color)">View all pending submissions</a></li>
-        <li class="breadcrumb-item active" style="color: var(--four-color); font-weight: 700" aria-current="page">Give feedback for a pending submission</li>
+        <li class="breadcrumb-item active" style="color: var(--primary-color); font-weight: 700" aria-current="page">Give feedback for a pending submission</li>
     </ol>
 </nav>
 
+@* MAGAZINE DETAIL *@
 <div class="magazine-detail-box d-flex">
     <div class="magazine-detail">
 
@@ -39,7 +40,7 @@
             <p class="magazine-detail-body-des">@Model.Contribution.Magazine.Detail</p>
         </div>
     </div>
-
+    <div class="magazine-submit-box">
     <div class="magazine-detail-submit">
         @if (Model.Contribution.Magazine.Status == "Opening")
         {
@@ -76,13 +77,10 @@
         }
 
     </div>
-</div>
-
-
-<div class="bg-secondary bg-opacity-10 py-2">
-    <div class="container">
-        <h1>Give feedback for submission</h1>
     </div>
+</div>
+<div class="px-2 py-3 text-white text-center text-uppercase" style="background: var(--third-color)">
+    <h4 class="m-0">Give feedback for submission</h4>
 </div>
 <div class="w-100" style="border-top: 2px solid var(--primary-color)">
     <div class="w-100 p-3">
@@ -99,20 +97,29 @@
                 <p class="small text-muted mb-0">@Model.Contribution.CreatedDate</p>
             </div>
         </div>
-
+        <div class="comment-contribution__tittle">@Model.Contribution.Content</div>
         <div class="contribution-file">
             <button class="button-contribution" type="button" data-bs-toggle="collapse"
                     data-bs-target="#contri-id-@Model.Contribution.Id" aria-expanded="false" aria-controls="contri-id-@Model.Contribution.Id">
-                @Model.Contribution.Content <i class="fa-solid fa-chevron-down"></i>
+                    Files <i class="fa-solid fa-chevron-down"></i>
             </button>
 
             @* FILE URL SECTION*@
-            <div class="collapse contribution-file-list" id="contri-id-@Model.Contribution.Id">
+            <div class="collapse contribution-file-list show" id="contri-id-@Model.Contribution.Id">
                 <div>
                     @foreach (var file in Model.Contribution.Files)
                     {
+                        string fileName = @file.ImageUrl;
+                        int firstIndex = @fileName.IndexOf('_');
+                        string fileNameRest = fileName.Substring(firstIndex + 1);
                         i++;
-                        <p><strong>----File @i: </strong> &colon; @file.ImageUrl</p>
+                        <p><strong>----File @i: </strong>
+                            &colon;
+                            <a class="material-link" href="#" data="@file.ImageUrl" style="text-decoration: none">
+                                @fileNameRest
+                                <i class="fa-solid fa-hand-point-left ps-2"></i>
+                            </a>
+                        </p>
                     }
                 </div>
             </div>
@@ -121,40 +128,41 @@
     </div>
 </div>
 
-<div class="container py-5">
-    <form method="post" enctype="multipart/form-data">
-      @*   <div class="d-flex">
-            <div class="mb-3 me-3 flex-grow-1">
-                <label class="form-label">Status</label>
-                <select class="form-select" asp-for="@Model.Status">
-                    <option value="Published">Public</option>
-                    <option value="Reject">Reject</option>
-                </select>
-            </div>
-        </div> *@
-        <div class="d-flex">
+<div class="d-flex">
+    <div class="w-100" style="min-width: 800px">
+        @foreach (var file in Model.Contribution.Files)
+        {
+            <iframe id="iframe-contribute"
+                    src="/@file.ImageUrl"
+                    width="100%"
+                    height="800px"
+                    loading="lazy"
+                    title="PDF-file"></iframe>
+            break;
+        }
+    </div>
+    <div class="p-3">
+        <form method="post" enctype="multipart/form-data">
             <div class="mb-3">
                 <label class="form-label" for="comment">Feedback Comment</label>
                 <textarea class="form-control" id="comment" name="Comment" asp-for="@Model.Comment" rows="3" cols="100"></textarea>
             </div>
-        </div>
-
-        <div class="mb-3">
-            @if(Model.Contribution.Status != "Reject" && Model.Contribution.Status != "Expired")
-            {
-                <button type="submit" class="btn btn-success" value="Published" id="status" name="status">Apply</button>
-                <button type="submit" class="btn btn-danger" value="Rejected" id="status" name="status">Reject</button>
-
-                <a asp-area="Coordinator" asp-controller="Contribution" asp-action="ContributionModeration" style="text-decoration: none" class="btn btn-dark">
-                    Cancel
-                </a>
-            }
-            else
-            {
-                <a asp-area="Coordinator" asp-controller="Contribution" asp-action="ContributionModeration" style="text-decoration: none" class="btn btn-dark">
-                    Back
-                </a>
-            }
-        </div>
-    </form>
+            <div class="mb-3 d-flex justify-content-center gap-5">
+                @if (Model.Contribution.Status != "Reject" && Model.Contribution.Status != "Expired")
+                {
+                    <button type="submit" class="btn btn-success" value="Published" id="status" name="status">Apply</button>
+                    <button type="submit" class="btn btn-danger" value="Rejected" id="status" name="status">Reject</button>
+                    <a asp-area="Coordinator" asp-controller="Contribution" asp-action="ContributionModeration" style="text-decoration: none" class="btn btn-dark">
+                        Cancel
+                    </a>
+                }
+                else
+                {
+                    <a asp-area="Coordinator" asp-controller="Contribution" asp-action="ContributionModeration" style="text-decoration: none" class="btn btn-dark">
+                        Back
+                    </a>
+                }
+            </div>
+        </form>
+    </div>
 </div>

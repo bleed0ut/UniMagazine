@@ -5,6 +5,9 @@
     --four-color: #F6B17A;
     --success-color: #609966;
     --failed-color: #ee4266;
+
+    /*Sidebar Size*/
+    --sidebar-size: 300px;
 }
 
 html {
@@ -21,6 +24,7 @@ body {
     min-height: 100%;
     box-sizing: inherit;
     padding-bottom: 400px !important;
+    background-color: #F1F2F3;
 }
 
 footer {
@@ -35,7 +39,7 @@ footer {
 @media(max-width: 1200px){
     html {
         height: 100%;
-        font-size: 16px;
+        font-size: 14px;
         box-sizing: border-box
     }
 
@@ -49,7 +53,7 @@ footer {
 
     footer {
         padding: 10px;
-        font-size: 12px;
+        font-size: 14px;
         position: absolute;
         bottom: 0;
         left: 0;
@@ -61,7 +65,7 @@ footer {
 
 @media (max-width: 768px) {
   html {
-    font-size: 16px;
+    font-size: 12px;
   }
  
   footer {
@@ -80,18 +84,34 @@ html {
 
 body {
     margin-bottom: 60px;
-    background-color: #F1F2F3;
 }
 
-/*HEADER*/
+/*SIDEBAR*/
 #nav-bar-side {
     display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: auto;
+    animation: navBarSlide ease 0.5s;
+    z-index: 999999;
+}
+
+@keyframes navBarSlide {
+    0% {
+        right: calc(var(--sidebar-size) * -1);
+    }
+
+    100% {
+        right: 0px;
+    }
 }
 
 .header__nav {
-    position: absolute;
+    position: sticky;
     min-height: 100vh;
-    width: 500px;
+    width: var(--sidebar-size);
     background-color: var(--secondary-color);
     opacity: 0.95;
     top: 0;
@@ -102,15 +122,18 @@ body {
     flex-direction: column;
     align-items: center;
     padding-top: 30px;
-    animation: navShowUp ease-in 0.2s;
+    border-left: 2px solid #F1F2F3;
 }
 
-@keyframes navShowUp{
-    0%{
-        width: 0;
+@media(max-width: 1024px) {
+    #nav-bar-side {
+        left: 0;
+        animation: none;
     }
-    50%{
-        width: 500px;
+
+    .header__nav {
+        width: 100%;
+        border: none;
     }
 }
 
@@ -118,7 +141,7 @@ body {
     width: 100%;
     color: #F1F2F3;
     font-weight: 500;
-    font-size: 30px;
+    font-size: 25px;
     letter-spacing: 5px;
     text-align: center;
 }
