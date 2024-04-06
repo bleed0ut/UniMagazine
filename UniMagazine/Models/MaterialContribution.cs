@@ -9,6 +9,8 @@ namespace UniMagazine.Models
         public int Id { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public string? ImageUrl { get; set; }
+
+        public string? Status { get; set; } = "Published";
         public int ContributionId { get; set; }
         //[Required]
 
