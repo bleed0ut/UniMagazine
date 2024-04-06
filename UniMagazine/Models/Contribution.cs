@@ -29,5 +29,6 @@ namespace UniMagazine.Models
 
         public virtual IEnumerable<FeedbackComment> FeedBacks { get; set; }
 
+
     }
 }
