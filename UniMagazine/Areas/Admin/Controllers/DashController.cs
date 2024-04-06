@@ -38,9 +38,6 @@ namespace UniMagazine.Areas.Admin.Controllers
             data.Add(contributionsPerFaculty);
             return data;
         }
-        
-
-        
 
     }
 }

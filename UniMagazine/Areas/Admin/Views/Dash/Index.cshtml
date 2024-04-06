@@ -33,20 +33,10 @@
             success: function (data) {
                 renderBarChart(data);
                 renderLineChart(data);
-            }
-
-        });
-        $.ajax({
-            type: "POST",
-            url: "/Admin/Dash/AllConInAca",
-            dataType: "json",
-            success: function (data) {
                 renderPieChart(data);
-            },
-            error: function (xhr, status, error) {
-                console.error("Error fetching data from AllConInAca:", error); // Log any errors
             }
         });
+        
         function renderBarChart(data) {
             const barChart = document.getElementById('barChart');
             var _data = data;
