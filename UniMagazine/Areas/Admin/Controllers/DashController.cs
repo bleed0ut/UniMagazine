@@ -29,14 +29,7 @@ namespace UniMagazine.Areas.Admin.Controllers
         [HttpPost]
         public List<object> AllConInFa()
         {
-            List<object> data = new List<object>();
-            List<string> label = _dbContext.Faculties.Select(m => m.Name).ToList();
-            var contributionsPerFaculty = _dbContext.Faculties
-            .Select(f => _dbContext.Magazines.Where(m => m.FacultyId == f.Id).SelectMany(m => m.Contributions).Count())
-            .ToList(); // Count the characters in the detail
-            data.Add(label);
-            data.Add(contributionsPerFaculty);
-            return data;
+            return _unitOfWork.DashRepository.GetAllConInAllFaByAca();
         }
 
     }

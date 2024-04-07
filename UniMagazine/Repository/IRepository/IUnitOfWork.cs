@@ -10,6 +10,7 @@
         public IFacultyRepository FacultyRepository { get; }
         public IMagazineRepository MagazineRepository { get; }
         public IFeedBackCommentRepository FeedBackCommentRepository { get; }
+        public IDashRepository DashRepository { get; }
 
         public void Save();
 
