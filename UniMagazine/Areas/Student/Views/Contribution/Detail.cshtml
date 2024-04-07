@@ -97,11 +97,15 @@
                             Update my contribution
                         </a>
                     }
-                    else
+                    else if (Model.Status == "Rejected")
                     {
                         <a class="magazine-detail-upload" asp-area="Student" asp-route-id="@Model.Id" asp-controller="Contribution" asp-action="Update" style="text-decoration: none;">
                             Update for a resubmission
                         </a>
+                    }
+                    else
+                    {
+                        
                     }
                 }
             </div>

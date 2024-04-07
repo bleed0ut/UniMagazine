@@ -192,9 +192,14 @@ namespace UniMagazine.Areas.Student.Controllers
                     _unitOfWork.MaterialContributionRepository.Add(MaCon);
                     
                 }
+                TempData["success"] = "Request successfully! Your contribution update is pending!";
 
                 _unitOfWork.ContributionRepository.Update(contribution);
                 _unitOfWork.Save();
+
+                var coordinators = _unitOfWork.UserRepository.GetCoordinators(contribution.User.FacultyId);
+                if (coordinators.Count() > 0)
+                    _emailSender.AnounceSubmission(coordinators, contribution);
 
                 return RedirectToAction("Detail", "Contribution", new { id = con.Id, area = "Student" });
             }
