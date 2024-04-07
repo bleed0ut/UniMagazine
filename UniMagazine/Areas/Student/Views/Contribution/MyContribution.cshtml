@@ -17,6 +17,7 @@
             <button type="submit" id="status" name="status" value="Published" class="main-control-text">Publised Contributions</button>
             <button type="submit" id="status" name="status" value="Pending" class="main-control-text">Pending Contributions</button>
             <button type="submit" id="status" name="status" value="Rejected" class="main-control-text">Rejected Contribution</button>
+            <button type="submit" id="status" name="status" value="PendingUpdate" class="main-control-text">Pending Updates</button>
         </div>
 
         @* RIGHT *@
@@ -54,6 +55,10 @@
                         else if (con.Status == "Pending")
                         {
                             <span class="contri-box-status-pending">@con.Status</span>
+                        }
+                        else if (con.Status == "PendingUpdate")
+                        {
+                            <span class="contri-box-status-pending" style="background-color:cornflowerblue">Pending Update</span>
                         }
                         else
                         {

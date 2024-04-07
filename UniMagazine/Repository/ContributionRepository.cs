@@ -1,5 +1,6 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using NuGet.Protocol.Plugins;
 using System.Linq.Expressions;
 using UniMagazine.Data;
@@ -16,9 +17,11 @@ namespace UniMagazine.Repository
             _dbContext = dbContext;
         }
 
-        public IEnumerable<Contribution> GetAllPendingContribution(int facultyId, string? searchByTitle = "", string? searchByContibutorEmail = "")
+        public IEnumerable<Contribution> GetAllPendingContribution(int facultyId, string? searchByTitle = "", string? searchByContibutorEmail = "", string? status = "")
         {
-            var contributions = _dbContext.Contributions.Where(s => s.Status == "Pending")
+            if (status.IsNullOrEmpty())
+                status = "Pending";
+            var contributions = _dbContext.Contributions.Where(s => s.Status == status)
                                                         .Include(m => m.Magazine)
                                                         .Include(u => u.User)
                                                         .ToList();
@@ -95,23 +98,19 @@ namespace UniMagazine.Repository
 
         public IEnumerable<Contribution> GetMyContribution(string userId, string? status = "", string? search = "")
         {
+            if (string.IsNullOrEmpty(status))
+                status = "Published";
             var contributions = _dbContext.Contributions.Where(x => x.UserId == userId)
+                                                        .Where(x => x.Status == status)
                                                         .Include(u => u.User)
                                                         .ThenInclude(f => f.Faculty)
                                                         .Include(m => m.Magazine)
                                                         .OrderByDescending(c => c.CreatedDate)
                                                         .ToList();
-            if(string.IsNullOrEmpty(status) || status == "Published")
-                contributions = contributions.Where(x => x.Status == "Published").ToList();
-            else if (status == "Pending")
-                contributions = contributions.Where(x => x.Status == "Pending").ToList();
-            else if (status == "Rejected")
-                contributions = contributions.Where(x => x.Status == "Rejected").ToList();
-            //
+
             if (!string.IsNullOrEmpty(search))
                 contributions = contributions.Where(s => s.Magazine.Title.ToLower().Contains(search.ToLower())).ToList();
         
-
             return contributions;
         }
         public IEnumerable<Contribution> GetByYear(int academicYearId)

@@ -8,7 +8,8 @@
     <form asp-area="Coordinator" asp-controller="Contribution" asp-action="ContributionModeration" class="d-flex w-100 justify-content-between" method="get">
         @* LEFT *@
         <div class="main-control-left">
-            <a class="main-control-text" asp-area="Coordinator" asp-controller="Contribution" asp-action="ContributionModeration" style="text-decoration:none"> All pending submisstion</a>
+            <button type="submit" id="status" name="status" value="Pending" class="main-control-text">All pending submission (New submission)</button>
+            <button type="submit" id="status" name="status" value="PendingUpdate" class="main-control-text">All pending submission updates</button>
         </div>
 
         @* RIGHT *@
@@ -18,7 +19,7 @@
                 <div class="main-control-search--input">
                     <input type="text" value="@Model.SearchByTitle" id="searchT" name="searchT" placeholder="Search by magazine's title" class="align-content-lg-start">
                     <input type="text" value="@Model.SearchByContributorEmail" id="searchC" name="searchC" placeholder="Search by contributor's email">
-                    <button type="submit" class="search-icon">
+                    <button type="submit" class="search-icon" value="@Model.Status" id="status" name="status">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
                 </div>

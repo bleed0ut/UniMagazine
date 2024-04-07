@@ -73,7 +73,15 @@
                 <p class="small text-muted mb-0">@Model.Contribution.CreatedDate</p>
             </div>
         </div>
-        <div class="comment-contribution__tittle">@Model.Contribution.Content</div>
+        @if (Model.Contribution.Status == "PendingUpdate")
+        {
+            <div class="comment-contribution__tittle"><span class="badge btn-dark">Old</span> @Model.Contribution.TempContent</div>
+            <div class="comment-contribution__tittle"><span class="badge btn-primary">New</span> @Model.Contribution.Content</div>
+        }
+        else
+        {
+            <div class="comment-contribution__tittle">@Model.Contribution.Content</div>
+        }
         <div class="contribution-file">
             <button class="button-contribution" type="button" data-bs-toggle="collapse"
                     data-bs-target="#contri-id-@Model.Contribution.Id" aria-expanded="false" aria-controls="contri-id-@Model.Contribution.Id">
@@ -92,7 +100,11 @@
                         <p><strong>----File @i: </strong>
                             &colon;
                             <a class="material-link" href="#" data="@file.ImageUrl" style="text-decoration: none">
-                                @fileNameRest
+                                @if(file.Status == "Updating"){
+                                    @fileNameRest <span>(New uploading)</span>
+                                }else{
+                                    @fileNameRest
+                                }
                                 <i class="fa-solid fa-hand-point-left ps-2"></i>
                             </a>
                         </p>

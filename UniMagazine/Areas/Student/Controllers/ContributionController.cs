@@ -74,8 +74,8 @@ namespace UniMagazine.Areas.Student.Controllers
                         Status = "Pending",
                         UserId = currentUser.Id,
                         MagazineId = con.MagazineId,
-                        // Assuming Contribution has a UserId property
                     };
+                    contribution.UpdatedDate = con.CreatedDate;
 
                     _unitOfWork.ContributionRepository.Add(contribution);
                     _unitOfWork.Save(); // Save Contribution entity to generate Id
@@ -130,7 +130,22 @@ namespace UniMagazine.Areas.Student.Controllers
         public IActionResult Update(int id)
         {
             var contribution = _unitOfWork.ContributionRepository.Get(id);
-           
+            
+            if(contribution == null)
+                return NotFound();
+
+            if(contribution.Magazine.Status == "Closed" && contribution.Status == "Rejected")
+            {
+                TempData["error"] = "Magazine has ended, cannot resubmission!";
+                return RedirectToAction("Detail", "Contribution", new { id = contribution.Id, area = "Student" });
+            }
+
+            if(contribution.Status == "Pending")
+            {
+                TempData["error"] = "Cannot update a pending contribution, wait your coordinator to approve it!";
+                return RedirectToAction("Detail", "Contribution", new { id = contribution.Id, area = "Student" });
+            }
+            
             return View(contribution);
 
         }
@@ -138,47 +153,52 @@ namespace UniMagazine.Areas.Student.Controllers
         public IActionResult Update(Contribution con, List<IFormFile> files)
         {
             string wwwRootPath = _webHostEnvironment.WebRootPath;
-            _unitOfWork.ContributionRepository.Update(con);
-            _unitOfWork.Save();
+            
+            var contribution = _unitOfWork.ContributionRepository.Get(x => x.Id == con.Id);
+            
             if (ModelState.IsValid)
             {
-                if (con.Status != null)
+                contribution.TempContent = con.TempContent;
+                contribution.Content = con.Content;
+                if (contribution.Status == "Published")
+                    contribution.Status = "PendingUpdate";
+                else
                 {
-                    foreach (var file in files)
-                    {
-                        string fileName = Guid.NewGuid().ToString() + "_" + file.FileName;
-                        string filePath = Path.Combine(wwwRootPath, @"upload\Student");
-                        if (!Directory.Exists(filePath))
-                        {
-                            Directory.CreateDirectory(filePath);
-                        }
-                        using (var fileStream = new FileStream(Path.Combine(filePath, fileName), FileMode.Create))
-                        {
-                            file.CopyTo(fileStream);
-                        }
-
-                        // Save file info to the database
-                        if (_unitOfWork != null && _unitOfWork.MaterialContributionRepository != null)
-                        {
-                            var MaCon = new MaterialContribution()
-                            {
-                                CreatedDate = DateTime.Now,
-                                ImageUrl = @"upload\Student\" + fileName,
-                                ContributionId = con.Id // Set ContributionId with the generated Id of Contribution entity
-                            };
-                            _unitOfWork.MaterialContributionRepository.Add(MaCon);
-                            _unitOfWork.Save();
-
-                        }
-                    }
+                    contribution.Status = "Pending";
+                    contribution.CreatedDate = DateTime.Now;
                 }
+
+                foreach (var file in files)
+                {
+                    string fileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+                    string filePath = Path.Combine(wwwRootPath, @"upload\Student");
+                    if (!Directory.Exists(filePath))
+                    {
+                        Directory.CreateDirectory(filePath);
+                    }
+                    using (var fileStream = new FileStream(Path.Combine(filePath, fileName), FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+
+                    var MaCon = new MaterialContribution()
+                    {
+                        CreatedDate = DateTime.Now,
+                        ImageUrl = @"upload\Student\" + fileName,
+                        ContributionId = contribution.Id,
+                    };
+                    if (contribution.Status == "PendingUpdate")
+                        MaCon.Status = "Updating";
+                    _unitOfWork.MaterialContributionRepository.Add(MaCon);
+                    
+                }
+
+                _unitOfWork.ContributionRepository.Update(contribution);
+                _unitOfWork.Save();
+
                 return RedirectToAction("Detail", "Contribution", new { id = con.Id, area = "Student" });
             }
             
-            _unitOfWork.ContributionRepository.Update(con);
-            _unitOfWork.Save();
-            var contribution = _unitOfWork.ContributionRepository.Get(con.Id);
-
             return View(contribution);
 
         }
