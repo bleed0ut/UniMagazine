@@ -72,56 +72,8 @@ namespace UniMagazine.Areas.Manager.Controllers
         }
 
         [HttpGet]
-        public IActionResult DownloadAllFiles()
-        {
-            // Đường dẫn tới thư mục lưu trữ các tệp tải lên
-            string uploadFolder = Path.Combine(_webHostEnvironment.WebRootPath, "upload/Student");
-
-            // Tạo một thư mục tạm để chứa tất cả các tệp
-            string tempFolderPath = Path.Combine(_webHostEnvironment.WebRootPath, "temp");
-            Directory.CreateDirectory(tempFolderPath);
-
-            // Lấy danh sách tên tệp trong thư mục lưu trữ tải lên
-            string[] allFiles = Directory.GetFiles(uploadFolder);
-
-            // Copy tất cả các tệp vào thư mục tạm
-            foreach (string filePath in allFiles)
-            {
-                string fileName = Path.GetFileName(filePath);
-                string destFilePath = Path.Combine(tempFolderPath, fileName);
-                System.IO.File.Copy(filePath, destFilePath, true);
-            }
-
-            // Tạo tên tệp zip duy nhất bằng cách sử dụng ngày giờ hiện tại
-            string zipFileName = $"All_Contributions_{DateTime.Now.ToString("yyyyMMddHHmmss")}.zip";
-
-            // Tạo bộ nhớ đệm để lưu trữ tệp zip
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                // Tạo tệp zip từ thư mục tạm
-                using (ZipArchive archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
-                {
-                    foreach (string filePath in allFiles)
-                    {
-                        string fileName = Path.GetFileName(filePath);
-                        string entryName = Path.Combine(zipFileName, fileName); // Đường dẫn của tệp trong tệp zip
-                        archive.CreateEntryFromFile(filePath, entryName);
-                    }
-                }
-
-                // Xóa thư mục tạm sau khi tạo tệp zip
-                Directory.Delete(tempFolderPath, true);
-
-                // Trả về tệp zip như là một phản hồi để tải xuống
-                return File(memoryStream.ToArray(), "application/zip", zipFileName);
-            }
-        }
-
-        [HttpGet]
         public IActionResult DownloadFilesByAcademicYear(int academicYearId)
         {
-            // Lấy thông tin về Contribution từ cơ sở dữ liệu
-            var magazines = _unitOfWork.MagazineRepository.GetByYear(academicYearId);
             var contributions = _unitOfWork.ContributionRepository.GetByYear(academicYearId);
             // Tạo một tên tệp zip duy nhất bằng cách sử dụng ngày giờ hiện tại
             string zipFileName = $"AcademicYear_{_unitOfWork.AcademicYearRepository.Get(x => x.Id == academicYearId).OpenedDate.ToString("yyyy")}" +
@@ -167,6 +119,67 @@ namespace UniMagazine.Areas.Manager.Controllers
 
             return File(fileBytes, "application/zip", zipFileName);
 
+        }
+
+        [HttpGet]
+        public IActionResult DownloadFilesOfAMagazine(int magazineId)
+        {
+            var magazine = _unitOfWork.MagazineRepository.Get(magazineId);
+            
+            if (magazine == null)
+                return NotFound();
+            if (magazine.Status == "Not Started" ||  magazine.Status == "Not Assigned" || magazine.Status == "Opening")
+            {
+                TempData["error"] = "You can only download contributions from an ended magazine";
+                return RedirectToAction("MagazineDetail", "Home", new { id = magazine.Id, area = "" });
+            }
+
+
+
+
+            var contributions = _unitOfWork.ContributionRepository.GetByMagazine(magazineId);
+            
+            // Tạo một tên tệp zip duy nhất bằng cách sử dụng ngày giờ hiện tại
+            string zipFileName = $"{magazine.Faculty.Name}_Magazine_{magazine.Title}_{magazine.PostedDate.ToString("yyyy")}" +
+                                 $"_{DateTime.Now.ToString("yyyyMMddHHmmss")}.zip";
+
+            // Tạo thư mục tạm để chứa tất cả các tệp
+            string tempFolderPath = Path.Combine(_webHostEnvironment.WebRootPath, "TempZip");
+            Directory.CreateDirectory(tempFolderPath);
+
+            // Lấy đường dẫn đến tệp zip tạm
+            string zipFilePath = Path.Combine(tempFolderPath, zipFileName);
+
+            // Tạo tệp zip
+            using (var zipArchive = ZipFile.Open(zipFilePath, ZipArchiveMode.Create))
+            {
+                foreach (var con in contributions)
+                {
+                    string contributionName = $"Contribution_{con.User.Email}_{con.Id}_{con.CreatedDate.ToString("yyyyMMdd")}/";
+
+                    if (con.Files.Count() > 0)
+                    {
+                        foreach (var file in con.Files)
+                        {
+                            string filePath = _webHostEnvironment.WebRootPath + $"/{file.ImageUrl}";
+                            if (System.IO.File.Exists(filePath))
+                            {
+                                string entryName = Path.GetFileName(filePath);
+                                zipArchive.CreateEntryFromFile(filePath, contributionName + entryName);
+                            }
+                        }
+                    }
+
+                }
+            }
+
+            // Đọc tệp zip và trả về nó để tải xuống
+            byte[] fileBytes = System.IO.File.ReadAllBytes(zipFilePath);
+
+            // Xóa thư mục tạm và tệp zip sau khi trả về
+            Directory.Delete(tempFolderPath, true);
+
+            return File(fileBytes, "application/zip", zipFileName);
         }
     }
 }

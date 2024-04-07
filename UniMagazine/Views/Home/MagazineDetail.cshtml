@@ -96,7 +96,7 @@
         <div class="d-flex w-100 justify-content-end">
             @foreach(var con in Model.Contributions)
             {
-                <a class="btn border ms-2 mb-2 text-white" style="background-color: var(--primary-color)" asp-area="Manager" asp-controller="Contribution" asp-action="DownloadAllFiles" asp-route-contributionId="@con.Id">Download all Files</a>
+                <a class="btn border ms-2 mb-2 text-white" style="background-color: var(--primary-color)" asp-area="Manager" asp-controller="Contribution" asp-action="DownloadFilesOfAMagazine" asp-route-magazineId="@Model.Magazine.Id">Download all Files</a>
                 break;
             }
         </div> 

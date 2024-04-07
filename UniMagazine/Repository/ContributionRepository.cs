@@ -129,5 +129,15 @@ namespace UniMagazine.Repository
 
             return contributions;
         }
+
+        public IEnumerable<Contribution> GetByMagazine(int magazineId) {
+            var contributions = _dbContext.Contributions.Where(m => m.MagazineId == magazineId)
+                                                        .Where(s => s.Status == "Published")
+                                                        .Include(f => f.Files)
+                                                        .Include(u => u.User)
+                                                        .ToList();
+
+            return contributions;
+        }
     }
 }
