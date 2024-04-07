@@ -15,5 +15,7 @@ namespace UniMagazine.Repository.IRepository
        void UpdateStatusMany(IEnumerable<Magazine> magazines);
 
        IEnumerable<Magazine> GetByYear(int academicYearId);
+
+        Magazine Get(int id);
     }
 }

@@ -121,6 +121,13 @@
                         <a asp-area="Manager"
                            asp-action="Update"
                            asp-route-id="@magazine.Id" class="btn btn-dark">Detail</a>
+                        @if(magazine.Status != "Not Started")
+                        {
+                            <a asp-area="Manager"
+                               asp-controller="Contribution"
+                               asp-action="DownloadFilesOfAMagazine"
+                               asp-route-magazineId="@magazine.Id" class="btn btn-success">Download</a>
+                        }
                     </td>
                 </tr>
             }

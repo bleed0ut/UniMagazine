@@ -29,9 +29,10 @@
                 <div class="magazine-detail-submit">
                     <form method="post" enctype="multipart/form-data">
                         <input type="number" asp-for="MagazineId" value="@Model.MagazineId" hidden />
-
+                        <input class="input-contribution" type="text" for="inputtext" asp-for="@Model.TempContent" value="@Model.Content" hidden/>
                         <p id="inputtext" class="text-muted" style="font-weight: 600">Contribution Description</p>
                         <input class="input-contribution" type="text" for="inputtext" asp-for="@Model.Content" placeholder="Enter title" />
+                        
                         <p><span class="w-100 text-danger" asp-validation-for="Content"></span></p>
 
                         <input id="imgInp" type="file" name="files" class="form-control" multiple />

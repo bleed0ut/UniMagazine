@@ -8,5 +8,8 @@ namespace UniMagazine.Repository.IRepository
         void UpdateStatus(MaterialContribution maCon);
         public IEnumerable<MaterialContribution> GetMaterial(int conId);
         MaterialContribution Get(int id);
+
+        void DeleteFileForRejectUpdating(int contributionId, string rootPath);
+        void PublishFileStatusForUpdating(int contributionId);
     }
 }

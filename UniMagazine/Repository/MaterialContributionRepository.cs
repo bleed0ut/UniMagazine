@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using UniMagazine.Data;
 using UniMagazine.Models;
 using UniMagazine.Repository.IRepository;
@@ -15,7 +16,7 @@ namespace UniMagazine.Repository
 
         public void Update(MaterialContribution macon)
         {
-            throw new NotImplementedException();
+            _dbContext.SaveChanges();
         }
 
         public void UpdateStatus(MaterialContribution macon)
@@ -32,6 +33,37 @@ namespace UniMagazine.Repository
                                                         
 
             return materialContribution;
+        }
+
+        public void DeleteFileForRejectUpdating(int contributionId, string rootPath)
+        {
+            var newUpdateFiles = _dbContext.MaterialContributions.Where(c => c.ContributionId == contributionId)
+                                                                 .Where(s => s.Status == "Updating")
+                                                                 .ToList();
+            _dbContext.RemoveRange(newUpdateFiles);
+            
+            foreach(var file in newUpdateFiles)
+            {
+                if(File.Exists(Path.Combine(rootPath, file.ImageUrl)))
+                {
+                    File.Delete(Path.Combine(rootPath, file.ImageUrl));
+                }
+            }
+        }
+
+        public void PublishFileStatusForUpdating(int contributionId)
+        {
+            var newUpdateFiles = _dbContext.MaterialContributions.Where(c => c.ContributionId == contributionId)
+                                                                 .Where(s => s.Status == "Updating")
+                                                                 .ToList();
+            if(newUpdateFiles.Count > 0)
+            {
+                foreach(var file in newUpdateFiles)
+                {
+                    file.Status = "Published";
+                    Update(file);
+                }
+            }
         }
     }
 }

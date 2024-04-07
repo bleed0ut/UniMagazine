@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using UniMagazine.Models;
@@ -13,30 +14,33 @@ namespace UniMagazine.Areas.Coordinator.Controllers
     public class ContributionController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IWebHostEnvironment _webHostEnvironment;
         private UserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _emailSender;
 
-        public ContributionController(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager, IEmailSender emailSender)
+        public ContributionController(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
             _userManager = userManager;
             _emailSender = emailSender;
+            _webHostEnvironment = webHostEnvironment;
         }
 
-        public IActionResult ContributionModeration(string? searchT ="", string? searchC ="")
+        public IActionResult ContributionModeration(string? status = "", string? searchT ="", string? searchC ="")
         {
             var userId = _userManager.GetUserId(this.User);
             var user = _unitOfWork.UserRepository.GetUserById(userId);
 
-            var contributions = _unitOfWork.ContributionRepository.GetAllPendingContribution(user.FacultyId, searchT, searchC);
+            var contributions = _unitOfWork.ContributionRepository.GetAllPendingContribution(user.FacultyId, searchT, searchC, status);
             _unitOfWork.ContributionRepository.CheckManyPendingContribution(contributions);
             _unitOfWork.Save();
 
             PendingContributionVM pcVM = new PendingContributionVM()
             { 
-                Contributions = _unitOfWork.ContributionRepository.GetAllPendingContribution(user.FacultyId, searchT, searchC),
+                Contributions = _unitOfWork.ContributionRepository.GetAllPendingContribution(user.FacultyId, searchT, searchC, status),
                 SearchByTitle = searchT,
-                SearchByContributorEmail = searchC
+                SearchByContributorEmail = searchC,
+                Status = status
             };
 
             return View(pcVM);
@@ -45,9 +49,6 @@ namespace UniMagazine.Areas.Coordinator.Controllers
         [HttpGet]
         public IActionResult GiveFeedback(int id)
         {
-            if (id == null || id == 0)
-                return NotFound();
-            
             var con = _unitOfWork.ContributionRepository.Get(id);
             if (con == null)
                 return NotFound();
@@ -67,7 +68,7 @@ namespace UniMagazine.Areas.Coordinator.Controllers
             if (con == null)
                 return NotFound();
 
-            if(con.Magazine.Status == "Closed")
+            if(con.Magazine.Status == "Closed" && con.Status == "Pending")
             {
                 feedbackVM.Contribution = con;
                 TempData["error"] = "Cannot moderate this contribution, due to the Magazine has been ended!";
@@ -83,26 +84,47 @@ namespace UniMagazine.Areas.Coordinator.Controllers
                 TempData["error"] = "Cannot give a feedback comment.This submission been expired in 14 days.";
                 return View(feedbackVM);
             }
-            else
+            //rejected/publish for pending or published for pendingupdate
+            if(status == "Published")
             {
-                con.Status = status;
-                _unitOfWork.Save();
-
-                var feedback = new FeedbackComment()
+                if (con.Status == "PendingUpdate")
                 {
-                    Comment = feedbackVM.Comment,
-                    ContributionID = feedbackVM.Id,
-                    UserID = _userManager.GetUserId(this.User),
-                    Status = status,
-                };
+                    _unitOfWork.MaterialContributionRepository.PublishFileStatusForUpdating(con.Id);
+                }
 
-                _unitOfWork.FeedBackCommentRepository.Add(feedback);
-                _unitOfWork.Save();
-
-                TempData["success"] = "Give feedback successfully!. An email notification will be sent to this student";
-                _emailSender.SendFeedBackEmail(con, feedback);
+                con.Status = status;
+                con.UpdatedDate = today;
             }
-                
+
+            if (status == "Rejected")
+            {
+                if (con.Status == "PendingUpdate")
+                {
+                    con.Status = "Published";
+                    con.Content = con.TempContent;
+                    _unitOfWork.MaterialContributionRepository.DeleteFileForRejectUpdating(con.Id, _webHostEnvironment.WebRootPath);
+                }
+                else //Pending for resubmission or first new submission
+                    con.Status = status;
+            }
+
+
+            var feedback = new FeedbackComment()
+            {
+                Comment = feedbackVM.Comment,
+                ContributionID = feedbackVM.Id,
+                UserID = _userManager.GetUserId(this.User),
+                Status = status,
+            };
+
+
+            _unitOfWork.FeedBackCommentRepository.Add(feedback);
+
+            _unitOfWork.Save();
+
+            TempData["success"] = "Give feedback successfully!. An email notification will be sent to this student";
+            _emailSender.SendFeedBackEmail(con, feedback);
+
             return RedirectToAction("ContributionModeration");
         }
     }

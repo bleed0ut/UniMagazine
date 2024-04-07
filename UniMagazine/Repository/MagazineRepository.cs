@@ -137,5 +137,12 @@ namespace UniMagazine.Repository
                                                 .ToList();
             return magazines;
         }
+
+        public Magazine Get(int id)
+        {
+            var magazine = _dbContext.Magazines.Include(f => f.Faculty)
+                                               .FirstOrDefault(m => m.Id == id);
+            return magazine;
+        }
     }
 }

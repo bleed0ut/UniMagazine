@@ -84,9 +84,16 @@ namespace UniMagazine.Utility
             mm.IsBodyHtml = true;
 
             mm.Subject = "New pending submissions";
-
-            string content = $"<h1>New pending submissions is waiting for you</h1>";
+            string content = $"<h1>New pending submissions are waiting for you</h1>";
             content += $"<p>Student {contribution.User.FullName}<i>({contribution.User.Email})</i> has just submitted a contribution at {contribution.Magazine.Title}</p>";
+            
+            if (contribution.Status == "PendingUpdate")
+            {
+                mm.Subject = "New pending submission updates";
+                content = $"<h1>New pending submission update are waiting for you</h1>";
+                content += $"<p>Student {contribution.User.FullName}<i>({contribution.User.Email})</i> has just submitted a contribution update at {contribution.Magazine.Title}</p>";
+            }
+
             mm.Body= content;
 
             SmtpClient smtp = GetSmtpClient();

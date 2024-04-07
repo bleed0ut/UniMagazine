@@ -7,5 +7,7 @@
         public string SearchByTitle { get; set; }
 
         public string SearchByContributorEmail { get; set; }
+
+        public string Status = "";
     }
 }

@@ -140,7 +140,7 @@ namespace UniMagazine.Areas.Admin.Controllers
             var contributions = _unitOfWork.ContributionRepository.GetByYear(academicYearId);
             // Tạo một tên tệp zip duy nhất bằng cách sử dụng ngày giờ hiện tại
             string zipFileName = $"AcademicYear_{_unitOfWork.AcademicYearRepository.Get(x => x.Id == academicYearId).OpenedDate.ToString("yyyy")}" +
-                                 $"_{DateTime.Now.ToString("yyyyMMddHHmmss")}_She_ride_a_dick_like_a_carnival_Kanye_East.zip";
+                                 $"_{DateTime.Now.ToString("yyyyMMddHHmmss")}.zip";
 
             // Tạo thư mục tạm để chứa tất cả các tệp
             string tempFolderPath = Path.Combine(_webHostEnvironment.WebRootPath, "TempZip");
