@@ -14,11 +14,13 @@ namespace UniMagazine.Repository
         public IAcademicYearRepository AcademicYearRepository { get; private set; }
 
         public IMagazineRepository MagazineRepository { get; private set; }
+        public IDashRepository DashRepository { get; private set; } 
 
         public IFeedBackCommentRepository FeedBackCommentRepository { get; private set; }
 
         public UnitOfWork(AppDbContext dbContext)
         {
+            DashRepository = new DashRepository(dbContext);
             MagazineRepository = new MagazineRepository(dbContext);
             _dbContext = dbContext;
             MaterialContributionRepository = new MaterialContributionRepository(dbContext);

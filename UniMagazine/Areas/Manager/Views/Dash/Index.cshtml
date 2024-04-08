@@ -1,0 +1,117 @@
+﻿@{
+    Layout = "/Areas/Manager/Views/_LayoutManagerPage.cshtml";
+    ViewData["Title"] = "Manager page";
+}
+<p>
+    <div class="row">
+        <div class="col-1">
+            <label><b>Chart-Type</b></label>
+        </div>
+        <div class="col-2">
+            <select id="ChartType" class="form-control" style="width:150px;">
+                <option selected>--select chart type--</option>
+                <option>bar</option>
+                <option>line</option>
+                <option>pie</option>
+                <option>polarArea</option>
+            </select>
+        </div>
+        <div class="col-3">
+            <select id="year" class="form-control" style="width:150px;">
+                <option value="" selected>--select academic year--</option>
+            </select>
+        </div>
+        <div class="col-4">
+            <input id="ID" value="SHow Graph" type="button"/>
+        </div>
+    </div>
+</p>
+<br/>
+<div id="chartView"> 
+    <canvas id="chart" ></canvas>
+</div>
+
+
+        
+        
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $.ajax({
+            type: "GET",
+            url: "/Manager/Dash/GetAcademicYears",
+            dataType: "json",
+            success: function (data) {
+                console.log('Data received:', data);
+                var select = $('#year');
+                $.each(data, function (index, item) {
+                    
+                    select.append('<option value="' + item.id + '">' + item.text + '</option>');
+                    console.log(typeof item.id)
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching academic years:', error);
+            }
+        });
+        $("#ID").click(function () {
+            
+            var chartType = $("#ChartType").val();
+            var chartView = document.getElementById("chartView");
+            var selectedYear = $("#year").val();
+            console.log(typeof selectedYear);
+            chartView.innerHTML='&nbsp;'
+            $('#chartView').append('<canvas id="chart" style="max-width:750pxp;max-height:400px;"></canvas>');
+
+            $.ajax({
+                type: "POST",
+                url: "/Manager/Dash/AllConInFa",
+                data: { year: selectedYear },
+                contextType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: OnSuccessResult,
+                error: OnErrorResult    
+            });
+
+            
+
+            function OnSuccessResult(data) {
+                var _data = data;
+                var _chartLabel = _data[0];
+                var _chartData = _data[1];
+                
+                var barcolor = ["red", "green", "blue", "orange", "brown", "purple"];
+
+                new Chart("chart",{
+                    type:  chartType,
+                    data: {
+                        labels: _chartLabel,
+                        datasets: [{
+                            label: "Contribution",
+                            
+                            data: _chartData
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                })
+            }
+            function OnErrorResult(data) {
+
+            }
+        });
+    });
+
+        
+</script>

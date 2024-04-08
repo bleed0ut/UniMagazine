@@ -7,9 +7,9 @@ using UniMagazine.Data;
 using UniMagazine.Models;
 using UniMagazine.Repository.IRepository;
 
-namespace UniMagazine.Areas.Admin.Controllers
+namespace UniMagazine.Areas.Manager.Controllers
 {
-    [Area("Admin")]
+    [Area("Manager")]
     public class DashController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -27,9 +27,18 @@ namespace UniMagazine.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
-        public List<object> AllConInFa()
+        public List<object> AllConInFa(string? year)
         {
-            return _unitOfWork.DashRepository.GetAllConInAllFaByAca();
+            List<object> data = new List<object>();
+            data = _unitOfWork.DashRepository.GetAllConInAllFaByAca(year);
+            return data;
+
+        }
+        [HttpGet]
+        public IActionResult GetAcademicYears()
+        {
+            List<AcademicYear> academicYears = _unitOfWork.AcademicYearRepository.GetAll().ToList();
+            return Json(academicYears.Select(year => new { Id = year.Id, Text = year.YearDate.ToString("yyyy") }));
         }
 
     }

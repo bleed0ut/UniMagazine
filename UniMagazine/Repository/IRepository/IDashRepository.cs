@@ -5,7 +5,7 @@ namespace UniMagazine.Repository.IRepository
 {
     public interface IDashRepository 
     {
-        public List<Object> GetAllConInAllFaByAca();
+        public List<Object> GetAllConInAllFaByAca(string? year);
         public List<Object> GetPerConInAllFaByAca();
         public List<Object> GetAllContributerInAllFaByAca();
     }

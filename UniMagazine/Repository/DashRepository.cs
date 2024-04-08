@@ -1,5 +1,7 @@
 ﻿
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using Stimulsoft.Data.Extensions;
 using UniMagazine.Data;
 using UniMagazine.Models;
 using UniMagazine.Repository.IRepository;
@@ -14,40 +16,33 @@ namespace UniMagazine.Repository
             _dbContext = dbContext;
         }
 
-        public List<object> GetAllConInAllFaByAca()
+        public List<object> GetAllConInAllFaByAca(string? year)
         {
             List<object> data = new List<object>();
-            var faculties = _dbContext.Faculties.ToList();
-            var academicYears = _dbContext.AcademicYears.ToList();
-
-            var contributionsPerFacultyPerYear =
-                from faculty in faculties
-                from year in academicYears
-                select new
-                {
-                    FacultyId = faculty.Id,
-                    FacultyName = faculty.Name,
-                    AcademicYearId = year.Id,
-                    AcademicYear = year.YearDate.ToString("yyyy"),
-                    ContributionCount = _dbContext.Magazines
-                        .Where(m => m.FacultyId == faculty.Id && m.AcademicYearId == year.Id)
-                        .SelectMany(m => m.Contributions)
-                        .Count()
-                };
-
-            foreach (var contribution in contributionsPerFacultyPerYear)
+            if (year != null)
             {
-                data.Add(new
+                if (int.TryParse(year, out int yearValue))
                 {
-                    FacultyId = contribution.FacultyId,
-                    FacultyName = contribution.FacultyName,
-                    AcademicYearId = contribution.AcademicYearId,
-                    AcademicYear = contribution.AcademicYear,
-                    ContributionCount = contribution.ContributionCount
-                });
+                    var year2 = _dbContext.AcademicYears.FirstOrDefault(k => k.Id == yearValue);
+
+                    List<string> label = _dbContext.Faculties.Select(m => m.Name).ToList();
+                    var contributionsPerFaculty = _dbContext.Faculties
+                        .Select(f => _dbContext.Magazines.Where(m => m.FacultyId == f.Id && m.AcademicYearId == year2.Id).SelectMany(m => m.Contributions).Count())
+                        .ToList(); // Count the characters in the detail
+                    data.Add(label);
+                    data.Add(contributionsPerFaculty);
+                    return data;
+                }
+                else
+                {
+                    // Handle invalid year format
+                    // For example:
+                    throw new ArgumentException("Invalid year format. Please provide a valid integer year.");
+                }
             }
             return data;
         }
+
 
         public List<object> GetAllContributerInAllFaByAca()
         {
