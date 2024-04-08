@@ -114,6 +114,7 @@ namespace UniMagazine.Areas.Student.Controllers
                         _emailSender.AnounceSubmission(coordinators, contribution);
 
                     // Save MaterialContribution entities
+                    TempData["success"] = "Add Contribution successfully !";
                     return RedirectToAction("MagazineDetail", "Home", new { id = con.MagazineId, area = "" });
                 }
             }

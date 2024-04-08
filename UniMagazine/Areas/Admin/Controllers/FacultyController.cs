@@ -39,6 +39,7 @@ namespace UniMagazine.Areas.Admin.Controllers
                     CreateDate = DateTime.Now,
                 };
                 _unitOfWork.FacultyRepository.Add(fal);
+                TempData["success"] = "Create Faculty year successfully!";
                 return RedirectToAction("List");
             }else
                 return View(faculty);
@@ -80,6 +81,7 @@ namespace UniMagazine.Areas.Admin.Controllers
             fac.Description = faculty.Description;
             _unitOfWork.FacultyRepository.Update(fac);
             _unitOfWork.Save();
+            TempData["success"] = "Update Faculty year successfully!";
             return RedirectToAction("List");
         }
 
@@ -91,6 +93,8 @@ namespace UniMagazine.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+            TempData["success"] = "Delete Faculty year successfully!";
+
             return RedirectToAction("List");
         }
     }

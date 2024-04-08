@@ -163,6 +163,7 @@ namespace UniMagazine.Areas.Admin.Controllers
             }
 
             await _userManager.UpdateAsync(user);
+            TempData["success"] = "Update user successfully !";
             return RedirectToAction("UserIndex");
         }
 

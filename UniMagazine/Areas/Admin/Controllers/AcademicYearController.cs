@@ -68,6 +68,7 @@ namespace UniMagazine.Areas.Admin.Controllers
                 academicY.YearDate = academicY.OpenedDate;
                 _unitOfWork.AcademicYearRepository.Add(academicY);
                 _unitOfWork.Save();
+                TempData["success"] = "Create academic year successfully!";
                 return RedirectToAction("Index");
             }
 
@@ -128,7 +129,8 @@ namespace UniMagazine.Areas.Admin.Controllers
             if(academicYear == null)
                 return NotFound();
             _unitOfWork.AcademicYearRepository.Delete(academicYear);
-            _unitOfWork.Save();
+            _unitOfWork.Save(); 
+            TempData["success"] = "Delete academic year successfully!";
             return RedirectToAction("Index");
         }
 
