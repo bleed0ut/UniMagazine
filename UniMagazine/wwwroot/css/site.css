@@ -11,11 +11,13 @@
 }
 
 html {
+    position: relative;
     height: 100%;
     box-sizing: border-box;
 }
 
 body {
+    margin-bottom: 60px;
     font-family: "Mulish", sans-serif;
     letter-spacing: 0.3px;
     font-size: 16px;
@@ -25,6 +27,7 @@ body {
     box-sizing: inherit;
     padding-bottom: 400px !important;
     background-color: #F1F2F3;
+    overflow-y: overlay;
 }
 
 footer {
@@ -36,7 +39,47 @@ footer {
     padding: 20px;
 }
 
-@media(max-width: 1200px){
+/*Scroll Custom*/
+html ::-webkit-scrollbar {
+    border-radius: 0px;
+    width: 8px;
+}
+
+html *::-webkit-scrollbar {
+    border-radius: 0;
+    width: 8px;
+}
+
+html ::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: var(--primary-color);
+}
+
+html *::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: var(--primary-color);
+}
+
+html ::-webkit-scrollbar-track {
+    border-radius: 0px;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+html *::-webkit-scrollbar-track {
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+/*Table Data - MAGAZINE TITLE*/
+.td-title {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/*TABLET*/
+@media(max-width: 1200px) {
     html {
         height: 100%;
         font-size: 14px;
@@ -53,7 +96,7 @@ footer {
 
     footer {
         padding: 10px;
-        font-size: 14px;
+        font-size: 12px;
         position: absolute;
         bottom: 0;
         left: 0;
@@ -69,21 +112,12 @@ footer {
   }
  
   footer {
-        
+    font-size: 10px;
  }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-body {
-    margin-bottom: 60px;
 }
 
 /*SIDEBAR*/

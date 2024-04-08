@@ -82,7 +82,9 @@
             {
                 <tr>
                     <td>@magazine.Id</td>
-                    <td>@magazine.Title</td>
+                    <td class="td-title">
+                        @magazine.Title
+                    </td>
                     @if(magazine.Status == "Not Started")
                     {
                         <td>

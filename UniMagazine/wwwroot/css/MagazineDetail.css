@@ -152,3 +152,40 @@
     padding: 10px 20px;
     font-weight: 400;
 }
+
+/*RESPONSIVE DETAIL MAGAZINE*/
+/*Tablet*/
+@media (max-width: 1199px){
+    .magazine-detail-box{
+        display: flex;
+        flex-direction: column-reverse;
+        font-size: 14px;
+    }
+    .magazine-img-section {
+        height: 150px;
+    }
+
+    .magazine-img-section img{
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .magazine-detail{
+        min-width: 100%;
+    }
+
+    .file-name {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .contribute-section{
+        font-size: 14px
+    }
+}
+
+/*Mobile*/
+@media (max-width: 739px){
+
+}

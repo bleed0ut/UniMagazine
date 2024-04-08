@@ -103,7 +103,7 @@
     }
 
     @* Contribution section *@
-    <div class="w-100" style="border-top: 1px solid var(--primary-color)">
+    <div class="contribute-section w-100" style="border-top: 1px solid var(--primary-color)">
         @foreach (var con in Model.Contributions)
         {
             int i = 0;
@@ -140,7 +140,8 @@
                                     string fileName = @file.ImageUrl;
                                     int firstIndex = @fileName.IndexOf('_');
                                     string fileNameRest = fileName.Substring(firstIndex + 1);
-                                    <p><strong>----File @i</strong> &colon;
+                                    <p class="file-name">
+                                        <strong>----File @i</strong> &colon;
                                         <a href="~/@file.ImageUrl" target="_blank" download style="text-decoration: none">
                                             <i class="fa-regular fa-file me-2"></i>@fileNameRest
                                         </a>
