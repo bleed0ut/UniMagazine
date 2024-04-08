@@ -56,7 +56,7 @@ namespace UniMagazine.Controllers
             
             return View(magaFilterVM);
         }
-        public IActionResult Privacy()
+        public IActionResult TermAndCondition()
         {
             return View();
         }

@@ -78,6 +78,8 @@
     background-color: var(--primary-color);
     color: white;
     border: 1px solid var(--primary-color);
+    box-shadow: 4px -4px var(--third-color);
+
 }
 
 /*CONTRIBUTION*/
