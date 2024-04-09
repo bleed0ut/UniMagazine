@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
 using UniMagazine.Data;
+using UniMagazine.Migrations;
 using UniMagazine.Models;
 using UniMagazine.Models.ViewModels;
 using UniMagazine.Repository.IRepository;
@@ -11,9 +12,11 @@ namespace UniMagazine.Repository
     public class MagazineRepository : Repository<Magazine>, IMagazineRepository
     {
         private readonly AppDbContext _dbContext;
-        public MagazineRepository(AppDbContext dbContext) : base(dbContext)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public MagazineRepository(AppDbContext dbContext, IWebHostEnvironment webHostEnvironment) : base(dbContext)
         {
             _dbContext = dbContext;
+            _webHostEnvironment = webHostEnvironment;
         }
         public void Add(Magazine entity)
         {
@@ -25,7 +28,18 @@ namespace UniMagazine.Repository
             var con = _dbContext.Contributions.Where(x => x.MagazineId == entity.Id);
             foreach (var contri in con)
             {
-                var ContriMa = _dbContext.MaterialContributions.Where(x => x.Id == contri.Id);
+                var ContriMa = _dbContext.MaterialContributions.Where(x => x.Id == contri.Id).ToList();
+                foreach (var fil in ContriMa)
+                {
+                    string wwwRootPath = _webHostEnvironment.WebRootPath;
+                    string filePath = Path.Combine(wwwRootPath, @"upload\Student\");
+                    var studentfile = Path.Combine(wwwRootPath, fil.ImageUrl.TrimStart('\\'));
+
+                    if (System.IO.File.Exists(studentfile))
+                    {
+                        System.IO.File.Delete(studentfile);
+                    }
+                }
                 _dbContext.MaterialContributions.RemoveRange(ContriMa);
             }
             _dbContext.Contributions.RemoveRange(con);

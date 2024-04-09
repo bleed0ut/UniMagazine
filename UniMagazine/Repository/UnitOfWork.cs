@@ -6,7 +6,7 @@ namespace UniMagazine.Repository
     public class UnitOfWork : IUnitOfWork
     {
         private readonly AppDbContext _dbContext;
-
+        private readonly IWebHostEnvironment _webHostEnvironment;
         public IUserRepository UserRepository { get; private set; }
         public IFacultyRepository FacultyRepository { get; private set; }
         public IContributionRepository ContributionRepository { get; private set; }
@@ -18,16 +18,17 @@ namespace UniMagazine.Repository
 
         public IFeedBackCommentRepository FeedBackCommentRepository { get; private set; }
 
-        public UnitOfWork(AppDbContext dbContext)
+        public UnitOfWork(AppDbContext dbContext, IWebHostEnvironment webHostEnvironment)
         {
             DashRepository = new DashRepository(dbContext);
-            MagazineRepository = new MagazineRepository(dbContext);
+            MagazineRepository = new MagazineRepository(dbContext, webHostEnvironment);
             _dbContext = dbContext;
+            _webHostEnvironment = webHostEnvironment;
             MaterialContributionRepository = new MaterialContributionRepository(dbContext);
             ContributionRepository = new ContributionRepository(dbContext);
             UserRepository = new UserRepository(dbContext);
             FacultyRepository = new FacultyRepository(dbContext);
-            AcademicYearRepository = new AcademicYearRepository(dbContext);
+            AcademicYearRepository = new AcademicYearRepository(dbContext, webHostEnvironment);
             FeedBackCommentRepository = new FeedbackCommentRepository(dbContext);
         }
 
