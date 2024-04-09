@@ -22,7 +22,15 @@ namespace UniMagazine.Repository
 
         public void Delete(Magazine entity)
         {
-            _dbContext.Magazines.Remove(entity);
+            var con = _dbContext.Contributions.Where(x => x.MagazineId == entity.Id);
+            foreach (var contri in con)
+            {
+                var ContriMa = _dbContext.MaterialContributions.Where(x => x.Id == contri.Id);
+                _dbContext.MaterialContributions.RemoveRange(ContriMa);
+            }
+            _dbContext.Contributions.RemoveRange(con);
+            if (entity != null)
+                _dbContext.Magazines.Remove(entity);
         }
 
         ///*public Magazine Get(int id)
