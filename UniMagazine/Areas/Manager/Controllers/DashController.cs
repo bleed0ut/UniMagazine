@@ -34,6 +34,12 @@ namespace UniMagazine.Areas.Manager.Controllers
             return data;
 
         }
+        public List<object> PercentageByFa(string? year)
+        {
+            List<object> data = new List<object>();
+            data = _unitOfWork.DashRepository.GetPerConInAllFaByAca(year);
+            return data;
+        }
         [HttpGet]
         public IActionResult GetAcademicYears()
         {
