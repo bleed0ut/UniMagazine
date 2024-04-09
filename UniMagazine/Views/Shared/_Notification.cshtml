@@ -1,7 +1,7 @@
 ﻿@if (TempData["error"] != null)
 {
 	<link rel="stylesheet" href="~/css/toast.css" />
-	<div class="toast-cus shadow">
+	<div class="toast-cus toast-cus-failed shadow">
 			<img class="toast-img" src="~/img/icon/failed.png"/>
 			<p class="toast-text">
 				@TempData["error"]
@@ -24,7 +24,7 @@
 @if (TempData["success"] != null)
 {
 	<link rel="stylesheet" href="~/css/toast.css" />
-	<div class="toast-cus shadow">
+	<div class="toast-cus toast-cus-success shadow">
 		<img class="toast-img" src="~/img/icon/success.png" />
 		<p class="toast-text">
 			@TempData["success"]

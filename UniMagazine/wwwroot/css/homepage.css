@@ -55,7 +55,7 @@
     margin-left: 14px;
 }
 
-/*HOME CONTROL*/
+/*HOME-CONTROL*/
 .main-control {
     display: flex;
     width: 100%;
@@ -108,14 +108,11 @@
 .faculty-options{
     margin-right: 20px;
 }
+
 .faculty-option {
     cursor: pointer;
     outline: none;
     border: unset;
-}
-
-.main-control-search{
-
 }
 
 .main-control-search--input input{

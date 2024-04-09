@@ -129,16 +129,18 @@ html *::-webkit-scrollbar-track {
     bottom: 0;
     left: auto;
     animation: navBarSlide ease 0.5s;
-    z-index: 999999;
+    z-index: 10;
 }
 
 @keyframes navBarSlide {
     0% {
-        right: calc(var(--sidebar-size) * -1);
+        transform: translateX(100%);
+        /*right: calc(var(--sidebar-size) * -1);*/
     }
 
     100% {
-        right: 0px;
+        transform: translateX(0);
+        /*right: 0px;*/
     }
 }
 
