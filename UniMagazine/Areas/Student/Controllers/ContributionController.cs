@@ -95,13 +95,16 @@ namespace UniMagazine.Areas.Student.Controllers
                         }
 
                         // Save file info to the database
-                        var MaCon = new MaterialContribution()
+                        if (_unitOfWork != null && _unitOfWork.MaterialContributionRepository != null)
                         {
-                            CreatedDate = DateTime.Now,
-                            ImageUrl = @"upload\Student\" + fileName,
-                            ContributionId = contribution.Id // Set ContributionId with the generated Id of Contribution entity
-                        };
-                        _unitOfWork.MaterialContributionRepository.Add(MaCon);
+                            var MaCon = new MaterialContribution()
+                            {
+                                CreatedDate = DateTime.Now,
+                                ImageUrl = @"\upload\Student\" + fileName,
+                                ContributionId = conTri.Id // Set ContributionId with the generated Id of Contribution entity
+                            };
+                            _unitOfWork.MaterialContributionRepository.Add(MaCon);
+                        }
                     }
                     TempData["success"] = "Request successfully! Your contribution is pending!";
                     _unitOfWork.Save();

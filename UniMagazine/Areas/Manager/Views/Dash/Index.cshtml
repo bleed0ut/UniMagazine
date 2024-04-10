@@ -1,0 +1,205 @@
+﻿@{
+    Layout = "/Areas/Manager/Views/_LayoutManagerPage.cshtml";
+    ViewData["Title"] = "Manager page";
+}
+<div>
+    <div class="row">
+        <div class="col-2">
+            <label><b>Chart-Type</b></label>
+        </div>
+        <div class="col-2">
+            <select id="ChartType" class="form-control" style="width:150px;">
+                <option selected>bar</option>
+            </select>
+        </div>
+        <div class="col-3">
+            <select id="year" class="form-control" style="width:150px;">
+            </select>
+        </div>
+        <div class="col-4">
+            <input id="ID" value="SHow Graph" type="button" />
+        </div>
+
+    </div>
+    <div id="chartView">
+        <canvas id="chart"></canvas>
+    </div>
+</div>
+    
+
+<br/>
+
+<div>
+    <div class="row">
+        <div class="col-2">
+            <label><b>Chart-Type</b></label>
+        </div>
+        <div class="col-2">
+            <select id="ChartTypeP" class="form-control" style="width:150px;">
+                <option selected>pie</option>
+            </select>
+        </div>
+        <div class="col-3">
+            <select id="yearP" class="form-control" style="width:150px;">
+            </select>
+        </div>
+        <div class="col-4">
+            <input id="IDP" value="SHow Graph" type="button" />
+        </div>
+
+    </div>
+    <div id="chartViewP">
+        <canvas id="chartP"></canvas>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $.ajax({
+            type: "GET",
+            url: "/Manager/Dash/GetAcademicYears",
+            dataType: "json",
+            success: function (data) {
+                console.log('Data received:', data);
+                var select = $('#year');
+                var selectP = $('#yearP');
+                var currentYear = new Date().getFullYear(); // Get the current year
+                $.each(data, function (index, item) {
+                    var option = $('<option value="' + item.id + '">' + item.text + '</option>');
+                    if (item.text === currentYear.toString()) { // Compare item.text with currentYear
+                        option.prop('selected', true);
+                        console.log(option.val()); // Output the value of the selected option
+                        console.log(option.text()); // Output the text of the selected option
+                        console.log(currentYear);
+                    }
+                    select.append(option);
+                    selectP.append(option.clone());
+                    console.log(option.attr('value'));
+                    $("#ID").trigger('click');
+                    $("#IDP").trigger('click');
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching academic years:', error);
+            }
+                  
+        });
+        
+        $("#ID").click(function () {
+            
+            var chartType = $("#ChartType").val();
+            var chartView = document.getElementById("chartView");
+            var selectedYear = $("#year").val();
+            console.log(selectedYear);
+            chartView.innerHTML='&nbsp;'
+            $('#chartView').append('<canvas id="chart" style="max-width:750pxp;max-height:400px;"></canvas>');
+
+            $.ajax({
+                type: "POST",
+                url: "/Manager/Dash/AllConInFa",
+                data: { year: selectedYear },
+                contextType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: OnSuccessResult,
+                error: OnErrorResult    
+            });
+            
+
+            
+
+            function OnSuccessResult(data) {
+                var _data = data;
+                var _chartLabel = _data[0];
+                var _chartData = _data[1];
+                console.log(data);
+                var barcolor = ["red", "green", "blue", "orange", "brown", "purple"];
+
+                new Chart("chart",{
+                    type:  chartType,
+                    data: {
+                        labels: _chartLabel,
+                        datasets: [{
+                            label: "Contribution",
+                            data: _chartData
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                })
+            }
+            function OnErrorResult(data) {
+
+            }
+        });
+        $("#IDP").click(function () {
+
+            var chartType = $("#ChartTypeP").val();
+            var chartView = document.getElementById("chartViewP");
+            var selectedYear = $("#yearP").val();
+            console.log(selectedYear);
+            chartView.innerHTML = '&nbsp;'
+            $('#chartViewP').append('<canvas id="chartP" style="max-width:750pxp;max-height:400px;"></canvas>');
+
+            $.ajax({
+                type: "POST",
+                url: "/Manager/Dash/PercentageByFa",
+                data: { year: selectedYear },
+                contextType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: OnSuccessResult,
+                error: OnErrorResult
+            });
+
+
+
+
+            function OnSuccessResult(data) {
+                var _data = data;
+                var _chartLabel = _data[0];
+                var _chartData = _data[1];
+                console.log(data);
+                var barcolor = ["red", "green", "blue", "orange", "brown", "purple"];
+
+                new Chart("chartP", {
+                    type: chartType,
+                    data: {
+                        labels: _chartLabel,
+                        datasets: [{
+                            label: "Contribution in %",
+                            data: _chartData 
+                        }]
+                    },
+                    
+                    // options: {
+                    //     scales: {
+                    //         y: {
+                    //             beginAtZero: true
+                    //         }
+                    //     }
+                    // }
+                })
+            }
+            function OnErrorResult(data) {
+
+            }
+        });
+        
+    });
+    
+        
+</script>

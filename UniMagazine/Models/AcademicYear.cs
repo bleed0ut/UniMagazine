@@ -14,8 +14,6 @@ namespace UniMagazine.Models
     public DateTime ClosedDate { get; set; }
     [ValidateNever]
     public string Status { get; set; }
-
-        
-        
+  
     }
 }
