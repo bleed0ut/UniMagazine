@@ -16,10 +16,9 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>();
 
-// Add services to the container.
-
+// Add services to the container
 builder.Services.AddControllersWithViews();
-builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+builder.Services.AddRazorPages();
 
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<UniMagazine.Utility.IEmailSender, EmailSender>();
