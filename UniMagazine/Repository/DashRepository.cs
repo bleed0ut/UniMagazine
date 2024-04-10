@@ -35,6 +35,7 @@ namespace UniMagazine.Repository
                                 join f in _dbContext.Faculties on m.FacultyId equals f.Id
                                 where c.Status == "Published"
                                 where m.AcademicYearId == year2.Id
+                                where m.Faculty.Name != "Sample Faculty"
                                 group c by new { f.Id, f.Name } into g
                                 select new
                                 {
@@ -42,13 +43,7 @@ namespace UniMagazine.Repository
                                     PublishedContributionsNumber = g.Count()
                                 };
 
-                    //List<object> facultiesWithNumber = query.ToList<object>();
-                    //foreach (var faculty in facultiesWithNumber)
-                    //{
-                    //    label.Add(faculty.FacultyName)
-                    //}
-                    //data.Add(label);
-                    //data.Add(publishedContributions);
+                   
                     foreach(var item in query)
                     {
                         label.Add(item.FacultyName);
@@ -90,6 +85,7 @@ namespace UniMagazine.Repository
                                 join f in _dbContext.Faculties on m.FacultyId equals f.Id
                                 where c.Status == "Published"
                                 where m.AcademicYearId == year2.Id
+                                where m.Faculty.Name != "Sample Faculty"
                                 group c by new { f.Id, f.Name } into g
                                 select new
                                 {
@@ -97,14 +93,7 @@ namespace UniMagazine.Repository
                                     PublishedContributionsNumber = g.Count()
                                     
                                 };
-                    
-                    //List<object> facultiesWithNumber = query.ToList<object>();
-                    //foreach (var faculty in facultiesWithNumber)
-                    //{
-                    //    label.Add(faculty.FacultyName)
-                    //}
-                    //data.Add(label);
-                    //data.Add(publishedContributions);
+                   
                     foreach (var item in query)
                     {
                         totalpersent += item.PublishedContributionsNumber;

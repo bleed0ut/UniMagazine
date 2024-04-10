@@ -147,6 +147,7 @@ namespace UniMagazine.Repository
                                                         .Include(u => u.User)
                                                         .Include(m => m.Magazine)
                                                         .ThenInclude(f => f.Faculty)
+                                                        .Where(f => f.Magazine.Faculty.Name != "Sample Faculty")
                                                         .ToList();
             return contributions;
         }
