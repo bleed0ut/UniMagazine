@@ -47,21 +47,25 @@ namespace UniMagazine.Repository
             foreach (var magazine in Magazine)
             {
                 var contributions = _dbContext.Contributions.Where(x => x.MagazineId == magazine.Id).ToList();
+                string wwwRootPath1 = _webHostEnvironment.WebRootPath;
+                var oldImagePath1 = Path.Combine(wwwRootPath1, magazine.ImageUrl.TrimStart('\\'));
 
+                if (File.Exists(oldImagePath1))
+                {
+                    File.Delete(oldImagePath1);
+                }
                 foreach (var contribution in contributions)
                 {
                     // Find MaterialContributions indirectly associated with the current contribution
-                    var materialContributions = _dbContext.MaterialContributions
-                        .Where(mc => mc.ContributionId == contribution.Id).ToList();
+                    var materialContributions = _dbContext.MaterialContributions.Where(mc => mc.ContributionId == contribution.Id).ToList();
                     foreach (var fil in materialContributions)
                     {
                         string wwwRootPath = _webHostEnvironment.WebRootPath;
-                        string filePath = Path.Combine(wwwRootPath, @"upload\Student\");
                         var oldImagePath = Path.Combine(wwwRootPath, fil.ImageUrl.TrimStart('\\'));
 
-                        if (System.IO.File.Exists(oldImagePath))
+                        if (File.Exists(oldImagePath))
                         {
-                            System.IO.File.Delete(oldImagePath);
+                            File.Delete(oldImagePath);
                         }
                     }
                         _dbContext.MaterialContributions.RemoveRange(materialContributions);

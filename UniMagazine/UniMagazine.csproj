@@ -30,6 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\img\Magazine\" />
+    <Folder Include="wwwroot\upload\" />
     <Folder Include="wwwroot\upload\Student\" />
   </ItemGroup>
 

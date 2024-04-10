@@ -75,16 +75,7 @@ namespace UniMagazine.Areas.Manager.Controllers
                         {
                             Directory.CreateDirectory(MagazinePath);
                         }
-                        //if (!string.IsNullOrEmpty(MagazineVM.Magazine.ImageUrl))
-                        //{
-                        //    // Delete the old image
-                        //    var oldImagePath = Path.Combine(wwwRootPath, BookVM.Book.ImageUrl.TrimStart('\\'));
-
-                        //    if (System.IO.File.Exists(oldImagePath))
-                        //    {
-                        //        System.IO.File.Delete(oldImagePath);
-                        //    }
-                        //}
+                        
 
                         using (var fileStream = new FileStream(Path.Combine(MagazinePath, fileName), FileMode.Create))
                         {
@@ -130,6 +121,7 @@ namespace UniMagazine.Areas.Manager.Controllers
                 return NotFound();
             }
             else {
+                
                 var mag = _unitOfWork.MagazineRepository.Get(x => x.Id == id);
                 var ma = new MagazineVM()
                 {
@@ -144,6 +136,7 @@ namespace UniMagazine.Areas.Manager.Controllers
                         Text = A.YearDate.ToString("yyyy"),
                         Value = A.Id.ToString()
                     })
+
                 };
                 return View(ma);
             }

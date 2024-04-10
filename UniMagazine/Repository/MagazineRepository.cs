@@ -28,17 +28,21 @@ namespace UniMagazine.Repository
             var con = _dbContext.Contributions.Where(x => x.MagazineId == entity.Id);
             foreach (var contri in con)
             {
-                var ContriMa = _dbContext.MaterialContributions.Where(x => x.Id == contri.Id).ToList();
+                var ContriMa = _dbContext.MaterialContributions.Where(x => x.ContributionId == contri.Id).ToList();
                 foreach (var fil in ContriMa)
                 {
                     string wwwRootPath = _webHostEnvironment.WebRootPath;
                     string filePath = Path.Combine(wwwRootPath, @"upload\Student\");
-                    var studentfile = Path.Combine(wwwRootPath, fil.ImageUrl.TrimStart('\\'));
-
-                    if (System.IO.File.Exists(studentfile))
+                    
+                    if (!string.IsNullOrEmpty(fil.ImageUrl))
                     {
-                        System.IO.File.Delete(studentfile);
+                        var studentfile = Path.Combine(wwwRootPath, fil.ImageUrl.TrimStart('\\'));
+                        if (File.Exists(studentfile))
+                        {
+                            File.Delete(studentfile);
+                        }
                     }
+                        
                 }
                 _dbContext.MaterialContributions.RemoveRange(ContriMa);
             }
