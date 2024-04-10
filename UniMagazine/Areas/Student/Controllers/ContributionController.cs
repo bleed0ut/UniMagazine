@@ -158,7 +158,7 @@ namespace UniMagazine.Areas.Student.Controllers
         {
             string wwwRootPath = _webHostEnvironment.WebRootPath;
             
-            var contribution = _unitOfWork.ContributionRepository.Get(x => x.Id == con.Id);
+            var contribution = _unitOfWork.ContributionRepository.Get(con.Id);
             
             if (ModelState.IsValid)
             {
