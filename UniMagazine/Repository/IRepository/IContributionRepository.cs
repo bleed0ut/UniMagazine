@@ -13,5 +13,6 @@ namespace UniMagazine.Repository.IRepository
         void Update(Contribution con);
         void CheckAPendingContribution(Contribution contribution);
         void CheckManyPendingContribution(IEnumerable<Contribution> contributions);
+        IEnumerable<Contribution> GetExpiredContributions();
     }
 }

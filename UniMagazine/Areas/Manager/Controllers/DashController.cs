@@ -24,7 +24,8 @@ namespace UniMagazine.Areas.Manager.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            var contributions = _unitOfWork.ContributionRepository.GetExpiredContributions();
+            return View(contributions);
         }
         [HttpPost]
         public List<object> AllConInFa(string? year)

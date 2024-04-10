@@ -1,13 +1,16 @@
-﻿@{
+﻿@model IEnumerable<Contribution>
+
+@{
     Layout = "/Areas/Manager/Views/_LayoutManagerPage.cshtml";
     ViewData["Title"] = "Manager page";
+    int i = 0;
 }
 <div>
     <div class="row">
-        <div class="col-2">
-            <label><b>Chart-Type</b></label>
-        </div>
-        <div class="col-2">
+        <h2><strong>Contributions number within each Faculty in </strong></h2>
+    </div>
+    <div class="row">
+        <div class="col-2" hidden>
             <select id="ChartType" class="form-control" style="width:150px;">
                 <option selected>bar</option>
             </select>
@@ -17,24 +20,24 @@
             </select>
         </div>
         <div class="col-4">
-            <input id="ID" value="SHow Graph" type="button" />
+            <input id="ID" value="Filter" type="button" />
         </div>
 
     </div>
+    
     <div id="chartView">
         <canvas id="chart"></canvas>
     </div>
 </div>
-    
 
 <br/>
 
 <div>
     <div class="row">
-        <div class="col-2">
-            <label><b>Chart-Type</b></label>
-        </div>
-        <div class="col-2">
+        <h2><strong>Percentage of contributions within each Faculty in </strong></h2>
+    </div>
+    <div class="row">
+        <div class="col-2" hidden>
             <select id="ChartTypeP" class="form-control" style="width:150px;">
                 <option selected>pie</option>
             </select>
@@ -44,7 +47,7 @@
             </select>
         </div>
         <div class="col-4">
-            <input id="IDP" value="SHow Graph" type="button" />
+            <input id="IDP" value="Filter" type="button" />
         </div>
 
     </div>
@@ -53,6 +56,43 @@
     </div>
 </div>
 
+<br/>
+@* Expired Contributions (no feedback comments in 14 days)*@
+<h1>
+    Contributions without a comment after 14 days
+    @if(Model.Count() > 0)
+    {
+        <span> (@Model.Count() contributions)</span>
+    }
+</h1>
+<div class="card-body p-0">
+    <table id="tblData" class="table table-bordered table-striped text-center" style="width:100%">
+        <thead class="text-center flex-grow-1">
+            <tr>
+                <th>Num</th>
+                <th>Faculty</th>
+                <th>Magazine Topic</th>
+                <th>Contribution content</th>
+                <th>Submission Date</th>
+                <th>Contributor</th>
+            </tr>
+        </thead>
+        <tbody class="text-center align-middle">
+            @foreach (var contribution in Model)
+            {
+                i++;
+                <tr>
+                    <td>@i</td>
+                    <td>@contribution.Magazine.Faculty.Name</td>
+                    <td>@contribution.Magazine.Title</td>
+                    <td>@contribution.Content</td>
+                    <td>@contribution.CreatedDate</td>
+                    <td>@contribution.User.Email</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
 
 

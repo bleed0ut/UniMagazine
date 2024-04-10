@@ -139,5 +139,16 @@ namespace UniMagazine.Repository
 
             return contributions;
         }
+
+        public IEnumerable<Contribution> GetExpiredContributions()
+        {
+            var contributions = _dbContext.Contributions.Where(s => s.Status == "Expired")
+                                                        .OrderByDescending(c => c.CreatedDate)
+                                                        .Include(u => u.User)
+                                                        .Include(m => m.Magazine)
+                                                        .ThenInclude(f => f.Faculty)
+                                                        .ToList();
+            return contributions;
+        }
     }
 }
