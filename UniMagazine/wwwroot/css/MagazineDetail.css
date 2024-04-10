@@ -84,10 +84,14 @@
 
 /*CONTRIBUTION*/
 .comment-contribution__tittle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-left: 60px;
     font-size: 1rem;
     font-weight: 600;
     margin-top: 10px;
+    
 }
 
 .contribution-file {
