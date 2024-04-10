@@ -7,6 +7,7 @@
     DateTime closedDate = (DateTime)Model.Magazine.ClosedDate;
     TimeSpan ts = closedDate - DateTime.Now;
     string timeleft = string.Format("{0} Days, {1} Hours, {2} Minutes", ts.Days, ts.Hours, ts.Minutes);
+    string userId = userManager.GetUserId(this.User);
 }
 <link rel="stylesheet" href="~/css/MagazineDetail.css" type="text/css" />
 
@@ -117,11 +118,27 @@
                             <span class="small text-muted mx-0 ms-2">@con.User.Email</span>
                         </div>
                     </div>
-                    <div>
-                        <p class="small text-muted mb-0">@con.CreatedDate</p>
-                    </div>
+                    @if (con.CreatedDate != con.UpdatedDate)
+                    {
+                        <div>
+                            <p class="small text-muted mb-0">@con.CreatedDate</p> <span class="small text-muted mb-0">(Updated in @con.UpdatedDate)</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            <p class="small text-muted mb-0">@con.CreatedDate</p>
+                        </div>
+                    }
                 </div>
-                <div class="comment-contribution__tittle">@con.Content</div>
+                <div class="comment-contribution__tittle">
+                    @con.Content
+                    @if(con.UserId == userId){
+                        <a class="badge btn-dark" asp-area="Student" asp-route-id="@con.Id" asp-controller="Contribution" asp-action="Update" style="text-decoration: none;">
+                            Update my contribution
+                        </a>
+                    }
+                </div>
                 <div class="contribution-file ">
                     <button class="button-contribution" type="button" data-bs-toggle="collapse"
                             data-bs-target="#contri-id-@con.Id" aria-expanded="false" aria-controls="contri-id-@con.Id">
