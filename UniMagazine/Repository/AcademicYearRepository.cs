@@ -43,11 +43,11 @@ namespace UniMagazine.Repository
         public void Delete(AcademicYear deleteAcademic)
         {
             var Magazine = _dbContext.Magazines.Where(x => x.AcademicYearId == deleteAcademic.Id).ToList();
-            
+            var faculty = _dbContext.Faculties.Where(x => x.CreateDate.Year == deleteAcademic.YearDate.Year).ToList();
             foreach (var magazine in Magazine)
             {
                 var contributions = _dbContext.Contributions.Where(x => x.MagazineId == magazine.Id).ToList();
-                var faculty = _dbContext.Faculties.Where(x => x.Id == magazine.FacultyId).FirstOrDefault();
+                
                 string wwwRootPath1 = _webHostEnvironment.WebRootPath;
                 var oldImagePath1 = Path.Combine(wwwRootPath1, magazine.ImageUrl.TrimStart('\\'));
 
@@ -73,10 +73,10 @@ namespace UniMagazine.Repository
                 }
 
                 _dbContext.Contributions.RemoveRange(contributions);
-                _dbContext.Contributions.RemoveRange(faculty);
+                
             }
-            
 
+            _dbContext.Faculties.RemoveRange(faculty);
             _dbContext.Magazines.RemoveRange(Magazine);
             if (deleteAcademic != null)
                 _dbContext.AcademicYears.Remove(deleteAcademic);
