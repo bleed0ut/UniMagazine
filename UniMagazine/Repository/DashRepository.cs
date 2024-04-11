@@ -1,7 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
-using Stimulsoft.Data.Extensions;
 using UniMagazine.Data;
 using UniMagazine.Models;
 using UniMagazine.Repository.IRepository;
