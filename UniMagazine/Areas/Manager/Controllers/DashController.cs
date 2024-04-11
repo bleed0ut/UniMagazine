@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Stimulsoft.Report.Components;
 using UniMagazine.Data;
 using UniMagazine.Models;
 using UniMagazine.Repository.IRepository;
