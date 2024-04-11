@@ -55,15 +55,16 @@ namespace UniMagazine.Areas.Student.Controllers
         public async Task<IActionResult> Add(Contribution con, List<IFormFile> files)
         {
             var magazine = _unitOfWork.MagazineRepository.Get(x => x.Id == con.MagazineId);
-
-            ViewData["MagazineTitle"] = magazine.Title;
-            ViewData["MagazineDescription"] = magazine.Detail;
-            ViewData["MagazineStatus"] = magazine.Status;
-            ViewData["PostedDate"] = magazine.PostedDate.ToString();
-            ViewData["ImgUrl"] = magazine.ImageUrl;
+            con.Magazine = magazine;
 
             if (ModelState.IsValid)
             {
+                if(files.Count() == 0)
+                {
+                    TempData["error"] = "Upload atleast one file for a submission!";
+                    return View(con);
+                }
+
                 if (con != null)
                 {
                     string wwwRootPath = _webHostEnvironment.WebRootPath;

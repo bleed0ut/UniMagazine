@@ -116,6 +116,15 @@ namespace UniMagazine.Areas.Coordinator.Controllers
                 UserID = _userManager.GetUserId(this.User),
                 Status = status,
             };
+            if (status == "Rejected" && string.IsNullOrEmpty(feedbackVM.Comment))
+            {
+                feedback.Comment = "You need to review again and fix for a resubmission";
+                if (con.Status == "Published")
+                    feedback.Comment = "Rejected for this submission update!";
+            }
+            else if (status == "Published" && string.IsNullOrEmpty(feedbackVM.Comment))
+                feedback.Comment = "It's acceptable !";
+
 
 
             _unitOfWork.FeedBackCommentRepository.Add(feedback);
