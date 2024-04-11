@@ -52,9 +52,9 @@
                 <label asp-for="@Model.Magazine.ImageUrl">Image</label>
                 <input id="imgInp" type="file" name="file" class="form-control" onchange="loadFile(event)" />
             </div>
-            <div class="d-flex flex-column w-100 h-25">
-                <label>Preview Image:</label>
-                <img id="imgOutput" src="@Model.Magazine.ImageUrl" class="rounded w-100 object-fit-cover overflow-hidden" />
+            <div class="w-100">
+                <p>Preview Image:</p>
+                <img id="imgOutput" src="@Model.Magazine.ImageUrl" class="rounded w-100 object-fit-cover" />
             </div>
         </div>
     </div>

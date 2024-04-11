@@ -120,7 +120,7 @@
                     </div>
                     @if (con.CreatedDate != con.UpdatedDate)
                     {
-                        <div>
+                        <div class="text-end">
                             <p class="small text-muted mb-0">@con.CreatedDate</p> <span class="small text-muted mb-0">(Updated in @con.UpdatedDate)</span>
                         </div>
                     }
@@ -134,7 +134,7 @@
                 <div class="comment-contribution__tittle">
                     @con.Content
                     @if(con.UserId == userId){
-                        <a class="badge btn-dark" asp-area="Student" asp-route-id="@con.Id" asp-controller="Contribution" asp-action="Update" style="text-decoration: none;">
+                        <a class="badge btn-dark" asp-area="Student" asp-route-id="@con.Id" asp-controller="Contribution" asp-action="Update" style="text-decoration: none; border-radius: unset">
                             Update my contribution
                         </a>
                     }
