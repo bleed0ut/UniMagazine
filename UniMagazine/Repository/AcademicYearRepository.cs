@@ -42,7 +42,7 @@ namespace UniMagazine.Repository
         public void Delete(AcademicYear deleteAcademic)
         {
             var Magazine = _dbContext.Magazines.Where(x => x.AcademicYearId == deleteAcademic.Id).ToList();
-            var faculty = _dbContext.Faculties.Where(x => x.CreateDate.Year == deleteAcademic.YearDate.Year).ToList();
+           
             foreach (var magazine in Magazine)
             {
                 var contributions = _dbContext.Contributions.Where(x => x.MagazineId == magazine.Id).ToList();
@@ -74,8 +74,6 @@ namespace UniMagazine.Repository
                 _dbContext.Contributions.RemoveRange(contributions);
                 
             }
-
-            _dbContext.Faculties.RemoveRange(faculty);
             _dbContext.Magazines.RemoveRange(Magazine);
             if (deleteAcademic != null)
                 _dbContext.AcademicYears.Remove(deleteAcademic);
