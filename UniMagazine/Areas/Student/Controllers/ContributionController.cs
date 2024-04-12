@@ -100,7 +100,7 @@ namespace UniMagazine.Areas.Student.Controllers
                             {
                                 CreatedDate = DateTime.Now,
                                 ImageUrl = @"\upload\Student\" + fileName,
-                                ContributionId = con.Id // Set ContributionId with the generated Id of Contribution entity
+                                ContributionId = contribution.Id // Set ContributionId with the generated Id of Contribution entity
                             };
                             _unitOfWork.MaterialContributionRepository.Add(MaCon);
                         }
@@ -108,10 +108,10 @@ namespace UniMagazine.Areas.Student.Controllers
                     TempData["success"] = "Request successfully! Your contribution is pending!";
                     _unitOfWork.Save();
 
-                    contribution.User = _unitOfWork.UserRepository.GetUserById(currentUser.Id);
-                    contribution.Magazine = _unitOfWork.MagazineRepository.Get(x => x.Id == con.MagazineId);
+                    var user = _unitOfWork.UserRepository.GetUserById(currentUser.Id);
+                    magazine = _unitOfWork.MagazineRepository.Get(x => x.Id == con.MagazineId);
                     //send mail to contribution
-                    var coordinators = _unitOfWork.UserRepository.GetCoordinators(contribution.User.FacultyId);
+                    var coordinators = _unitOfWork.UserRepository.GetCoordinators(user.FacultyId);
                     if(coordinators.Count() > 0)
                         _emailSender.AnounceSubmission(coordinators, contribution);
 
