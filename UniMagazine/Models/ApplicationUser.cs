@@ -30,5 +30,6 @@ public class ApplicationUser : IdentityUser
 
     [ForeignKey("FacultyId")]
     public virtual Faculty? Faculty { get; set; }
+    public virtual ICollection<Contribution> Contributions { get; set; }
 }
 

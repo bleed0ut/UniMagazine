@@ -119,6 +119,55 @@ namespace UniMagazine.Repository
             }
             return data;
         }
+        public List<object> GetContributerInFaAca(string? year)
+        {
+            List<object> data = new List<object>();
+            var totalpersent = 0;
+            if (year != null)
+            {
+                if (int.TryParse(year, out int yearValue))
+                {
+                    var year2 = _dbContext.AcademicYears.FirstOrDefault(k => k.Id == yearValue);
+
+                    List<string> label = new List<string>();
+                    List<decimal> count = new List<decimal>();
+
+                    var query = from c in _dbContext.Contributions
+                                join m in _dbContext.Magazines on c.MagazineId equals m.Id
+                                join f in _dbContext.Faculties on m.FacultyId equals f.Id
+                                where c.Status == "Published"
+                                where m.AcademicYearId == year2.Id
+                                where m.Faculty.Name != "Sample Faculty"
+                                group c by new { f.Id, f.Name } into g
+                                select new
+                                {
+                                    FacultyName = g.Key.Name,
+                                    ContributorCount = g.Select(c => c.UserId).Distinct().Count()
+                                };
+
+
+                    
+                    foreach (var item in query)
+                    {
+
+                        label.Add(item.FacultyName);
+                        count.Add(item.ContributorCount);
+                    }
+                    data.Add(label);
+                    data.Add(count);
+
+                    return data;
+                }
+                else
+                {
+                    // Handle invalid year format
+                    // For example:
+                    throw new ArgumentException("Invalid year format. Please provide a valid integer year.");
+                }
+
+            }
+            return data;
+        }
 
         public List<object> GetAllContributerInAllFaByAca()
         {

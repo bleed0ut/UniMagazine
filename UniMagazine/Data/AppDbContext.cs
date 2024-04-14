@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 using UniMagazine.Models;
 
 namespace UniMagazine.Data;
@@ -25,5 +26,9 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
                 .WithOne(e => e.Magazine)
                 .HasForeignKey("MagazineId")
                 .IsRequired();
+        builder.Entity<Contribution>()
+        .HasOne(c => c.User)
+        .WithMany(u => u.Contributions)
+        .HasForeignKey(c => c.UserId);
     }
 }

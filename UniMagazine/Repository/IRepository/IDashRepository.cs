@@ -7,6 +7,7 @@ namespace UniMagazine.Repository.IRepository
     {
         public List<Object> GetAllConInAllFaByAca(string? year);
         public List<Object> GetPerConInAllFaByAca(string? year);
+        public List<object> GetContributerInFaAca(string? year);
         public List<Object> GetAllContributerInAllFaByAca();
     }
 }

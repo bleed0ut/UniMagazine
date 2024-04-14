@@ -5,56 +5,80 @@
     ViewData["Title"] = "Manager page";
     int i = 0;
 }
-<div>
-    <div class="row">
-        <h2><strong>Contributions number within each Faculty in </strong></h2>
-    </div>
-    <div class="row">
-        <div class="col-2" hidden>
-            <select id="ChartType" class="form-control" style="width:150px;">
-                <option selected>bar</option>
-            </select>
+<div class="row">
+    <div class="col">
+        <div class="row">
+            <h5>Contributions number within each Faculty by year</h5>
         </div>
-        <div class="col-3">
-            <select id="year" class="form-control" style="width:150px;">
-            </select>
-        </div>
-        <div class="col-4">
-            <input id="ID" value="Filter" type="button" />
+        <div class="row">
+            <div class="col-2" hidden>
+                <select id="ChartType" class="form-control" style="width:110px;">
+                    <option selected>bar</option>
+                </select>
+            </div>
+            <div class="col-3">
+                <select id="year" class="form-control" style="width:110px;">
+                </select>
+            </div>
+            <div class="col-4">
+                <input id="ID" value="Filter" type="button" />
+            </div>
+
         </div>
 
+        <div id="chartView">
+            <canvas id="chart"></canvas>
+        </div>
+    </div>
+    <div class="col">
+        <div class="row">
+            <h5>Number of contributor in faculty in each year </h5>
+        </div>
+        <div class="row">
+            <div class="col-2" hidden>
+                <select id="ChartTypeC" class="form-control" style="width:110px;">
+                    <option selected>bar</option>
+                </select>
+            </div>
+            <div class="col-3">
+                <select id="yearC" class="form-control" style="width:110px;">
+                </select>
+            </div>
+            <div class="col-4">
+                <input id="IDC" value="Filter" type="button" />
+            </div>
+
+        </div>
+        <div id="chartViewC">
+            <canvas id="chartC"></canvas>
+        </div>
+    </div>
+    <div class="col">
+        <div class="row">
+            <h5>Percentage of contributions within each Faculty by year </h5>
+        </div>
+        <div class="row">
+            <div class="col-2" hidden>
+                <select id="ChartTypeP" class="form-control" style="width:110px;">
+                    <option selected>pie</option>
+                </select>
+            </div>
+            <div class="col-3">
+                <select id="yearP" class="form-control" style="width:110px;">
+                </select>
+            </div>
+            <div class="col-4">
+                <input id="IDP" value="Filter" type="button" />
+            </div>
+
+        </div>
+        <div id="chartViewP">
+            <canvas id="chartP"></canvas>
+        </div>
     </div>
     
-    <div id="chartView">
-        <canvas id="chart"></canvas>
-    </div>
 </div>
 
-<br/>
-
-<div>
-    <div class="row">
-        <h2><strong>Percentage of contributions within each Faculty in </strong></h2>
-    </div>
-    <div class="row">
-        <div class="col-2" hidden>
-            <select id="ChartTypeP" class="form-control" style="width:150px;">
-                <option selected>pie</option>
-            </select>
-        </div>
-        <div class="col-3">
-            <select id="yearP" class="form-control" style="width:150px;">
-            </select>
-        </div>
-        <div class="col-4">
-            <input id="IDP" value="Filter" type="button" />
-        </div>
-
-    </div>
-    <div id="chartViewP">
-        <canvas id="chartP"></canvas>
-    </div>
-</div>
 
 <br/>
 @* Expired Contributions (no feedback comments in 14 days)*@
@@ -113,6 +137,7 @@
                 console.log('Data received:', data);
                 var select = $('#year');
                 var selectP = $('#yearP');
+                var selectC = $('#yearC');
                 var currentYear = new Date().getFullYear(); // Get the current year
                 $.each(data, function (index, item) {
                     var option = $('<option value="' + item.id + '">' + item.text + '</option>');
@@ -124,9 +149,11 @@
                     }
                     select.append(option);
                     selectP.append(option.clone());
+                    selectC.append(option.clone());
                     console.log(option.attr('value'));
                     $("#ID").trigger('click');
                     $("#IDP").trigger('click');
+                    $("#IDC").trigger('click');
                 });
             },
             error: function (xhr, status, error) {
@@ -193,7 +220,7 @@
             var selectedYear = $("#yearP").val();
             console.log(selectedYear);
             chartView.innerHTML = '&nbsp;'
-            $('#chartViewP').append('<canvas id="chartP" style="max-width:750pxp;max-height:400px;"></canvas>');
+            $('#chartViewP').append('<canvas id="chartP" style="max-width:750pxp;max-height:200px;"></canvas>');
 
             $.ajax({
                 type: "POST",
@@ -232,6 +259,62 @@
                     //         }
                     //     }
                     // }
+                })
+            }
+            function OnErrorResult(data) {
+
+            }
+        });
+        $("#IDC").click(function () {
+
+            var chartType = $("#ChartTypeC").val();
+            var chartView = document.getElementById("chartViewC");
+            var selectedYear = $("#yearC").val();
+            console.log(selectedYear);
+            chartView.innerHTML = '&nbsp;'
+            $('#chartViewC').append('<canvas id="chartC" style="max-width:750pxp;max-height:400px;"></canvas>');
+
+            $.ajax({
+                type: "POST",
+                url: "/Manager/Dash/ContributerInFaAca",
+                data: { year: selectedYear },
+                contextType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: OnSuccessResult,
+                error: OnErrorResult
+            });
+
+
+
+
+            function OnSuccessResult(data) {
+                var _data = data;
+                var _chartLabel = _data[0];
+                var _chartData = _data[1];
+                console.log(data);
+                
+
+                new Chart("chartC", {
+                    type: chartType,
+                    data: {
+                        labels: _chartLabel,
+                        datasets: [{
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 159, 64, 0.2)',
+                                'rgba(255, 205, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(201, 203, 207, 0.2)'
+                            ],
+                            label: "Contributor",
+                            data: _chartData
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                    }
                 })
             }
             function OnErrorResult(data) {

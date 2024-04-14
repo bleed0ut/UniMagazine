@@ -40,6 +40,12 @@ namespace UniMagazine.Areas.Manager.Controllers
             data = _unitOfWork.DashRepository.GetPerConInAllFaByAca(year);
             return data;
         }
+        public List<object> ContributerInFaAca(string? year)
+        {
+            List<object> data = new List<object>();
+            data = _unitOfWork.DashRepository.GetContributerInFaAca(year);
+            return data;
+        }
         [HttpGet]
         public IActionResult GetAcademicYears()
         {
