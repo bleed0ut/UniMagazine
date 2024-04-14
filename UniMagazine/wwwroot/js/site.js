@@ -15,6 +15,6 @@ $("#header__nav--close-icon").click(function () {
 //Hien thi file trong iframe
 $('.material-link').click(function (e) {
     e.preventDefault(); // Prevent default link behavior
-    $('#iframe-contribute').attr('src', '/' + $(this).attr("data"))
+    $('#iframe-contribute').attr('src', $(this).attr("data"))
 
 });
