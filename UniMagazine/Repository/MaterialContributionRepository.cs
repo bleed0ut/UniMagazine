@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using UniMagazine.Data;
+using UniMagazine.Migrations;
 using UniMagazine.Models;
 using UniMagazine.Repository.IRepository;
 
@@ -37,12 +38,22 @@ namespace UniMagazine.Repository
 
         public void DeleteFileForRejectUpdating(int contributionId, string rootPath)
         {
-            var newUpdateFiles = _dbContext.MaterialContributions.Where(c => c.ContributionId == contributionId)
+            var contribution = _dbContext.Contributions.FirstOrDefault(f => f.Id == contributionId);
+            if (contribution == null)
+                return;
+
+            var rejectedFiles = _dbContext.MaterialContributions.Where(c => c.ContributionId == contributionId)
+                                                                 .ToList();
+            if (contribution.Status == "PendingUpdate")
+            {
+                rejectedFiles = _dbContext.MaterialContributions.Where(c => c.ContributionId == contributionId)
                                                                  .Where(s => s.Status == "Updating")
                                                                  .ToList();
-            _dbContext.RemoveRange(newUpdateFiles);
+            }
+                
+            _dbContext.RemoveRange(rejectedFiles);
             
-            foreach(var file in newUpdateFiles)
+            foreach(var file in rejectedFiles)
             {
                 if(File.Exists(Path.Combine(rootPath, file.ImageUrl)))
                 {

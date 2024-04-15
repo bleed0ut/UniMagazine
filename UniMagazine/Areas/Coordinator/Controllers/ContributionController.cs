@@ -68,13 +68,13 @@ namespace UniMagazine.Areas.Coordinator.Controllers
             if (con == null)
                 return NotFound();
 
-            if(con.Magazine.Status == "Closed" && con.Status == "Pending")
+            if (con.Magazine.Status == "Closed" && con.Status == "Pending")
             {
                 feedbackVM.Contribution = con;
                 TempData["error"] = "Cannot moderate this contribution, due to the Magazine has been ended!";
                 return View(feedbackVM);
             }
-                        
+
             DateTime today = DateTime.Now;
             TimeSpan ts = today - con.CreatedDate;
 
@@ -104,8 +104,12 @@ namespace UniMagazine.Areas.Coordinator.Controllers
                     con.Content = con.TempContent;
                     _unitOfWork.MaterialContributionRepository.DeleteFileForRejectUpdating(con.Id, _webHostEnvironment.WebRootPath);
                 }
-                else //Pending for resubmission or first new submission
+                else
+                {
+                    //Pending for resubmission or first new submission
                     con.Status = status;
+                    _unitOfWork.MaterialContributionRepository.DeleteFileForRejectUpdating(con.Id, _webHostEnvironment.WebRootPath);
+                }
             }
 
 

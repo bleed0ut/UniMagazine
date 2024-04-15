@@ -119,9 +119,9 @@ namespace UniMagazine.Repository
                                                         .ThenInclude(m => m.Academic)
                                                         .Include(u => u.User)
                                                         .ThenInclude(f => f.Faculty)
-                                                        .Include(f => f.Files)
+                                                        .Include(f => f.Files.Where(f => f.Status != "Updating"))
                                                         .Where(m => m.Magazine.AcademicYearId == academicYearId)
-                                                        .Where(s => s.Status == "Published")
+                                                        .Where(s => s.Status == "Published" || s.Status == "PendingUpdate")
                                                         .Where(f => f.User.Faculty.Name != "Sample Faculty")
                                                         .Where(c => c.Files.Count() > 0)
                                                         .OrderByDescending(c => c.CreatedDate)
@@ -132,11 +132,12 @@ namespace UniMagazine.Repository
 
         public IEnumerable<Contribution> GetByMagazine(int magazineId) {
             var contributions = _dbContext.Contributions.Where(m => m.MagazineId == magazineId)
-                                                        .Where(s => s.Status == "Published")
-                                                        .Include(f => f.Files)
+                                                        .Where(s => s.Status == "Published" || s.Status == "PendingUpdate")
+                                                        .Include(f => f.Files.Where(f => f.Status != "Updating"))
                                                         .Include(u => u.User)
                                                         .ToList();
-
+            
+            
             return contributions;
         }
 
