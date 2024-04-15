@@ -67,7 +67,7 @@ namespace UniMagazine.Areas.Manager.Controllers
 
             // Xóa thư mục tạm và tệp zip sau khi trả về
             Directory.Delete(tempFolderPath, true);
-            TempData["success"] = "Download Contribution successfully !";
+            //TempData["success"] = "Download Contribution successfully !";
             return File(fileBytes, "application/zip", zipFileName);
         }
 

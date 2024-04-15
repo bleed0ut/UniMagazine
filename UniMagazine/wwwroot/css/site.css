@@ -144,7 +144,6 @@ html *::-webkit-scrollbar-track {
     flex-direction: column;
     align-items: center;
     padding-top: 30px;
-    border-left: 2px solid #F1F2F3;
 }
 
 @media(max-width: 1024px) {

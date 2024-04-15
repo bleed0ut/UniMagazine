@@ -187,7 +187,7 @@ namespace UniMagazine.Areas.Student.Controllers
                     var MaCon = new MaterialContribution()
                     {
                         CreatedDate = DateTime.Now,
-                        ImageUrl = @"upload\Student\" + fileName,
+                        ImageUrl = @"\upload\Student\" + fileName,
                         ContributionId = contribution.Id,
                     };
                     if (contribution.Status == "PendingUpdate")
