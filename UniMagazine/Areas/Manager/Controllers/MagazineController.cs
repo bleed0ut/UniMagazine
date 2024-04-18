@@ -60,12 +60,12 @@ namespace UniMagazine.Areas.Manager.Controllers
             AcademicYear academicYear = _unitOfWork.AcademicYearRepository.Get(a => a.Id ==  magazineVm.Magazine.AcademicYearId);
             bool isInAcademicYearDate =false;
             if (magazineVm.Magazine.OpenedDate != null)
-                isInAcademicYearDate = magazineVm.Magazine.OpenedDate >= academicYear.OpenedDate && magazineVm.Magazine.OpenedDate <= academicYear.ClosedDate;
+                isInAcademicYearDate = magazineVm.Magazine.OpenedDate >= academicYear.OpenedDate && magazineVm.Magazine.ClosedDate <= academicYear.ClosedDate;
 
             if (magazineVm.Magazine.OpenedDate == null || isInAcademicYearDate)
             {
                 if (ModelState.IsValid && magazineVm.Magazine.FacultyId != 0 && magazineVm.Magazine.AcademicYearId != 0)
-                {
+                {   
                     string wwwRootPath = _webHostEnvironment.WebRootPath;
                     if (file != null)
                     {
@@ -145,7 +145,11 @@ namespace UniMagazine.Areas.Manager.Controllers
         [HttpPost]
         public IActionResult Update(MagazineVM magazineVm, IFormFile? file)
         {
-                if (ModelState.IsValid && magazineVm.Magazine.FacultyId != 0 && magazineVm.Magazine.AcademicYearId != 0)
+            AcademicYear academicYear = _unitOfWork.AcademicYearRepository.Get(a => a.Id == magazineVm.Magazine.AcademicYearId);
+            bool isInAcademicYearDate = false;
+            if (magazineVm.Magazine.OpenedDate != null)
+                isInAcademicYearDate = magazineVm.Magazine.OpenedDate >= academicYear.OpenedDate && magazineVm.Magazine.ClosedDate <= academicYear.ClosedDate;
+            if (ModelState.IsValid && magazineVm.Magazine.FacultyId != 0 && magazineVm.Magazine.AcademicYearId != 0 && isInAcademicYearDate)
                 {
                     string wwwRootPath = _webHostEnvironment.WebRootPath;
                     if (magazineVm.Magazine.ClosedDate < magazineVm.Magazine.OpenedDate || magazineVm.Magazine.OpenedDate == null && magazineVm.Magazine.ClosedDate != null)
