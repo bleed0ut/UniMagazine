@@ -28,6 +28,7 @@ body {
     padding-bottom: 400px !important;
     background-color: #F1F2F3;
     overflow-y: overlay;
+    overflow-x: hidden;
 }
 
 footer {
