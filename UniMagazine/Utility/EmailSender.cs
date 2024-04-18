@@ -60,9 +60,9 @@ namespace UniMagazine.Utility
 
             string content = $"<h1>About your Contributionn</h1>";
             if (feedback.Status == "Published")
-                content += $"<p>Your contribution ha been published! Please check</p>";
+                content += $"<p>Your contribution has been published! Please check</p>";
             else
-                content += $"<p>Your contribution ha been rejected! Please check</p>";
+                content += $"<p>Your contribution has been rejected! Please check</p>";
 
             content += $"<p><strong>Topic Magazine: {con.Magazine.Title}</strong></p>";
             content += $"<p>{con.Content}</p>";
