@@ -53,7 +53,7 @@ namespace UniMagazine.Areas.Manager.Controllers
             {
                 foreach (var file in contribution.Files)
                 {
-                    string filePath = Path.Combine(_webHostEnvironment.WebRootPath, file.ImageUrl);
+                    string filePath = _webHostEnvironment.WebRootPath + $"/{file.ImageUrl}";
                     if (System.IO.File.Exists(filePath))
                     {
                         string entryName = Path.GetFileName(filePath);
